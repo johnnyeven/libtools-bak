@@ -12,8 +12,8 @@ import (
 
 	"golang.org/x/tools/imports"
 
-	"golib/tools/codegen"
-	"golib/tools/codegen/loaderx"
+	"profzone/libtools/codegen"
+	"profzone/libtools/codegen/loaderx"
 )
 
 type Field struct {

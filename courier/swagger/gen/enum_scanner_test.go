@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"golib/tools/codegen/loaderx"
+	"profzone/libtools/codegen/loaderx"
 )
 
 func TestEnumScanner_WithSkip(t *testing.T) {

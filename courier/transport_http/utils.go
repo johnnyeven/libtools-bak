@@ -8,7 +8,7 @@ import (
 
 	"github.com/julienschmidt/httprouter"
 
-	"golib/tools/courier/httpx"
+	"profzone/libtools/courier/httpx"
 )
 
 func GetParams(path string, url string) (params httprouter.Params, err error) {

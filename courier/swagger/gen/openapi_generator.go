@@ -12,7 +12,7 @@ import (
 
 	"encoding/json"
 
-	"golib/tools/codegen"
+	"profzone/libtools/codegen"
 )
 
 type SwaggerGenerator struct {

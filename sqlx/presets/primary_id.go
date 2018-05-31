@@ -3,7 +3,7 @@ package presets
 import (
 	"database/sql"
 
-	"golib/tools/sqlx"
+	"profzone/libtools/sqlx"
 )
 
 var _ interface {

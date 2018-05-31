@@ -12,10 +12,10 @@ import (
 
 	"github.com/google/uuid"
 
-	"golib/tools/codegen"
-	"golib/tools/godash"
-	"golib/tools/sqlx"
-	"golib/tools/sqlx/builder"
+	"profzone/libtools/codegen"
+	"profzone/libtools/godash"
+	"profzone/libtools/sqlx"
+	"profzone/libtools/sqlx/builder"
 )
 
 var (

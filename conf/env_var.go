@@ -8,7 +8,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"golib/tools/strutil"
+	"profzone/libtools/strutil"
 )
 
 var TagConf = "conf"

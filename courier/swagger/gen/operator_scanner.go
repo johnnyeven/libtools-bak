@@ -12,16 +12,16 @@ import (
 	"runtime/debug"
 	"strings"
 
-	"golib/tools/courier/transport_http/transform"
+	"profzone/libtools/courier/transport_http/transform"
 
 	"github.com/morlay/oas"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/tools/go/loader"
 
-	"golib/tools/codegen/loaderx"
-	"golib/tools/courier/httpx"
-	"golib/tools/courier/status_error"
-	"golib/tools/courier/transport_http"
+	"profzone/libtools/codegen/loaderx"
+	"profzone/libtools/courier/httpx"
+	"profzone/libtools/courier/status_error"
+	"profzone/libtools/courier/transport_http"
 )
 
 func FullNameOfType(tpe reflect.Type) string {

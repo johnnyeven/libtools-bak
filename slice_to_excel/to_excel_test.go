@@ -5,8 +5,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"golib/tools/slice_to_excel"
-	"golib/tools/timelib"
+	"profzone/libtools/slice_to_excel"
+	"profzone/libtools/timelib"
 )
 
 type GroupedColumn struct {

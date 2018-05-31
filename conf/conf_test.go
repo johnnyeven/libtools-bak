@@ -6,11 +6,11 @@ import (
 	"testing"
 	"time"
 
-	"golib/tools/conf/presets"
-	"golib/tools/courier/transport_http/transform"
-	"golib/tools/ptr"
+	"profzone/libtools/conf/presets"
+	"profzone/libtools/courier/transport_http/transform"
+	"profzone/libtools/ptr"
 
-	"golib/tools/conf"
+	"profzone/libtools/conf"
 
 	"github.com/stretchr/testify/assert"
 )

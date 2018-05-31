@@ -6,9 +6,9 @@ import (
 	"io"
 	"strconv"
 
-	"golib/tools/codegen"
-	"golib/tools/courier/enumeration"
-	"golib/tools/courier/swagger/gen"
+	"profzone/libtools/codegen"
+	"profzone/libtools/courier/enumeration"
+	"profzone/libtools/courier/swagger/gen"
 )
 
 func NewEnum(importPath, pkgName, name string, options gen.Enum, hasOffset bool) *Enum {
@@ -92,7 +92,7 @@ var `+m.InvalidError()+` = errors.New("invalid `+m.Name+`")
 func (m *Enum) WriteInitFunc(w io.Writer) {
 	io.WriteString(w, `
 func init () {
-	`+m.Importer.Use("golib/tools/courier/enumeration.RegisterEnums")+`("`+m.Name+`", map[string]string{
+	`+m.Importer.Use("profzone/libtools/courier/enumeration.RegisterEnums")+`("`+m.Name+`", map[string]string{
 `)
 
 	for _, option := range enumeration.Enum(m.Options) {
@@ -247,7 +247,7 @@ var _ interface {
 } = (*`+m.Name+`)(nil)
 
 func (v *`+m.Name+`) Scan(src interface{}) error {
-	integer, err := `+m.Importer.Use("golib/tools/courier/enumeration.AsInt64")+`(src, `+m.ConstOffset()+`)
+	integer, err := `+m.Importer.Use("profzone/libtools/courier/enumeration.AsInt64")+`(src, `+m.ConstOffset()+`)
 	if err != nil {
 		return err
 	}

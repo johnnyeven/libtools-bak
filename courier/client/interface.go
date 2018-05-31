@@ -1,7 +1,7 @@
 package client
 
 import (
-	"golib/tools/courier"
+	"profzone/libtools/courier"
 )
 
 type IRequest interface {

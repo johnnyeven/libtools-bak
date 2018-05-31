@@ -10,19 +10,19 @@ import (
 	"strings"
 	"time"
 
-	"golib/tools/conf"
-	"golib/tools/conf/presets"
-	"golib/tools/courier"
-	"golib/tools/env"
-	"golib/tools/reflectx"
-	"golib/tools/timelib"
+	"profzone/libtools/conf"
+	"profzone/libtools/conf/presets"
+	"profzone/libtools/courier"
+	"profzone/libtools/env"
+	"profzone/libtools/reflectx"
+	"profzone/libtools/timelib"
 
 	"github.com/gomodule/redigo/redis"
 	"github.com/google/uuid"
 	"gopkg.in/robfig/cron.v2"
 
-	"golib/tools/mq"
-	mq_redis "golib/tools/mq/redis"
+	"profzone/libtools/mq"
+	mq_redis "profzone/libtools/mq/redis"
 )
 
 var (

@@ -3,9 +3,9 @@ package cmd
 import (
 	"github.com/spf13/cobra"
 
-	"golib/tools/codegen"
-	"golib/tools/courier/status_error/gen"
-	"golib/tools/courier/status_error/gen_from_old"
+	"profzone/libtools/codegen"
+	"profzone/libtools/courier/status_error/gen"
+	"profzone/libtools/courier/status_error/gen_from_old"
 )
 
 var cmdGenError = &cobra.Command{

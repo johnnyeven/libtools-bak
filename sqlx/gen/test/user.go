@@ -1,8 +1,8 @@
 package test
 
 import (
-	"golib/tools/sqlx/presets"
-	"golib/tools/timelib"
+	"profzone/libtools/sqlx/presets"
+	"profzone/libtools/timelib"
 )
 
 // @def primary ID

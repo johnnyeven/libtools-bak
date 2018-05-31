@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"sort"
 
-	"golib/tools/godash"
-	"golib/tools/sqlx/builder"
+	"profzone/libtools/godash"
+	"profzone/libtools/sqlx/builder"
 )
 
 func (m *Model) dataAndTable() string {
@@ -13,18 +13,18 @@ func (m *Model) dataAndTable() string {
 
 	if m.WithTableInterfaces {
 		m.ParseTo(buf, `
-var {{ .StructName }}Table *{{ use "golib/tools/sqlx/builder" }}.Table
+var {{ .StructName }}Table *{{ use "profzone/libtools/sqlx/builder" }}.Table
 
 func init() {
 	{{ .StructName }}Table = {{ .Database }}.Register(&{{ .StructName }}{})
 }
 
-func ({{ var .StructName }} *{{ .StructName }}) D() *{{ use "golib/tools/sqlx" }}.Database {
+func ({{ var .StructName }} *{{ .StructName }}) D() *{{ use "profzone/libtools/sqlx" }}.Database {
 	return {{ .Database }}
 }
 
 
-func ({{ var .StructName }} *{{ .StructName }}) T() *{{ use "golib/tools/sqlx/builder" }}.Table {
+func ({{ var .StructName }} *{{ .StructName }}) T() *{{ use "profzone/libtools/sqlx/builder" }}.Table {
 	return {{ .StructName }}Table
 }
 
@@ -38,7 +38,7 @@ func ({{ var .StructName }} *{{ .StructName }}) TableName() string {
 	{{ $structName := .StructName }}
 
 	type {{ .StructName }}Fields struct {
-		{{ range $k, $field := ( .FieldNames ) }}{{ print $field }} *{{ use "golib/tools/sqlx/builder" }}.Column
+		{{ range $k, $field := ( .FieldNames ) }}{{ print $field }} *{{ use "profzone/libtools/sqlx/builder" }}.Column
 		{{ end }}
 	}
 	
@@ -63,12 +63,12 @@ func ({{ var .StructName }} *{{ .StructName }}) TableName() string {
 		return {{ dump .IndexFieldNames }}
 	}
 
-	func ({{ var .StructName }} *{{ .StructName }}) ConditionByStruct() *{{ use "golib/tools/sqlx/builder" }}.Condition  {
+	func ({{ var .StructName }} *{{ .StructName }}) ConditionByStruct() *{{ use "profzone/libtools/sqlx/builder" }}.Condition  {
 		table := {{ var .StructName }}.T()
 
-		fieldValues := {{ use "golib/tools/sqlx" }}.FieldValuesFromStructByNonZero({{ var .StructName }})
+		fieldValues := {{ use "profzone/libtools/sqlx" }}.FieldValuesFromStructByNonZero({{ var .StructName }})
 
-		conditions := []*{{ use "golib/tools/sqlx/builder" }}.Condition{}
+		conditions := []*{{ use "profzone/libtools/sqlx/builder" }}.Condition{}
 
 		for _, fieldName := range {{ var .StructName }}.IndexFieldNames() {
 			if v, exists := fieldValues[fieldName]; exists {
@@ -85,10 +85,10 @@ func ({{ var .StructName }} *{{ .StructName }}) TableName() string {
 			conditions = append(conditions, table.F(fieldName).Eq(v))
 		}
 
-		condition := {{ use "golib/tools/sqlx/builder" }}.And(conditions...)
+		condition := {{ use "profzone/libtools/sqlx/builder" }}.And(conditions...)
 
 		{{ if .HasSoftDelete }}
-			condition = {{ use "golib/tools/sqlx/builder" }}.And(condition, table.F("{{ .FieldSoftDelete }}").Eq({{ use .ConstSoftDeleteTrue }}))
+			condition = {{ use "profzone/libtools/sqlx/builder" }}.And(condition, table.F("{{ .FieldSoftDelete }}").Eq({{ use .ConstSoftDeleteTrue }}))
 		{{ end }}
 		return condition
 	}

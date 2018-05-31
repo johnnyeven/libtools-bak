@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"golib/tools/format"
+	"profzone/libtools/format"
 )
 
 func TestProcess(t *testing.T) {
@@ -15,8 +15,8 @@ func TestProcess(t *testing.T) {
 		testing "testing"
 		"fmt"
 
-		"golib/tools/format"
-		"golib/tools/gin_app"
+		"profzone/libtools/format"
+		"profzone/libtools/gin_app"
 
 		"github.com/davecgh/go-spew/spew"
 	)

@@ -6,7 +6,7 @@ import (
 	"io"
 	"sort"
 
-	"golib/tools/codegen"
+	"profzone/libtools/codegen"
 )
 
 func NewClientSet(baseClient, name string) *ClientSet {
@@ -66,7 +66,7 @@ func (c *ClientSet) WriteTypeInterface(w io.Writer) {
 			reqTypeInParams = reqType + ", "
 		}
 
-		interfaceMethod := op.ID() + `(` + reqVar + ` ` + reqTypeInParams + `metas... ` + c.Importer.Use("golib/tools/courier.Metadata") + `) (resp *` + ResponseOf(op.ID()) + `, err error)
+		interfaceMethod := op.ID() + `(` + reqVar + ` ` + reqTypeInParams + `metas... ` + c.Importer.Use("profzone/libtools/courier.Metadata") + `) (resp *` + ResponseOf(op.ID()) + `, err error)
 `
 
 		io.WriteString(w, interfaceMethod)
@@ -102,12 +102,12 @@ type `+reqType+" ")
 			op.WriteReqType(w, c.Importer)
 		}
 
-		interfaceMethod := op.ID() + `(` + reqVar + ` ` + reqTypeInParams + `metas... ` + c.Importer.Use("golib/tools/courier.Metadata") + `) (resp *` + ResponseOf(op.ID()) + `, err error)`
+		interfaceMethod := op.ID() + `(` + reqVar + ` ` + reqTypeInParams + `metas... ` + c.Importer.Use("profzone/libtools/courier.Metadata") + `) (resp *` + ResponseOf(op.ID()) + `, err error)`
 
 		io.WriteString(w, `
 func (c `+c.ClientName+`) `+interfaceMethod+` {
 	resp = &`+ResponseOf(op.ID())+`{}
-	resp.Meta = `+c.Importer.Use("golib/tools/courier.Metadata")+`{}
+	resp.Meta = `+c.Importer.Use("profzone/libtools/courier.Metadata")+`{}
 
 	err = c.Request(c.Name + ".`+op.ID()+`", "`+op.Method()+`", "`+op.Path()+`", `+reqVarInUse+`, metas...).
 		Do().
@@ -120,7 +120,7 @@ func (c `+c.ClientName+`) `+interfaceMethod+` {
 
 		io.WriteString(w, `
 type `+ResponseOf(op.ID())+`  struct {
-	Meta `+c.Importer.Use("golib/tools/courier.Metadata")+`
+	Meta `+c.Importer.Use("profzone/libtools/courier.Metadata")+`
 	Body `)
 		op.WriteRespBodyType(w, c.Importer)
 		io.WriteString(w, `
@@ -151,8 +151,8 @@ func (c  `+c.ClientName+`) CheckService() {
 	err := c.Request(c.Name+".Check", "HEAD", "/", nil).
 		Do().
 		Into(nil)
-	statusErr := `+c.Importer.Use("golib/tools/courier/status_error.FromError")+`(err)
-	if statusErr.Code == int64(`+c.Importer.Use("golib/tools/courier/status_error.RequestTimeout")+`) {
+	statusErr := `+c.Importer.Use("profzone/libtools/courier/status_error.FromError")+`(err)
+	if statusErr.Code == int64(`+c.Importer.Use("profzone/libtools/courier/status_error.RequestTimeout")+`) {
 		panic(fmt.Errorf("service %s have some error %s", c.Name, statusErr))
 	}
 }

@@ -5,8 +5,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"golib/tools/executil"
-	"golib/tools/project/govendor"
+	"profzone/libtools/executil"
+	"profzone/libtools/project/govendor"
 )
 
 var cmdUpdateFlagUpdate bool

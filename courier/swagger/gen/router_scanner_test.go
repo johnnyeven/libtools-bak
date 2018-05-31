@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"golib/tools/codegen/loaderx"
+	"profzone/libtools/codegen/loaderx"
 )
 
 func TestRouterScanner(t *testing.T) {
@@ -16,8 +16,8 @@ func TestRouterScanner(t *testing.T) {
 
 	import (
 		"context"
-		"golib/tools/courier/httpx"
-		"golib/tools/courier"
+		"profzone/libtools/courier/httpx"
+		"profzone/libtools/courier"
 	)
 
 	type Root struct {

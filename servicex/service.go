@@ -7,8 +7,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"golib/tools/conf"
-	"golib/tools/service/dockerizier"
+	"profzone/libtools/conf"
+	"profzone/libtools/service/dockerizier"
 )
 
 var (

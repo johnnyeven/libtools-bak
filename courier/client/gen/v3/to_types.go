@@ -9,12 +9,12 @@ import (
 
 	"github.com/morlay/oas"
 
-	"golib/tools/codegen"
-	"golib/tools/codegen/loaderx"
-	"golib/tools/courier/client/gen/common"
-	"golib/tools/courier/client/gen/enums"
-	"golib/tools/courier/swagger/gen"
-	"golib/tools/godash"
+	"profzone/libtools/codegen"
+	"profzone/libtools/codegen/loaderx"
+	"profzone/libtools/courier/client/gen/common"
+	"profzone/libtools/courier/client/gen/enums"
+	"profzone/libtools/courier/swagger/gen"
+	"profzone/libtools/godash"
 )
 
 func ToTypes(serviceName string, pkgName string, openAPI *oas.OpenAPI) string {
@@ -89,7 +89,7 @@ func (g *TypeGenerator) TypeIndirect(schema *oas.Schema) (string, bool) {
 
 	if schema.Extensions[gen.XNamed] != nil {
 		if schema.Type == "array" && schema.Items != nil && schema.Items.Format == "uint64" {
-			return g.Importer.Use("golib/tools/httplib.Uint64List"), true
+			return g.Importer.Use("profzone/libtools/httplib.Uint64List"), true
 		}
 
 		typeFullName := fmt.Sprint(schema.Extensions[gen.XNamed])
@@ -107,7 +107,7 @@ func (g *TypeGenerator) TypeIndirect(schema *oas.Schema) (string, bool) {
 
 			if schema.Type == "boolean" {
 				typeName = "Bool"
-				pkgImportName = "golib/tools/courier/enumeration"
+				pkgImportName = "profzone/libtools/courier/enumeration"
 				isInCommonLib = true
 			}
 

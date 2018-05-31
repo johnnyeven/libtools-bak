@@ -3,8 +3,8 @@ package cmd
 import (
 	"github.com/spf13/cobra"
 
-	"golib/tools/codegen"
-	"golib/tools/courier/enumeration/gen"
+	"profzone/libtools/codegen"
+	"profzone/libtools/courier/enumeration/gen"
 )
 
 var cmdGenEnum = &cobra.Command{

@@ -11,7 +11,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"golang.org/x/tools/go/loader"
 
-	"golib/tools/codegen/loaderx"
+	"profzone/libtools/codegen/loaderx"
 )
 
 const (

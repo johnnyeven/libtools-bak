@@ -3,8 +3,8 @@ package examples
 import (
 	"time"
 
-	"golib/tools/courier/enumeration"
-	"golib/tools/timelib"
+	"profzone/libtools/courier/enumeration"
+	"profzone/libtools/timelib"
 )
 
 //go:generate tools gen method --no-table-name User

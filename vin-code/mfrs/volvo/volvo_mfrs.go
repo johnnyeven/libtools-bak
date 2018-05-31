@@ -3,7 +3,7 @@ package volvo
 import (
 	"fmt"
 
-	"golib/tools/vin-code/vinrune"
+	"profzone/libtools/vin-code/vinrune"
 )
 
 var (

@@ -13,9 +13,9 @@ import (
 	"strings"
 	"time"
 
-	"golib/tools/courier"
-	"golib/tools/courier/httpx"
-	"golib/tools/courier/status_error"
+	"profzone/libtools/courier"
+	"profzone/libtools/courier/httpx"
+	"profzone/libtools/courier/status_error"
 )
 
 func NewRequest(method string, uri string, v interface{}, metadatas ...courier.Metadata) (*http.Request, error) {

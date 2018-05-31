@@ -9,9 +9,9 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"golib/tools/env"
-	"golib/tools/reflectx"
-	"golib/tools/strutil"
+	"profzone/libtools/env"
+	"profzone/libtools/reflectx"
+	"profzone/libtools/strutil"
 )
 
 type TagFlags map[string]bool

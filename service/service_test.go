@@ -3,7 +3,7 @@ package service_test
 import (
 	"testing"
 
-	"golib/tools/service"
+	"profzone/libtools/service"
 )
 
 func TestNew(t *testing.T) {

@@ -3,7 +3,7 @@ package oauth2
 import (
 	"golang.org/x/oauth2"
 
-	"golib/tools/conf/presets"
+	"profzone/libtools/conf/presets"
 )
 
 type OAuthConfig struct {

@@ -3,7 +3,7 @@ package common
 import (
 	"io"
 
-	"golib/tools/codegen"
+	"profzone/libtools/codegen"
 )
 
 type Op interface {

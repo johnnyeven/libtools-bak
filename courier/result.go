@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"reflect"
 
-	"golib/tools/courier/status_error"
+	"profzone/libtools/courier/status_error"
 )
 
 type TUnmarshal func(data []byte, v interface{}) error

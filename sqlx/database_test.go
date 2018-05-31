@@ -13,10 +13,10 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 
-	"golib/tools/runner"
-	"golib/tools/sqlx"
-	"golib/tools/sqlx/builder"
-	"golib/tools/timelib"
+	"profzone/libtools/runner"
+	"profzone/libtools/sqlx"
+	"profzone/libtools/sqlx/builder"
+	"profzone/libtools/timelib"
 )
 
 var db *sqlx.DB

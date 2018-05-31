@@ -4,10 +4,10 @@ import (
 	fmt "fmt"
 	time "time"
 
-	golib_tools_courier_enumeration "golib/tools/courier/enumeration"
-	golib_tools_sqlx "golib/tools/sqlx"
-	golib_tools_sqlx_builder "golib/tools/sqlx/builder"
-	golib_tools_timelib "golib/tools/timelib"
+	golib_tools_courier_enumeration "profzone/libtools/courier/enumeration"
+	golib_tools_sqlx "profzone/libtools/sqlx"
+	golib_tools_sqlx_builder "profzone/libtools/sqlx/builder"
+	golib_tools_timelib "profzone/libtools/timelib"
 )
 
 var UserTable *golib_tools_sqlx_builder.Table

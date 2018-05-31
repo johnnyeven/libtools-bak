@@ -6,10 +6,10 @@ import (
 	"sort"
 	"strings"
 
-	"golib/tools/codegen"
-	"golib/tools/courier/enumeration"
-	"golib/tools/courier/enumeration/gen"
-	swagger_gen "golib/tools/courier/swagger/gen"
+	"profzone/libtools/codegen"
+	"profzone/libtools/courier/enumeration"
+	"profzone/libtools/courier/enumeration/gen"
+	swagger_gen "profzone/libtools/courier/swagger/gen"
 )
 
 var serviceEnumMap = map[string]map[string]enumeration.Enum{}

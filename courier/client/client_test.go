@@ -5,12 +5,12 @@ import (
 	"testing"
 	"time"
 
-	"golib/tools/courier"
+	"profzone/libtools/courier"
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/stretchr/testify/assert"
 
-	"golib/tools/courier/status_error"
+	"profzone/libtools/courier/status_error"
 )
 
 type IpInfo struct {

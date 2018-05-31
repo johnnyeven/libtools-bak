@@ -1,9 +1,9 @@
 package client_demo
 
 import (
-	golib_tools_courier_status_error "golib/tools/courier/status_error"
-	golib_tools_courier_swagger "golib/tools/courier/swagger"
-	golib_tools_courier_transport_http "golib/tools/courier/transport_http"
+	golib_tools_courier_status_error "profzone/libtools/courier/status_error"
+	golib_tools_courier_swagger "profzone/libtools/courier/swagger"
+	golib_tools_courier_transport_http "profzone/libtools/courier/transport_http"
 )
 
 type Data struct {

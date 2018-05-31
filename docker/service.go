@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"golib/tools/ptr"
+	"profzone/libtools/ptr"
 )
 
 func NewService(image string) *Service {

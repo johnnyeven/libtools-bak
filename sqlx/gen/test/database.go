@@ -1,7 +1,7 @@
 package test
 
 import (
-	"golib/tools/sqlx"
+	"profzone/libtools/sqlx"
 )
 
 var DBTest = sqlx.NewDatabase("test")

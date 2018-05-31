@@ -7,11 +7,11 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"golib/tools/courier/status_error"
-	"golib/tools/courier/transport_http/transform"
-	"golib/tools/httplib/testify"
-	"golib/tools/timelib"
-	"golib/tools/validate"
+	"profzone/libtools/courier/status_error"
+	"profzone/libtools/courier/transport_http/transform"
+	"profzone/libtools/httplib/testify"
+	"profzone/libtools/timelib"
+	"profzone/libtools/validate"
 )
 
 func v_ok(v interface{}) (bool, string) {

@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/peer"
 
-	"golib/tools/courier/httpx"
+	"profzone/libtools/courier/httpx"
 )
 
 func ClientIP(ctx context.Context) string {

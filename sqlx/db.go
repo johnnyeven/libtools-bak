@@ -5,8 +5,8 @@ import (
 	"errors"
 	"time"
 
-	"golib/tools/sqlx/builder"
-	_ "golib/tools/sqlx/mysql_logger_driver"
+	"profzone/libtools/sqlx/builder"
+	_ "profzone/libtools/sqlx/mysql_logger_driver"
 )
 
 var ErrNotTx = errors.New("db is not *sql.Tx")

@@ -5,7 +5,7 @@ import (
 	"os"
 	"reflect"
 
-	"golib/tools/sqlx/builder"
+	"profzone/libtools/sqlx/builder"
 
 	"github.com/sirupsen/logrus"
 )

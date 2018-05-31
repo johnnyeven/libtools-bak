@@ -3,7 +3,7 @@ package general
 import (
 	"fmt"
 
-	"golib/tools/vin-code/vinrune"
+	"profzone/libtools/vin-code/vinrune"
 )
 
 // 缺省的解析方式

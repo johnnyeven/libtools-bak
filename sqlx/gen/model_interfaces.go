@@ -3,7 +3,7 @@ package gen
 import (
 	"bytes"
 
-	"golib/tools/sqlx/builder"
+	"profzone/libtools/sqlx/builder"
 )
 
 func (m *Model) GetComments() map[string]string {
@@ -18,21 +18,21 @@ func (m *Model) interfaces() string {
 	buf := &bytes.Buffer{}
 
 	if len(m.Keys.Primary) > 0 {
-		m.ParseTo(buf, `func ({{ var .StructName }} *{{ .StructName }}) PrimaryKey() {{ use "golib/tools/sqlx" }}.FieldNames {
+		m.ParseTo(buf, `func ({{ var .StructName }} *{{ .StructName }}) PrimaryKey() {{ use "profzone/libtools/sqlx" }}.FieldNames {
 		return {{ dump .Keys.Primary }}
 	}
 	`)
 	}
 
 	if len(m.Keys.Indexes) > 0 {
-		m.ParseTo(buf, `func ({{ var .StructName }} *{{ .StructName }}) Indexes() {{ use "golib/tools/sqlx" }}.Indexes {
+		m.ParseTo(buf, `func ({{ var .StructName }} *{{ .StructName }}) Indexes() {{ use "profzone/libtools/sqlx" }}.Indexes {
 		return {{ dump .Keys.Indexes }}
 	}
 	`)
 	}
 
 	if len(m.Keys.UniqueIndexes) > 0 {
-		m.ParseTo(buf, `func ({{ var .StructName }} *{{ .StructName }}) UniqueIndexes() {{ use "golib/tools/sqlx" }}.Indexes {
+		m.ParseTo(buf, `func ({{ var .StructName }} *{{ .StructName }}) UniqueIndexes() {{ use "profzone/libtools/sqlx" }}.Indexes {
 		return {{ dump .Keys.UniqueIndexes }}
 	}
 	`)

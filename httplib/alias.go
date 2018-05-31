@@ -1,8 +1,8 @@
 package httplib
 
 import (
-	"golib/tools/courier/enumeration"
-	"golib/tools/courier/status_error"
+	"profzone/libtools/courier/enumeration"
+	"profzone/libtools/courier/status_error"
 )
 
 // deprecated

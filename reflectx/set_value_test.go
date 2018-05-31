@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"golib/tools/ptr"
+	"profzone/libtools/ptr"
 )
 
 func TestSetValue(t *testing.T) {

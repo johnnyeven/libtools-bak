@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"strings"
 
-	"golib/tools/codegen"
+	"profzone/libtools/codegen"
 )
 
 func RequestOf(id string) string {

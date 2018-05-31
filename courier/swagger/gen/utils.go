@@ -9,8 +9,8 @@ import (
 
 	"golang.org/x/tools/go/loader"
 
-	"golib/tools/codegen/loaderx"
-	"golib/tools/courier"
+	"profzone/libtools/codegen/loaderx"
+	"profzone/libtools/courier"
 )
 
 func getTagNameAndFlags(tagValue string) (name string, flags map[string]bool) {

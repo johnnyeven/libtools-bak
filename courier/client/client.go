@@ -6,13 +6,13 @@ import (
 	"strings"
 	"time"
 
-	"golib/tools/conf"
-	"golib/tools/courier"
-	"golib/tools/courier/httpx"
-	"golib/tools/courier/transport_grpc"
-	"golib/tools/courier/transport_http"
-	"golib/tools/env"
-	"golib/tools/log/context"
+	"profzone/libtools/conf"
+	"profzone/libtools/courier"
+	"profzone/libtools/courier/httpx"
+	"profzone/libtools/courier/transport_grpc"
+	"profzone/libtools/courier/transport_http"
+	"profzone/libtools/env"
+	"profzone/libtools/log/context"
 )
 
 type Client struct {

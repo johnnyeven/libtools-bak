@@ -5,8 +5,8 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"golib/tools/log"
-	"golib/tools/log/context"
+	"profzone/libtools/log"
+	"profzone/libtools/log/context"
 )
 
 var logger = log.Log{

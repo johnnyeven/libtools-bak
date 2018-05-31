@@ -3,8 +3,8 @@ package cmd
 import (
 	"github.com/spf13/cobra"
 
-	"golib/tools/codegen"
-	"golib/tools/sqlx/gen"
+	"profzone/libtools/codegen"
+	"profzone/libtools/sqlx/gen"
 )
 
 var withDefaults bool

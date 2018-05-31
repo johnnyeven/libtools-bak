@@ -5,8 +5,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"golib/tools/codegen"
-	"golib/tools/service/gen"
+	"profzone/libtools/codegen"
+	"profzone/libtools/service/gen"
 )
 
 var cmdNewFlagName string

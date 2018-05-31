@@ -7,9 +7,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 
-	"golib/tools/redis"
+	"profzone/libtools/redis"
 
-	"golib/tools/mq"
+	"profzone/libtools/mq"
 )
 
 var r = &redis.Redis{

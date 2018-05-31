@@ -6,7 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"golib/tools/project/commit_msg"
+	"profzone/libtools/project/commit_msg"
 )
 
 var cmdCommitMsgFlagInit bool

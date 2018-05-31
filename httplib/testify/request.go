@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 
-	"golib/tools/courier/transport_http/transform"
+	"profzone/libtools/courier/transport_http/transform"
 )
 
 func NewContext(method string, url string, req interface{}) (ctx *gin.Context) {

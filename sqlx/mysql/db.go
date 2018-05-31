@@ -5,9 +5,9 @@ import (
 	"net/url"
 	"time"
 
-	"golib/tools/conf"
-	"golib/tools/conf/presets"
-	"golib/tools/sqlx"
+	"profzone/libtools/conf"
+	"profzone/libtools/conf/presets"
+	"profzone/libtools/sqlx"
 )
 
 type MySQL struct {

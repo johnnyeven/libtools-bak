@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"golib/tools/conf"
+	"profzone/libtools/conf"
 )
 
 func TestOAuth(t *testing.T) {

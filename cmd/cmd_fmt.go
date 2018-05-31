@@ -9,7 +9,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"golib/tools/format"
+	"profzone/libtools/format"
 )
 
 func LoadFiles(dir string, filter func(filename string) bool) (filenames []string) {

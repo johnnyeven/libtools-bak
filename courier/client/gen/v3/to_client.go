@@ -7,11 +7,11 @@ import (
 
 	"github.com/morlay/oas"
 
-	"golib/tools/codegen"
-	"golib/tools/courier/client/gen/common"
-	"golib/tools/courier/httpx"
-	"golib/tools/courier/swagger/gen"
-	"golib/tools/courier/transport_http/transform"
+	"profzone/libtools/codegen"
+	"profzone/libtools/courier/client/gen/common"
+	"profzone/libtools/courier/httpx"
+	"profzone/libtools/courier/swagger/gen"
+	"profzone/libtools/courier/transport_http/transform"
 )
 
 func ToClient(baseClient string, serviceName string, openAPI *oas.OpenAPI) string {

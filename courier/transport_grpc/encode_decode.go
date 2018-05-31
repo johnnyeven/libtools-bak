@@ -11,11 +11,11 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 
-	"golib/tools/courier"
-	"golib/tools/courier/httpx"
-	"golib/tools/courier/status_error"
-	"golib/tools/duration"
-	logContext "golib/tools/log/context"
+	"profzone/libtools/courier"
+	"profzone/libtools/courier/httpx"
+	"profzone/libtools/courier/status_error"
+	"profzone/libtools/duration"
+	logContext "profzone/libtools/log/context"
 )
 
 type DecodeStreamFunc func(c context.Context, data []byte) (request interface{}, err error)

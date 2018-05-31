@@ -1,7 +1,7 @@
 package err
 
 import (
-	"golib/tools/httplib"
+	"profzone/libtools/httplib"
 )
 
 var (

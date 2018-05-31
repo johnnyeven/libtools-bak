@@ -12,10 +12,10 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"golib/tools/courier/status_error"
-	"golib/tools/ptr"
-	"golib/tools/reflectx"
-	"golib/tools/timelib"
+	"profzone/libtools/courier/status_error"
+	"profzone/libtools/ptr"
+	"profzone/libtools/reflectx"
+	"profzone/libtools/timelib"
 )
 
 type JSON string

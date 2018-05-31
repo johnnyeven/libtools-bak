@@ -1,8 +1,8 @@
 package vincode
 
 import (
-	"golib/tools/vin-code/mfrs/msbs"
-	"golib/tools/vin-code/misc"
+	"profzone/libtools/vin-code/mfrs/msbs"
+	"profzone/libtools/vin-code/misc"
 )
 
 // 三菱

@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"golib/tools/courier/httpx"
+	"profzone/libtools/courier/httpx"
 )
 
 func setCORS(headers *http.Header) {

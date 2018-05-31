@@ -9,7 +9,7 @@ import (
 	"sort"
 	"strings"
 
-	"golib/tools/executil"
+	"profzone/libtools/executil"
 )
 
 var pkgsNoGoGet = []string{

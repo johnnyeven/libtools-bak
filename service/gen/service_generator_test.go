@@ -3,7 +3,7 @@ package gen
 import (
 	"testing"
 
-	"golib/tools/codegen"
+	"profzone/libtools/codegen"
 )
 
 func TestGen(t *testing.T) {

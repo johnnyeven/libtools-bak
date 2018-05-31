@@ -6,8 +6,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"golib/tools/courier/status_error"
-	"golib/tools/httplib"
+	"profzone/libtools/courier/status_error"
+	"profzone/libtools/httplib"
 )
 
 func WithSignBy(exchangeSecret SecretExchanger) gin.HandlerFunc {

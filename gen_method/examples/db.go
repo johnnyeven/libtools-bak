@@ -1,7 +1,7 @@
 package examples
 
 import (
-	"golib/tools/mysql"
+	"profzone/libtools/mysql"
 )
 
 var DBTable = mysql.NewDBTable()

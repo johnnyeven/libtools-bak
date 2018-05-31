@@ -1,7 +1,7 @@
 package sqlx
 
 import (
-	"golib/tools/sqlx/builder"
+	"profzone/libtools/sqlx/builder"
 )
 
 type EnumTypeDescriber interface {

@@ -3,7 +3,7 @@ package vincode
 import (
 	"testing"
 
-	"golib/tools/vin-code/mfrs/msbs"
+	"profzone/libtools/vin-code/mfrs/msbs"
 )
 
 func TestMSBS1(t *testing.T) {

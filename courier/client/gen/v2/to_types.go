@@ -9,12 +9,12 @@ import (
 
 	"github.com/go-openapi/spec"
 
-	"golib/tools/codegen"
-	"golib/tools/codegen/loaderx"
-	"golib/tools/courier/client/gen/common"
-	"golib/tools/courier/client/gen/enums"
-	"golib/tools/courier/swagger/gen"
-	"golib/tools/godash"
+	"profzone/libtools/codegen"
+	"profzone/libtools/codegen/loaderx"
+	"profzone/libtools/courier/client/gen/common"
+	"profzone/libtools/courier/client/gen/enums"
+	"profzone/libtools/courier/swagger/gen"
+	"profzone/libtools/godash"
 )
 
 func ToTypes(serviceName string, pkgName string, swagger *spec.Swagger) string {
@@ -83,7 +83,7 @@ func (g *TypeGenerator) TypeIndirect(schema *spec.Schema) string {
 
 	if schema.Extensions[gen.XNamed] != nil {
 		if schema.Type.Contains("array") && schema.Items != nil && schema.Items.Schema.Format == "uint64" {
-			return g.Importer.Use("golib/tools/httplib.Uint64List")
+			return g.Importer.Use("profzone/libtools/httplib.Uint64List")
 		}
 
 		typeFullName := fmt.Sprint(schema.Extensions[gen.XNamed])
@@ -103,7 +103,7 @@ func (g *TypeGenerator) TypeIndirect(schema *spec.Schema) string {
 
 			if schema.Type.Contains("boolean") {
 				typeName = "Bool"
-				pkgImportName = "golib/tools/courier/enumeration"
+				pkgImportName = "profzone/libtools/courier/enumeration"
 			}
 
 			return g.Importer.Use(fmt.Sprintf("%s.%s", pkgImportName, typeName))

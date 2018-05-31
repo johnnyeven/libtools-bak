@@ -1,7 +1,7 @@
 package httplib
 
 import (
-	"golib/tools/timelib"
+	"profzone/libtools/timelib"
 )
 
 type Pager struct {

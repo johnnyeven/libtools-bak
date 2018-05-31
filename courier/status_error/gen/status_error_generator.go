@@ -15,9 +15,9 @@ import (
 
 	"golang.org/x/tools/go/loader"
 
-	"golib/tools/codegen"
-	"golib/tools/codegen/loaderx"
-	"golib/tools/courier/status_error"
+	"profzone/libtools/codegen"
+	"profzone/libtools/codegen/loaderx"
+	"profzone/libtools/courier/status_error"
 )
 
 type StatusErrorGenerator struct {

@@ -7,9 +7,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"golib/tools/conf"
-	"golib/tools/httplib"
-	"golib/tools/service/dockerizier"
+	"profzone/libtools/conf"
+	"profzone/libtools/httplib"
+	"profzone/libtools/service/dockerizier"
 )
 
 // @deprecated

@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"golib/tools/codegen"
+	"profzone/libtools/codegen"
 )
 
 func init() {

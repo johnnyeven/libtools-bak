@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"golib/tools/godash"
-	"golib/tools/sqlx/builder"
+	"profzone/libtools/godash"
+	"profzone/libtools/sqlx/builder"
 )
 
 func (m *Model) methodsForCRUD() string {
@@ -100,7 +100,7 @@ func (m *Model) methodsForBasic() string {
 
 	m.ParseTo(buf, `
 	{{ $method := "Create"}}
-	func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "golib/tools/sqlx" }}.DB) error {
+	func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "profzone/libtools/sqlx" }}.DB) error {
 	{{ ( .EnableIfNeed ) }}
 	{{ ( .SetCreatedAtIfNeed ) }}
 
@@ -125,7 +125,7 @@ func (m *Model) methodsForBasic() string {
 	m.ParseTo(buf, fmt.Sprintf(
 		`
 {{ $method := "DeleteByStruct" }}
-func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "golib/tools/sqlx" }}.DB) (err error) {
+func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "profzone/libtools/sqlx" }}.DB) (err error) {
 	table :=  {{ var .StructName }}.T()
 
 	stmt := table.Delete().
@@ -140,7 +140,7 @@ func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "golib/
 	if len(m.Keys.UniqueIndexes) > 0 {
 		m.ParseTo(buf, `
 {{ $method := "CreateOnDuplicateWithUpdateFields"}}
-func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "golib/tools/sqlx" }}.DB, updateFields []string) error {
+func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "profzone/libtools/sqlx" }}.DB, updateFields []string) error {
 	if len(updateFields) == 0 {
 		panic({{ use "fmt"}}.Errorf("must have update fields"))
 	}
@@ -150,7 +150,7 @@ func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "golib/
 
 	table := {{ var .StructName }}.T()
 
-	fieldValues := {{ use "golib/tools/sqlx" }}.FieldValuesFromStructByNonZero({{ var .StructName }}, updateFields...)
+	fieldValues := {{ use "profzone/libtools/sqlx" }}.FieldValuesFromStructByNonZero({{ var .StructName }}, updateFields...)
 
 	{{ if .HasAutoIncrement }}
 		delete(fieldValues, "{{ .FieldAutoIncrement }}")
@@ -227,13 +227,13 @@ func (m *Model) methodsForKeys() string {
 
 			m.ParseTo(buf, fmt.Sprintf(`
 {{ $method := "%s" }}
-func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "golib/tools/sqlx" }}.DB) error {
+func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "profzone/libtools/sqlx" }}.DB) error {
 	{{ ( .EnableIfNeed ) }}
 
 	table :=  {{ var .StructName }}.T()
 	stmt := table.Select().
 		Comment("{{ .StructName }}.{{ $method }}").
-		Where({{ use "golib/tools/sqlx/builder" }}.And(
+		Where({{ use "profzone/libtools/sqlx/builder" }}.And(
 			%s
 		))
 
@@ -246,13 +246,13 @@ func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "golib/
 
 			m.ParseTo(buf, fmt.Sprintf(`
 {{ $method := "%s" }}
-func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "golib/tools/sqlx" }}.DB) error {
+func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "profzone/libtools/sqlx" }}.DB) error {
 	{{ ( .EnableIfNeed ) }}
 
 	table :=  {{ var .StructName }}.T()
 	stmt := table.Select().
 		Comment("{{ .StructName }}.{{ $method }}").
-		Where({{ use "golib/tools/sqlx/builder" }}.And(
+		Where({{ use "profzone/libtools/sqlx/builder" }}.And(
 			%s
 		)).
 		ForUpdate()
@@ -266,13 +266,13 @@ func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "golib/
 
 			m.ParseTo(buf, fmt.Sprintf(`
 {{ $method := "%s" }}
-func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "golib/tools/sqlx" }}.DB) error {
+func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "profzone/libtools/sqlx" }}.DB) error {
 	{{ ( .EnableIfNeed ) }}
 
 	table :=  {{ var .StructName }}.T()
 	stmt := table.Delete().
 		Comment("{{ .StructName }}.{{ $method }}").
-		Where({{ use "golib/tools/sqlx/builder" }}.And(
+		Where({{ use "profzone/libtools/sqlx/builder" }}.And(
 			%s
 		))
 
@@ -286,7 +286,7 @@ func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "golib/
 			m.ParseTo(buf, fmt.Sprintf(`
 {{ $method := "%s" }}
 {{ $methodForFetch := "%s" }}
-func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "golib/tools/sqlx" }}.DB, fieldValues {{ use "golib/tools/sqlx/builder" }}.FieldValues) error {
+func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "profzone/libtools/sqlx" }}.DB, fieldValues {{ use "profzone/libtools/sqlx/builder" }}.FieldValues) error {
 	{{ ( .SetUpdatedForFieldValuesAtIfNeed ) }}
 	{{ ( .EnableIfNeed ) }}
 
@@ -299,7 +299,7 @@ func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "golib/
 	stmt := table.Update().
 		Comment("{{ .StructName }}.{{ $method }}").
 		Set(table.AssignsByFieldValues(fieldValues)...).
-		Where({{ use "golib/tools/sqlx/builder" }}.And(
+		Where({{ use "profzone/libtools/sqlx/builder" }}.And(
 			%s
 		))
 
@@ -324,8 +324,8 @@ func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "golib/
 			m.ParseTo(buf, fmt.Sprintf(`
 {{ $method := "%s" }}
 {{ $methodForUpdateWithMap := "%s" }}
-func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "golib/tools/sqlx" }}.DB, zeroFields ...string) error {
-	fieldValues := {{ use "golib/tools/sqlx" }}.FieldValuesFromStructByNonZero({{ var .StructName }}, zeroFields...)
+func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "profzone/libtools/sqlx" }}.DB, zeroFields ...string) error {
+	fieldValues := {{ use "profzone/libtools/sqlx" }}.FieldValuesFromStructByNonZero({{ var .StructName }}, zeroFields...)
 	return {{ var .StructName }}.{{ $methodForUpdateWithMap }}(db, fieldValues)
 }
 					`,
@@ -338,11 +338,11 @@ func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "golib/
 				m.ParseTo(buf, fmt.Sprintf(`
 {{ $method := "%s" }}
 {{ $methodForDelete := "%s" }}
-func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "golib/tools/sqlx" }}.DB) error {
+func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "profzone/libtools/sqlx" }}.DB) error {
 	{{ ( .EnableIfNeed ) }}
 	table :=  {{ var .StructName }}.T()
 
-	fieldValues := {{ use "golib/tools/sqlx/builder" }}.FieldValues{}
+	fieldValues := {{ use "profzone/libtools/sqlx/builder" }}.FieldValues{}
 	fieldValues["{{ .FieldSoftDelete }}"] = {{ use .ConstSoftDeleteFalse }}
 
 	{{ ( .SetUpdatedForFieldValuesAtIfNeed ) }}
@@ -350,14 +350,14 @@ func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "golib/
 	stmt := table.Update().
 		Comment("{{ .StructName }}.{{ $method }}").
 		Set(table.AssignsByFieldValues(fieldValues)...).
-		Where({{ use "golib/tools/sqlx/builder" }}.And(
+		Where({{ use "profzone/libtools/sqlx/builder" }}.And(
 			%s
 		))
 
 	dbRet := db.Do(stmt).Scan({{ var .StructName }})
 	err := dbRet.Err()
 	if err != nil {
-		dbErr := {{ use "golib/tools/sqlx" }}.DBErr(err)
+		dbErr := {{ use "profzone/libtools/sqlx" }}.DBErr(err)
 		if dbErr.IsConflict() {
 			return 	{{ var .StructName }}.{{ $methodForDelete }}(db)
 		}

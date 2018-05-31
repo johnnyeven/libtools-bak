@@ -5,7 +5,7 @@ import (
 	"testing"
 	"text/template"
 
-	"golib/tools/codegen"
+	"profzone/libtools/codegen"
 )
 
 var gFile = os.Stdout

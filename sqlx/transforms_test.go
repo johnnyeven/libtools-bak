@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"golib/tools/sqlx/builder"
+	"profzone/libtools/sqlx/builder"
 )
 
 func TestValueMap_FromStructBy(t *testing.T) {

@@ -8,7 +8,7 @@ import (
 	"github.com/go-sql-driver/mysql"
 	"github.com/sirupsen/logrus"
 
-	"golib/tools/sqlx/builder"
+	"profzone/libtools/sqlx/builder"
 )
 
 func Do(db *DB, stmt builder.Statement) (result *Result) {

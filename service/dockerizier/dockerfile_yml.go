@@ -3,8 +3,8 @@ package dockerizier
 import (
 	"gopkg.in/yaml.v2"
 
-	"golib/tools/conf"
-	"golib/tools/docker"
+	"profzone/libtools/conf"
+	"profzone/libtools/docker"
 )
 
 var (

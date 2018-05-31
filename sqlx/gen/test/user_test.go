@@ -8,8 +8,8 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 
-	"golib/tools/courier/enumeration"
-	"golib/tools/sqlx"
+	"profzone/libtools/courier/enumeration"
+	"profzone/libtools/sqlx"
 )
 
 var db *sqlx.DB

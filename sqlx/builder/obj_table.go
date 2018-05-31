@@ -6,7 +6,7 @@ import (
 	"sort"
 	"strings"
 
-	"golib/tools/env"
+	"profzone/libtools/env"
 )
 
 type TableDef interface {

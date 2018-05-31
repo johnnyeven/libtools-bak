@@ -4,7 +4,7 @@ import (
 	"go/build"
 	"path"
 
-	"golib/tools/codegen"
+	"profzone/libtools/codegen"
 )
 
 type ServiceGenerator struct {
@@ -36,7 +36,7 @@ func (g *ServiceGenerator) Output(cwd string) codegen.Outputs {
 		codegen.NewGenFile("database", path.Join(g.ServiceName, "database/db.go")).
 			WithData(g).
 			Block(`
-		var DB{{ .ExposeVar .Data.DatabaseName }} = {{ ( .PureUse "golib/tools/sqlx" )}}.NewDatabase("{{ .Data.DatabaseName }}")
+		var DB{{ .ExposeVar .Data.DatabaseName }} = {{ ( .PureUse "profzone/libtools/sqlx" )}}.NewDatabase("{{ .Data.DatabaseName }}")
 `,
 			).
 			OutputTo(outputs)
@@ -48,38 +48,38 @@ func (g *ServiceGenerator) Output(cwd string) codegen.Outputs {
 		WithData(g).
 		Block(`
 func init() {
-	{{ .PureUse "golib/tools/servicex" }}.SetServiceName("{{ .Data.ServiceName }}")
-	{{ .PureUse "golib/tools/servicex" }}.ConfP(&Config)
+	{{ .PureUse "profzone/libtools/servicex" }}.SetServiceName("{{ .Data.ServiceName }}")
+	{{ .PureUse "profzone/libtools/servicex" }}.ConfP(&Config)
 
 	{{ if .Data.DatabaseName }}
-		{{ .PureUse .Data.Root "database" }}.DB{{ .ExposeVar .Data.DatabaseName }}.MustMigrateTo(Config.MasterDB.Get(), !{{ .PureUse "golib/tools/servicex" }}.AutoMigrate)
+		{{ .PureUse .Data.Root "database" }}.DB{{ .ExposeVar .Data.DatabaseName }}.MustMigrateTo(Config.MasterDB.Get(), !{{ .PureUse "profzone/libtools/servicex" }}.AutoMigrate)
 	{{ end }}
 }
 
 var Config = struct {
-	Log      *{{ ( .PureUse "golib/tools/log" ) }}.Log
-	Server   {{ ( .PureUse "golib/tools/courier/transport_http" ) }}.ServeHTTP
+	Log      *{{ ( .PureUse "profzone/libtools/log" ) }}.Log
+	Server   {{ ( .PureUse "profzone/libtools/courier/transport_http" ) }}.ServeHTTP
 {{ if .Data.DatabaseName }}
-	MasterDB *{{ .PureUse "golib/tools/sqlx/mysql" }}.MySQL
-	SlaveDB  *{{ .PureUse "golib/tools/sqlx/mysql" }}.MySQL
+	MasterDB *{{ .PureUse "profzone/libtools/sqlx/mysql" }}.MySQL
+	SlaveDB  *{{ .PureUse "profzone/libtools/sqlx/mysql" }}.MySQL
 {{ end }}
 }{
-	Log: &{{ ( .PureUse "golib/tools/log" ) }}.Log{
+	Log: &{{ ( .PureUse "profzone/libtools/log" ) }}.Log{
 		Level: "DEBUG",
 	},
-	Server: {{ ( .PureUse "golib/tools/courier/transport_http" ) }}.ServeHTTP{
+	Server: {{ ( .PureUse "profzone/libtools/courier/transport_http" ) }}.ServeHTTP{
 		WithCORS: true,
 		Port:     8000,
 	},
 {{ if .Data.DatabaseName }}
-	MasterDB: &{{ .PureUse "golib/tools/sqlx/mysql" }}.MySQL{
+	MasterDB: &{{ .PureUse "profzone/libtools/sqlx/mysql" }}.MySQL{
 		Name: "{{ .Data.DatabaseName }}",
 		Port: 33306,
 		User: "root",
 		Password: "root",
 		Host: "....",
 	},
-	SlaveDB: &{{ .PureUse "golib/tools/sqlx/mysql" }}.MySQL{
+	SlaveDB: &{{ .PureUse "profzone/libtools/sqlx/mysql" }}.MySQL{
 		Name: "{{ .Data.DatabaseName }}-readonly",
 		Port: 33306,
 		User: "root",
@@ -107,32 +107,32 @@ const ServiceStatusErrorCode = 0 * 1e3 // todo rename this
 
 const (
 	// 请求参数错误
-	BadRequest {{ .PureUse "golib/tools/courier/status_error" }}.StatusErrorCode = http.StatusBadRequest*1e6 + ServiceStatusErrorCode + iota
+	BadRequest {{ .PureUse "profzone/libtools/courier/status_error" }}.StatusErrorCode = http.StatusBadRequest*1e6 + ServiceStatusErrorCode + iota
 )
 
 const (
 	// 未找到
-	NotFound {{ .PureUse "golib/tools/courier/status_error" }}.StatusErrorCode = http.StatusNotFound*1e6 + ServiceStatusErrorCode + iota
+	NotFound {{ .PureUse "profzone/libtools/courier/status_error" }}.StatusErrorCode = http.StatusNotFound*1e6 + ServiceStatusErrorCode + iota
 )
 
 const (
 	// @errTalk 未授权
-	Unauthorized {{ .PureUse "golib/tools/courier/status_error" }}.StatusErrorCode = http.StatusUnauthorized*1e6 + ServiceStatusErrorCode + iota
+	Unauthorized {{ .PureUse "profzone/libtools/courier/status_error" }}.StatusErrorCode = http.StatusUnauthorized*1e6 + ServiceStatusErrorCode + iota
 )
 
 const (
 	// @errTalk 操作冲突
-	Conflict {{ .PureUse "golib/tools/courier/status_error" }}.StatusErrorCode = http.StatusConflict*1e6 + ServiceStatusErrorCode + iota
+	Conflict {{ .PureUse "profzone/libtools/courier/status_error" }}.StatusErrorCode = http.StatusConflict*1e6 + ServiceStatusErrorCode + iota
 )
 
 const (
 	// @errTalk 不允许操作
-	Forbidden {{ .PureUse "golib/tools/courier/status_error" }}.StatusErrorCode = http.StatusForbidden*1e6 + ServiceStatusErrorCode + iota
+	Forbidden {{ .PureUse "profzone/libtools/courier/status_error" }}.StatusErrorCode = http.StatusForbidden*1e6 + ServiceStatusErrorCode + iota
 )
 
 const (
 	// 内部处理错误
-	InternalError {{ .PureUse "golib/tools/courier/status_error" }}.StatusErrorCode = http.StatusInternalServerError*1e6 + ServiceStatusErrorCode + iota
+	InternalError {{ .PureUse "profzone/libtools/courier/status_error" }}.StatusErrorCode = http.StatusInternalServerError*1e6 + ServiceStatusErrorCode + iota
 )
 		`,
 		).
@@ -141,10 +141,10 @@ const (
 	codegen.NewGenFile("routes", path.Join(g.ServiceName, "routes/root.go")).
 		WithData(g).
 		Block(`
-var RootRouter = {{ .PureUse "golib/tools/courier" }}.NewRouter(GroupRoot{})
+var RootRouter = {{ .PureUse "profzone/libtools/courier" }}.NewRouter(GroupRoot{})
 
 func init() {
-	RootRouter.Register({{ .PureUse "golib/tools/courier/swagger" }}.SwaggerRouter)
+	RootRouter.Register({{ .PureUse "profzone/libtools/courier/swagger" }}.SwaggerRouter)
 }
 
 type GroupRoot struct {
@@ -164,7 +164,7 @@ func (root GroupRoot) Path() string {
 		WithData(g).
 		Block(`
 	func main() {
-		{{( .PureUse "golib/tools/servicex" )}}.Execute()
+		{{( .PureUse "profzone/libtools/servicex" )}}.Execute()
 		{{( .PureUse .Data.Root "global" )}}.Config.Server.Serve({{ ( .PureUse .Data.Root "routes" ) }}.RootRouter)
 	}
 	`,

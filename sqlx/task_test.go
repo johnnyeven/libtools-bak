@@ -7,7 +7,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 
-	"golib/tools/sqlx"
+	"profzone/libtools/sqlx"
 )
 
 func TestWithTasks(t *testing.T) {

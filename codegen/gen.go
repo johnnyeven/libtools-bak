@@ -8,8 +8,8 @@ import (
 
 	"golang.org/x/tools/imports"
 
-	"golib/tools/duration"
-	"golib/tools/format"
+	"profzone/libtools/duration"
+	"profzone/libtools/format"
 )
 
 type Outputs map[string]string

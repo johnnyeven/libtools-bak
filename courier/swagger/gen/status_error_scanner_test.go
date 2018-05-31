@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"golib/tools/codegen/loaderx"
+	"profzone/libtools/codegen/loaderx"
 )
 
 func TestStatusErrorScanner(t *testing.T) {
@@ -15,7 +15,7 @@ func TestStatusErrorScanner(t *testing.T) {
 	package main
 
 	import (
-		"golib/tools/courier/status_error"
+		"profzone/libtools/courier/status_error"
 		"net/http"
 	)
 

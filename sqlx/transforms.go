@@ -5,8 +5,8 @@ import (
 	"go/ast"
 	"reflect"
 
-	"golib/tools/reflectx"
-	"golib/tools/sqlx/builder"
+	"profzone/libtools/reflectx"
+	"profzone/libtools/sqlx/builder"
 )
 
 func ForEachStructField(structType reflect.Type, fn func(structField reflect.StructField, columnName string)) {

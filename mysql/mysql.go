@@ -13,8 +13,8 @@ import (
 
 	"golib/gorm"
 
-	"golib/tools/conf"
-	"golib/tools/conf/presets"
+	"profzone/libtools/conf"
+	"profzone/libtools/conf/presets"
 )
 
 type MySQL struct {

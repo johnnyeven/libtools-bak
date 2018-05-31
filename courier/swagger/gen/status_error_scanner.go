@@ -9,9 +9,9 @@ import (
 
 	"golang.org/x/tools/go/loader"
 
-	"golib/tools/codegen/loaderx"
-	"golib/tools/courier/status_error"
-	"golib/tools/courier/status_error/gen"
+	"profzone/libtools/codegen/loaderx"
+	"profzone/libtools/courier/status_error"
+	"profzone/libtools/courier/status_error/gen"
 )
 
 var (

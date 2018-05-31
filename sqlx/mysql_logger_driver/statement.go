@@ -10,7 +10,7 @@ import (
 	"github.com/go-sql-driver/mysql"
 	"github.com/sirupsen/logrus"
 
-	"golib/tools/duration"
+	"profzone/libtools/duration"
 )
 
 type loggerStmt struct {

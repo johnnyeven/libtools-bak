@@ -1,7 +1,7 @@
 package validate
 
 import (
-	"golib/tools/validate/validatetpl"
+	"profzone/libtools/validate/validatetpl"
 )
 
 type ValidateFn func(v interface{}) (bool, string)

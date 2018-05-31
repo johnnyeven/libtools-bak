@@ -17,9 +17,9 @@ import (
 
 	"encoding/json"
 
-	"golib/tools/courier/enumeration"
-	"golib/tools/courier/status_error"
-	"golib/tools/ptr"
+	"profzone/libtools/courier/enumeration"
+	"profzone/libtools/courier/status_error"
+	"profzone/libtools/ptr"
 )
 
 func MarshalParametersWithPath(req *http.Request, path string, v interface{}) error {

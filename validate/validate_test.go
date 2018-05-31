@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"golib/tools/validate/validatetpl"
+	"profzone/libtools/validate/validatetpl"
 )
 
 func TestValidateItemWithPredefineTag(t *testing.T) {

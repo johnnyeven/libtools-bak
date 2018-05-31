@@ -3,7 +3,7 @@ package dockerizier
 import (
 	"gopkg.in/yaml.v2"
 
-	"golib/tools/conf"
+	"profzone/libtools/conf"
 )
 
 func toConfigDefaultYML(envVars conf.EnvVars) string {

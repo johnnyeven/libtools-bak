@@ -7,10 +7,10 @@ import (
 	"net/http"
 	"reflect"
 
-	"golib/tools/courier"
-	"golib/tools/courier/httpx"
-	"golib/tools/courier/status_error"
-	"golib/tools/courier/transport_http/transform"
+	"profzone/libtools/courier"
+	"profzone/libtools/courier/httpx"
+	"profzone/libtools/courier/status_error"
+	"profzone/libtools/courier/transport_http/transform"
 )
 
 func setContextType(w http.ResponseWriter, s string) {

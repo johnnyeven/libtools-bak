@@ -12,10 +12,10 @@ import (
 	"github.com/julienschmidt/httprouter"
 	"github.com/sirupsen/logrus"
 
-	"golib/tools/courier"
-	"golib/tools/courier/httpx"
-	"golib/tools/duration"
-	logContext "golib/tools/log/context"
+	"profzone/libtools/courier"
+	"profzone/libtools/courier/httpx"
+	"profzone/libtools/duration"
+	logContext "profzone/libtools/log/context"
 )
 
 func CreateHttpHandler(s *ServeHTTP, ops ...courier.IOperator) httprouter.Handle {

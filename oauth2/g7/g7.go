@@ -6,9 +6,9 @@ import (
 	"net/url"
 	"strings"
 
-	"golib/tools/conf"
-	"golib/tools/conf/presets"
-	"golib/tools/courier/client"
+	"profzone/libtools/conf"
+	"profzone/libtools/conf/presets"
+	"profzone/libtools/courier/client"
 )
 
 type OAuth struct {

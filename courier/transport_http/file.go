@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"io"
 
-	"golib/tools/courier"
+	"profzone/libtools/courier"
 )
 
 func NewFile(filename string, contentType string) *File {

@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"golib/tools/duration"
+	"profzone/libtools/duration"
 )
 
 func TestNewCost(t *testing.T) {

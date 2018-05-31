@@ -1,7 +1,7 @@
 package transform
 
 import (
-	"golib/tools/courier/status_error"
+	"profzone/libtools/courier/status_error"
 )
 
 type ParameterErrors struct {

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"golib/tools/cmd"
+	"profzone/libtools/cmd"
 )
 
 func main() {

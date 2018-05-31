@@ -11,7 +11,7 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/sirupsen/logrus"
 
-	"golib/tools/strutil"
+	"profzone/libtools/strutil"
 )
 
 type IWebSocket interface {

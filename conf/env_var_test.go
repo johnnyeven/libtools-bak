@@ -4,11 +4,11 @@ import (
 	"reflect"
 	"testing"
 
-	"golib/tools/ptr"
+	"profzone/libtools/ptr"
 
 	"github.com/stretchr/testify/assert"
 
-	"golib/tools/conf/presets"
+	"profzone/libtools/conf/presets"
 )
 
 type SubConfig struct {

@@ -13,11 +13,11 @@ import (
 	"github.com/morlay/oas"
 	"github.com/sirupsen/logrus"
 
-	"golib/tools/codegen"
-	"golib/tools/courier/client/gen/enums"
-	"golib/tools/courier/client/gen/v2"
-	"golib/tools/courier/client/gen/v3"
-	"golib/tools/courier/status_error"
+	"profzone/libtools/codegen"
+	"profzone/libtools/courier/client/gen/enums"
+	"profzone/libtools/courier/client/gen/v2"
+	"profzone/libtools/courier/client/gen/v3"
+	"profzone/libtools/courier/status_error"
 )
 
 type ClientGenerator struct {
@@ -87,8 +87,8 @@ func bytesToSwaggerOrOpenAPI(data []byte) (*spec.Swagger, *oas.OpenAPI, status_e
 		panic(err)
 	}
 
-	data = bytes.Replace(data, []byte("golib/timelib"), []byte("golib/tools/timelib"), -1)
-	data = bytes.Replace(data, []byte("golib/httplib"), []byte("golib/tools/httplib"), -1)
+	data = bytes.Replace(data, []byte("golib/timelib"), []byte("profzone/libtools/timelib"), -1)
+	data = bytes.Replace(data, []byte("golib/httplib"), []byte("profzone/libtools/httplib"), -1)
 
 	statusErrCodeMap := status_error.StatusErrorCodeMap{}
 

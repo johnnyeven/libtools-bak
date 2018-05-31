@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"strings"
 
-	"golib/tools/courier"
-	"golib/tools/courier/httpx"
-	"golib/tools/courier/status_error"
+	"profzone/libtools/courier"
+	"profzone/libtools/courier/httpx"
+	"profzone/libtools/courier/status_error"
 )
 
 func MetadataWithMocker(mocker *Mocker) courier.Metadata {

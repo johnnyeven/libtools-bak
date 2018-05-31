@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"golib/tools/courier"
+	"profzone/libtools/courier"
 )
 
 func ToMap(schema interface{}) (result interface{}) {

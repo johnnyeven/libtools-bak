@@ -5,9 +5,9 @@ import (
 	"os"
 	"time"
 
-	"golib/tools/conf"
-	"golib/tools/conf/presets"
-	"golib/tools/env"
+	"profzone/libtools/conf"
+	"profzone/libtools/conf/presets"
+	"profzone/libtools/env"
 )
 
 type Redis struct {

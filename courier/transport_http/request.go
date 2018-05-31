@@ -11,11 +11,11 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"golib/tools/courier"
-	"golib/tools/courier/httpx"
-	"golib/tools/courier/status_error"
-	"golib/tools/courier/transport_http/transform"
-	"golib/tools/duration"
+	"profzone/libtools/courier"
+	"profzone/libtools/courier/httpx"
+	"profzone/libtools/courier/status_error"
+	"profzone/libtools/courier/transport_http/transform"
+	"profzone/libtools/duration"
 )
 
 type TransportWrapper func(rt http.RoundTripper) http.RoundTripper

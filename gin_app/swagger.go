@@ -7,7 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"golib/tools/env"
+	"profzone/libtools/env"
 )
 
 func getSwaggerJSON() []byte {

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"encoding/xml"
 
-	"golib/tools/courier/httpx"
+	"profzone/libtools/courier/httpx"
 )
 
 func init() {

@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"golib/tools/strutil"
+	"profzone/libtools/strutil"
 )
 
 type Stringer struct {

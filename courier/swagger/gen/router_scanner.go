@@ -9,12 +9,12 @@ import (
 	"github.com/julienschmidt/httprouter"
 	"golang.org/x/tools/go/loader"
 
-	"golib/tools/codegen/loaderx"
-	"golib/tools/courier"
+	"profzone/libtools/codegen/loaderx"
+	"profzone/libtools/courier"
 )
 
 var (
-	courierPkgImportPath = "golib/tools/courier"
+	courierPkgImportPath = "profzone/libtools/courier"
 	routerTypeString     = reflectTypeString(reflect.TypeOf(new(courier.Router)))
 )
 

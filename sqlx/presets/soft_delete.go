@@ -1,7 +1,7 @@
 package presets
 
 import (
-	"golib/tools/courier/enumeration"
+	"profzone/libtools/courier/enumeration"
 )
 
 type SoftDelete struct {

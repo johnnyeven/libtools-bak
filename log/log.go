@@ -7,9 +7,9 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"golib/tools/conf"
-	"golib/tools/log/context"
-	"golib/tools/log/hooks"
+	"profzone/libtools/conf"
+	"profzone/libtools/log/context"
+	"profzone/libtools/log/hooks"
 )
 
 type Log struct {

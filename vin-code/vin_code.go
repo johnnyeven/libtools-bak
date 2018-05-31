@@ -3,7 +3,7 @@ package vincode
 import (
 	"strings"
 
-	"golib/tools/vin-code/misc"
+	"profzone/libtools/vin-code/misc"
 )
 
 // 专业术语(Technical Terms)

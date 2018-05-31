@@ -6,7 +6,7 @@ import (
 
 	"github.com/gomodule/redigo/redis"
 
-	"golib/tools/mq"
+	"profzone/libtools/mq"
 )
 
 func NewRedisBroker(pool *redis.Pool, prefix string) *RedisBroker {

@@ -8,10 +8,10 @@ import (
 	"reflect"
 	"strings"
 
-	"golib/tools/courier/transport_http/transform"
-	"golib/tools/reflectx"
-	"golib/tools/strutil"
-	"golib/tools/validate"
+	"profzone/libtools/courier/transport_http/transform"
+	"profzone/libtools/reflectx"
+	"profzone/libtools/strutil"
+	"profzone/libtools/validate"
 
 	"github.com/sirupsen/logrus"
 )

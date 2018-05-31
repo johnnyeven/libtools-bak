@@ -5,8 +5,8 @@ import (
 	"strings"
 	"time"
 
-	"golib/tools/sqlx/builder"
-	"golib/tools/sqlx/data_type"
+	"profzone/libtools/sqlx/builder"
+	"profzone/libtools/sqlx/data_type"
 )
 
 func toInterfaces(list ...string) []interface{} {

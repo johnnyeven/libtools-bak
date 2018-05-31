@@ -5,8 +5,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"golib/tools/courier"
-	"golib/tools/courier/transport_grpc/testify"
+	"profzone/libtools/courier"
+	"profzone/libtools/courier/transport_grpc/testify"
 )
 
 type Op struct {

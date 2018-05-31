@@ -6,7 +6,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"golib/tools/sqlx/data_type"
+	"profzone/libtools/sqlx/data_type"
 )
 
 func Col(table *Table, columnName string) *Column {

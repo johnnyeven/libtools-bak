@@ -1,8 +1,8 @@
 package vincode
 
 import (
-	"golib/tools/vin-code/mfrs/volvo"
-	"golib/tools/vin-code/misc"
+	"profzone/libtools/vin-code/mfrs/volvo"
+	"profzone/libtools/vin-code/misc"
 )
 
 /**********************************************************

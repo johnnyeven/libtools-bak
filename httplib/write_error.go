@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 
-	"golib/tools/courier/status_error"
+	"profzone/libtools/courier/status_error"
 )
 
 var serviceName = ""

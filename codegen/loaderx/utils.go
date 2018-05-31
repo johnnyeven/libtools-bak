@@ -3,7 +3,7 @@ package loaderx
 import (
 	"strings"
 
-	"golib/tools/codegen"
+	"profzone/libtools/codegen"
 )
 
 func GetPkgImportPathAndExpose(s string) (pkgImportPath string, expose string) {

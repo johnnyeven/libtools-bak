@@ -6,11 +6,11 @@ import (
 	"strconv"
 	"testing"
 
-	"golib/tools/timelib"
+	"profzone/libtools/timelib"
 
 	"github.com/stretchr/testify/assert"
 
-	"golib/tools/ptr"
+	"profzone/libtools/ptr"
 )
 
 type Gender int
