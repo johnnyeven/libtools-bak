@@ -3,6 +3,7 @@ package v2
 import (
 	"fmt"
 	"io"
+	"strings"
 
 	"github.com/go-openapi/spec"
 
@@ -92,18 +93,26 @@ func (op *SwaggerOperation) WriteReqType(w io.Writer, importer *codegen.Importer
 
 		field := common.NewField(fieldName)
 		field.AddTag("in", parameter.In)
-		field.AddTag("name", parameter.Name)
+
+		tagName := parameter.Name
+		if parameter.Extensions[gen.XTagName] != nil {
+			tagName = fmt.Sprintf("%s", parameter.Extensions[gen.XTagName])
+		}
+		flags := make([]string, 0)
+		if !parameter.Required && !strings.Contains(tagName, "omitempty") {
+			flags = append(flags, "omitempty")
+		}
+		field.AddTag("name", tagName, flags...)
 		field.Comment = parameter.Description
 
 		if parameter.Extensions[gen.XTagValidate] != nil {
 			field.AddTag("validate", fmt.Sprintf("%s", parameter.Extensions[gen.XTagValidate]))
 		}
 
-		if !parameter.Required {
-			if parameter.Default != nil {
-				field.AddTag("default", fmt.Sprintf("%v", parameter.Default))
-			} else {
-				field.AddTag("default", "")
+		if parameter.Default != nil {
+			defaultValue := fmt.Sprintf("%v", parameter.Default)
+			if defaultValue != "" {
+				field.AddTag("default", defaultValue)
 			}
 		}
 

@@ -10,14 +10,14 @@ type Pager struct {
 	Size int32 `name:"size" in:"query" default:"10"  validate:"@int32[-1,50]"`
 	// 分页偏移
 	// 默认为 0
-	Offset int32 `name:"offset" in:"query" default:"0"  validate:"@int32[0,]"`
+	Offset int32 `name:"offset,omitempty" in:"query" validate:"@int32[0,]"`
 }
 
 type CreateTimeRange struct {
 	// 创建起始时间
-	CreateStartTime timelib.MySQLTimestamp `name:"createStartTime" in:"query" default:"" `
+	CreateStartTime timelib.MySQLTimestamp `name:"createStartTime,omitempty" in:"query"`
 	// 创建终止时间
-	CreateEndTime timelib.MySQLTimestamp `name:"createEndTime" in:"query" default:""`
+	CreateEndTime timelib.MySQLTimestamp `name:"createEndTime,omitempty" in:"query"`
 }
 
 func (createTimeRange CreateTimeRange) ValidateCreateEndTime() string {

@@ -10,7 +10,7 @@ import (
 	"github.com/morlay/oas"
 	"golang.org/x/tools/go/loader"
 
-	"golib/json"
+	"encoding/json"
 
 	"golib/tools/codegen"
 )

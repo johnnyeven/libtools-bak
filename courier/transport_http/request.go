@@ -21,12 +21,11 @@ import (
 type TransportWrapper func(rt http.RoundTripper) http.RoundTripper
 
 type HttpRequest struct {
-	UserAgent     string
 	BaseURL       string
 	Method        string
 	URI           string
 	ID            string
-	RequestID     string
+	Metadata      courier.Metadata
 	Timeout       time.Duration
 	Req           interface{}
 	WrapTransport TransportWrapper
@@ -34,7 +33,7 @@ type HttpRequest struct {
 
 func (httpRequest *HttpRequest) Do() (result courier.Result) {
 	result = courier.Result{}
-	request, err := transform.NewRequest(httpRequest.Method, httpRequest.BaseURL+httpRequest.URI, httpRequest.Req)
+	request, err := transform.NewRequest(httpRequest.Method, httpRequest.BaseURL+httpRequest.URI, httpRequest.Req, httpRequest.Metadata)
 	if err != nil {
 		result.Err = status_error.InvalidRequestParams.StatusError().WithDesc(err.Error())
 		return
@@ -43,9 +42,10 @@ func (httpRequest *HttpRequest) Do() (result courier.Result) {
 	d := duration.NewDuration()
 	defer func() {
 		logger := d.ToLogger().WithFields(logrus.Fields{
-			"request": httpRequest.ID,
-			"method":  httpRequest.Method,
-			"url":     request.URL.String(),
+			"request":  httpRequest.ID,
+			"method":   httpRequest.Method,
+			"url":      request.URL.String(),
+			"metadata": httpRequest.Metadata,
 		})
 
 		if result.Err == nil {
@@ -54,9 +54,6 @@ func (httpRequest *HttpRequest) Do() (result courier.Result) {
 			logger.Warnf("do http request failed %s", result.Err)
 		}
 	}()
-
-	request.Header.Add(httpx.HeaderRequestID, httpRequest.RequestID)
-	request.Header.Add(httpx.HeaderUserAgent, httpRequest.UserAgent)
 
 	httpClient := GetShortConnClient(httpRequest.Timeout)
 

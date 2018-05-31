@@ -5,55 +5,11 @@ import (
 	golib_tools_timelib "golib/tools/timelib"
 )
 
-type AccountCard struct {
-	// 内部帐户ID
-	AccountID uint64 `json:"accountID,string"`
-	// 银行卡号
-	BankCardNo string `json:"bankCardNo"`
-	// 内部银行ID
-	BankID uint32 `json:"bankID"`
-	// 银行卡绑定时间
-	BindTime golib_tools_timelib.MySQLTimestamp `json:"bindTime"`
-	// 借记卡类型
-	CardType CashdeskCardType `json:"cardType"`
-	// 证件号码
-	CertificateCode string `json:"certificateCode"`
-	// 证件类型
-	CertificateType CashdeskCertificateType `json:"certificateType"`
-	// 银行卡安全码
-	CVV2 string `json:"cvv2"`
-	// 上次使用银行卡进行快捷支付的时间
-	LastPayTime golib_tools_timelib.MySQLTimestamp `json:"lastPayTime"`
-	// 银行预留手机号码
-	Mobile string `json:"mobile"`
-	// 签约类型
-	SignType CashdeskSignType `json:"signType"`
-	// 绑定银行卡的状态
-	State CashdeskBindState `json:"state"`
-	// 真实姓名
-	TrueName string `json:"trueName"`
-	// 银行卡的有效期月份
-	ValidMonth uint16 `json:"validMonth"`
-	// 银行卡的有效期年份
-	ValidYear uint16 `json:"validYear"`
-}
-
-type AccountCardSignLimit struct {
-	// 账户银行卡信息
-	AccountCard AccountCard `json:"accountCard"`
-	// 银行卡通道信息
-	CardSigns []CardSignLimit `json:"cardSigns"`
-}
-
 type AreaBank struct {
-	// 地区编码
-	AreaCode string `json:"areaCode"`
-	// 分支行编码
-	BankCode string `json:"bankCode"`
+	//
+	PabSubbranchBank
 	// 银行编码
 	BankID uint32 `json:"bankID"`
-	// 分支行名字
-	BankName string `json:"bankName"`
 	// G7地区编码
 	G7AreaCode string `json:"g7AreaCode"`
 	// G7上级地区编码
@@ -61,9 +17,7 @@ type AreaBank struct {
 	// G7上级地区编码
 	G7TopAreaCode2 string `json:"g7TopAreaCode2"`
 	// G7上级地区编码
-	G7TopAreaCode3 string `json:"g7TopAreaCode3"`
-	// 拼音
-	PinYin string `json:"pinyin"`
+	G7TopAreaCode3 string `json:"g7TopeAreaCode3"`
 }
 
 type AreaListByParentCodeDepthBody struct {
@@ -93,11 +47,20 @@ type AreaListByParentCodeDepthBody struct {
 
 type Bank struct {
 	//
-	BankModel
+	BankInfo
 	// 银行拼音名称首字母
 	FirstPinyin string `json:"firstPinyin"`
 	// 银行拼音
 	Pinyin string `json:"pinyin"`
+}
+
+type BankInfo struct {
+	//
+	BankModel
+	// 是否支持银联鉴权
+	IsSupportUnionpayAuth golib_tools_courier_enumeration.Bool `json:"isSupportUnionpayAuth"`
+	// 超级网银联行号
+	SuperBankCode string `json:"superBankCode"`
 }
 
 type BankModel struct {
@@ -107,82 +70,11 @@ type BankModel struct {
 	BankName string `json:"bankName"`
 	// 银行ID
 	ID uint32 `json:"id"`
-	// 是否支持银联鉴权
-	IsSupportUnionpayAuth golib_tools_courier_enumeration.Bool `json:"isSupportUnionpayAuth"`
-	// 超级网银联行号
-	SuperBankCode string `json:"superBankCode"`
 }
 
 type CancelTransBody struct {
 	// 注释
 	Comments string `default:"" json:"comments" validate:"@string[0,1024]"`
-}
-
-type Card struct {
-	//
-	AmountExceed bool `json:"amountExceed"`
-	//
-	BankCardNo string `json:"bankCardNo"`
-	//
-	BankID uint32 `json:"bankID"`
-	//
-	BankName string `json:"bankName"`
-	//
-	BindTime golib_tools_timelib.MySQLTimestamp `json:"bindTime"`
-	//
-	CardType CashdeskCardType `json:"cardType"`
-	//
-	ChannelMatched bool `json:"channelMatched"`
-	//
-	LastPayTime golib_tools_timelib.MySQLTimestamp `json:"lastPayTime"`
-	//
-	SingleLimit int64 `json:"singleLimit"`
-}
-
-type CardSign struct {
-	// 内部帐户ID
-	AccountID uint64 `json:"accountID,string"`
-	// 协议号
-	AgreementNo string `json:"agreementNo"`
-	// 银行帐户ID
-	BankAccountID uint64 `json:"bankAccountID,string"`
-	// 银行卡号
-	BankCardNo string `json:"bankCardNo"`
-	// 内部银行ID
-	BankID uint32 `json:"bankID"`
-	// 通道绑定时间
-	BindTime golib_tools_timelib.MySQLTimestamp `json:"bindTime"`
-	// 借记卡类型
-	CardType CashdeskCardType `json:"cardType"`
-	// 证件号码
-	CertificateCode string `json:"certificateCode"`
-	// 证件类型
-	CertificateType CashdeskCertificateType `json:"certificateType"`
-	// 银行卡安全码
-	CVV2 string `json:"cvv2"`
-	// 上次使用该通道进行快捷支付的时间
-	LastPayTime golib_tools_timelib.MySQLTimestamp `json:"lastPayTime"`
-	// 银行预留手机号码
-	Mobile string `json:"mobile"`
-	// 签约类型
-	SignType CashdeskSignType `json:"signType"`
-	// 绑定银行卡的状态
-	State CashdeskBindState `json:"state"`
-	// 真实姓名
-	TrueName string `json:"trueName"`
-	// 银行卡的有效期月份
-	ValidMonth uint16 `json:"validMonth"`
-	// 银行卡的有效期年份
-	ValidYear uint16 `json:"validYear"`
-}
-
-type CardSignLimit struct {
-	//
-	CardSign
-	//
-	DailyLimit int64 `json:"dailyLimit"`
-	//
-	SingleLimit int64 `json:"singleLimit"`
 }
 
 type CreateTransReqBody struct {
@@ -191,23 +83,23 @@ type CreateTransReqBody struct {
 	// 币种
 	Currency CashdeskCurrencyType `default:"1" json:"currency"`
 	// 商品或服务名称
-	GoodsName string `json:"goodsName" validate:"@string[1,32]"`
+	GoodsName string `default:"" json:"goodsName" validate:"@string[1,32]"`
 	// 商品或服务的url地址
 	GoodsUrl string `default:"" json:"goodsUrl" validate:"@httpUrlOrEmpty"`
 	// 支付成功后的通知地址
-	NotifyUrl string `json:"notifyUrl" validate:"@httpUrl"`
+	NotifyUrl string `default:"" json:"notifyUrl" validate:"@httpUrl"`
 	// 订单号
-	OrderNo string `json:"orderNo" validate:"@string[1,64]"`
+	OrderNo string `default:"" json:"orderNo" validate:"@string[1,64]"`
 	// 用户终端类型
 	PlatformType CashdeskPlatformType `json:"platformType"`
 	// 随机字符串
-	RandString string `json:"randString" validate:"@string[1,32]"`
+	RandString string `default:"" json:"randString" validate:"@string[1,32]"`
 	// 支付成功后的跳转地址
 	ReturnUrl string `default:"" json:"returnUrl" validate:"@httpUrlOrEmpty"`
 	// 用户终端ip
 	SourceIP string `default:"" json:"sourceIP" validate:"@ipv4OrEmpty"`
 	// 总金额(单位为分)
-	TotalAmount int64 `json:"totalAmount" validate:"@int64[1,9007199254740991]"`
+	TotalAmount int64 `default:"" json:"totalAmount" validate:"@int64[1,9007199254740991]"`
 	// user-agent
 	UserAgent string `default:"" json:"userAgent" validate:"@string[0,512]"`
 	// 用户来源
@@ -231,7 +123,7 @@ type EBankPayReqBody struct {
 	// 通道编号
 	ChannelCode string `default:"" json:"channelCode"`
 	// 外部用户id
-	UserID string `json:"userID" validate:"@string[1,64]"`
+	UserID string `default:"" json:"userID" validate:"@string[1,64]"`
 }
 
 type ErrorField struct {
@@ -259,113 +151,6 @@ type ExtTrans struct {
 	Trans
 	//
 	PayStatus CashdeskPayState `json:"payStatus"`
-}
-
-type FastpayMessageReqBody struct {
-	// 充值或交易单充值金额
-	Amount int64 `json:"amount" validate:"@int64[0,9007199254740991]"`
-	// 银行卡号
-	BankCardNo string `json:"bankCardNo" validate:"@string[1,32]"`
-	// 快捷通道
-	ChannelCode string `json:"channelCode" validate:"@string[1,]"`
-	// 外部用户id
-	UserID string `json:"userID" validate:"@string[1,64]"`
-}
-
-type FastpayMessageRespBody struct {
-	// 收款单号
-	// Required : true
-	ReceiptID uint64 `json:"receiptID,string"`
-}
-
-type FastpayResignMessageReqBody struct {
-	// 银行卡号
-	BankCardNo string `json:"bankCardNo" validate:"@string[1,32]"`
-	// 通道编码
-	ChannelCode string `json:"channelCode" validate:"@string[1,32]"`
-	// 外部用户id
-	UserID string `json:"userID" validate:"@string[1,64]"`
-}
-
-type FastpaySignMessageReqBody struct {
-	// 银行卡号
-	BankCardNo string `json:"bankCardNo" validate:"@string[1,32]"`
-	// 银行id
-	BankID uint32 `json:"bankID" validate:"@uint32[1,100000]"`
-	// 银行账户姓名
-	CardName string `json:"cardName" validate:"@string[1,32]"`
-	// 银行卡类型
-	CardType CashdeskCardType `json:"cardType"`
-	// 证件号码
-	CertNo string `json:"certNo" validate:"@string[6,32]"`
-	// 证件类型
-	CertType CashdeskCertificateType `json:"certType" validate:"@string{ID_CARD,PASSPORT}"`
-	// 信用卡cvv2
-	CVV2 string `default:"" json:"cvv2" validate:"@cvv2[3,10]"`
-	// 手机号
-	PhoneNo string `json:"phoneNo"`
-	// 外部用户id
-	UserID string `json:"userID" validate:"@string[1,64]"`
-	// 信用卡有效期月
-	ValidMonth uint8 `default:"1" json:"validMonth" validate:"@uint8[1,12]"`
-	// 信用卡有效期年
-	ValidYear int64 `default:"2016" json:"validYear" validate:"@int[2016,30000]"`
-}
-
-type FastpaySignMessageRespBody struct {
-	// 签约号
-	// Required : true
-	AgreementNo string `json:"agreementNo"`
-	// 签约通道编码
-	// Required : true
-	ChannelCode string `json:"channelCode"`
-}
-
-type FastpaySignVerifyReqBody struct {
-	// 银行卡号
-	BankCardNo string `json:"bankCardNo" validate:"@string[1,32]"`
-	// 通道编码
-	ChannelCode string `json:"channelCode" validate:"@string[1,32]"`
-	// 短信验证码
-	SmsCode string `json:"smsCode" validate:"@string[1,6]"`
-	// 外部用户id
-	UserID string `json:"userID" validate:"@string[1,64]"`
-}
-
-type FastpayVerifyReqBody struct {
-	// 快捷通道
-	ChannelCode string `json:"channelCode" validate:"@string[1,]"`
-	// 收款单号
-	ReceiptID uint64 `json:"receiptID,string" validate:"@uint64[1,]"`
-	// 短信验证码
-	SMSCode string `json:"smsCode" validate:"@string[1,6]"`
-	// 外部用户id
-	UserID string `json:"userID" validate:"@string[1,64]"`
-}
-
-type FastpayVerifyRespBody struct {
-	// 支付状态
-	// Required : true
-	PayStatus CashdeskPayState `json:"payStatus"`
-}
-
-type GeneralError struct {
-	// 是否能作为错误话术
-	CanBeErrorTalk bool `json:"canBeTalkError"`
-	// 错误代码
-	Code int32 `json:"code"`
-	// 详细描述
-	Desc string `json:"desc"`
-	// 出错字段
-	ErrorFields ErrorFields `json:"errorFields"`
-	// 请求 ID
-	ID string `json:"id"`
-	// 错误 Key
-	Key string `json:"key"`
-	// 错误信息
-	Msg string `json:"msg"`
-	// 错误溯源
-	Source []string `json:"source"`
 }
 
 type GetAreaBankByBankCodeRespBody struct {
@@ -397,7 +182,7 @@ type GetSignRespBody struct {
 
 type KVPair struct {
 	// 参数
-	Params string `json:"params" validate:"@string[1,128]"`
+	Params string `default:"" json:"params" validate:"@string[1,128]"`
 	// 参数值
 	ParamsValue string `default:"" json:"paramsValue" validate:"@string[0,1024]"`
 }
@@ -419,7 +204,9 @@ type PabLinkModel struct {
 	// 证件号码
 	CertificateCode string `json:"certificateCode"`
 	// 证件类型
-	CertificateType CashdeskCertificateType `json:"certificateType" validate:"@string{ID_CARD,ORG_INSITITUTE_CODE,UNITY_SOCIAL_CREDIT_CODE}"`
+	CertificateType CashdeskCertificateType `default:"" json:"certificateType" validate:"@string{ID_CARD,ORG_INSITITUTE_CODE,UNITY_SOCIAL_CREDIT_CODE}"`
+	// 见证宝账户手机号码
+	Mobile string `json:"mobile"`
 	// 见证宝账户余额
 	PabAmount int64 `json:"pabAmount"`
 	// 开户状态
@@ -434,9 +221,13 @@ type PabLinkModel struct {
 
 type PabPayReqBody struct {
 	// 交易金额
-	Amount int64 `json:"amount" validate:"@int64[0,9007199254740991]"`
+	Amount int64 `default:"" json:"amount" validate:"@int64[0,9007199254740991]"`
+	// 证件号码
+	CertificateCode string `default:"" json:"certificateCode" validate:"@string[1,32]"`
+	// 证件类型
+	CertificateType CashdeskCertificateType `default:"" json:"certificateType" validate:"@string{ID_CARD,ORG_INSITITUTE_CODE,UNITY_SOCIAL_CREDIT_CODE}"`
 	// 外部用户id
-	UserID string `json:"userID" validate:"@string[1,64]"`
+	UserID string `default:"" json:"userID" validate:"@string[1,64]"`
 }
 
 type PabPayRespBody struct {
@@ -450,6 +241,17 @@ type PabPayRespBody struct {
 	TransID uint64 `json:"transID,string"`
 	// 外部用户id
 	UserID string `json:"userID"`
+}
+
+type PabSubbranchBank struct {
+	// 地区编码
+	CityCode string `json:"areaCode"`
+	// 分支行编码
+	BankCode string `json:"bankCode"`
+	// 分支行名字
+	BankName string `json:"bankName"`
+	// 拼音
+	PinYin string `json:"pinyin"`
 }
 
 type PabWhiteListTrans struct {
@@ -476,23 +278,6 @@ type PabWhiteListTransResp struct {
 	Total int32 `json:"total"`
 }
 
-type PayModeProp struct {
-	// 用户在支付类型下绑定的银行卡,第一个为默认是用的卡
-	// Required : true
-	Cards []Card `json:"cards"`
-	// 支付通道编码
-	// Required : true
-	ChannelCode string `json:"channelCode"`
-	// 支付通道所属支付类型
-	// Required : true
-	PayMode CashdeskPayMode `json:"payMode"`
-	// 支付类型名称
-	// Required : true
-	PayModeName string `json:"payModeName"`
-}
-
-type PayRouteRespBody []PayModeProp
-
 type QueryTransResponseBody struct {
 	//
 	Data []TransQuery `json:"data"`
@@ -513,13 +298,36 @@ type ReturnTransModel struct {
 	UserID string `json:"userID"`
 }
 
+type StatusError struct {
+	// 是否能作为错误话术
+	CanBeErrorTalk bool `json:"canBeTalkError"`
+	// 错误代码
+	Code int64 `json:"code"`
+	// 详细描述
+	Desc string `json:"desc"`
+	// 出错字段
+	ErrorFields ErrorFields `json:"errorFields"`
+	// 请求 ID
+	ID string `json:"id"`
+	// 错误 Key
+	Key string `json:"key"`
+	// 错误信息
+	Msg string `json:"msg"`
+	// 错误溯源
+	Source []string `json:"source"`
+}
+
 type Trans struct {
 	// 调账标志 1:非调账 2：调账记录
-	AdjustFlag CashdeskAdjustFlag `json:"adjustFlag"`
+	AdjustFlag CashdeskPayAdjustFlag `json:"adjustFlag"`
+	// 银行端付款时间
+	BankPayTime golib_tools_timelib.MySQLTimestamp `json:"bankPayTime"`
 	// 买家账号ID
 	BuyerAccountID uint64 `json:"buyerAccountID,string"`
+	// 买家外部通道账户ID
+	BuyerChannelAccountID uint64 `json:"buyerChannelAccountID,string"`
 	// 买家子账户类型
-	BuyerSubAccountType CashdeskSubAccountType `json:"buyerSubAccountType"`
+	BuyerSubAccountType CashdeskPaySubAccountType `json:"buyerSubAccountType"`
 	// 交易是否可修改 1为可以 2为不可以
 	CanModify golib_tools_courier_enumeration.Bool `json:"canModify"`
 	// 实际支付金额
@@ -531,7 +339,7 @@ type Trans struct {
 	// 交易创建时间
 	CreateTime golib_tools_timelib.MySQLTimestamp `json:"createTime"`
 	// 币种
-	Currency CashdeskCurrencyType `json:"currency"`
+	Currency CashdeskPayCurrencyType `json:"currency"`
 	// 交易结束时间
 	EndTime golib_tools_timelib.MySQLTimestamp `json:"endTime"`
 	// 结算账户ID,如果金额为0 此字段可为0
@@ -539,7 +347,7 @@ type Trans struct {
 	// 交易手续费
 	FeeAmount int64 `json:"feeAmount"`
 	// 结算子账户类型
-	FeeSubAccountType CashdeskSubAccountType `json:"feeSubAccountType"`
+	FeeSubAccountType CashdeskPaySubAccountType `json:"feeSubAccountType"`
 	// 商品名称
 	GoodsName string `json:"goodsName"`
 	// 商品URL地址
@@ -551,9 +359,9 @@ type Trans struct {
 	// 交易付款时间
 	PayTime golib_tools_timelib.MySQLTimestamp `json:"payTime"`
 	// 付款类型 1:余额支付 2：充值支付
-	PayType CashdeskPayType `json:"payType"`
+	PayType CashdeskPayPayType `json:"payType"`
 	// 平台类型 参看银行网关的的终端标识
-	PlatformType CashdeskPlatformType `json:"platformType"`
+	PlatformType CashdeskPayPlatformType `json:"platformType"`
 	// 支付使用积分
 	Points int64 `json:"points"`
 	// 积分抵扣金额
@@ -562,14 +370,16 @@ type Trans struct {
 	ReturnUrl string `json:"returnUrl"`
 	// 卖家账号ID
 	SellerAccountID uint64 `json:"sellerAccountID,string"`
+	// 卖家外部通道账户ID
+	SellerChannelAccountID uint64 `json:"sellerChannelAccountID,string"`
 	// 卖家子账户类型
-	SellerSubAccountType CashdeskSubAccountType `json:"sellerSubAccountType"`
+	SellerSubAccountType CashdeskPaySubAccountType `json:"sellerSubAccountType"`
 	// 结算模式
-	SettlementType CashdeskSettlementType `json:"settlementType"`
+	SettlementType CashdeskPaySettlementType `json:"settlementType"`
 	// 商户ID
 	SpID uint64 `json:"spID,string"`
 	// 交易状态
-	State CashdeskTransState `json:"state"`
+	State CashdeskPayTransState `json:"state"`
 	// 交易总金额
 	TotalAmount int64 `json:"totalAmount"`
 	// 交易单ID
@@ -577,18 +387,22 @@ type Trans struct {
 	// 外部订单/交易号
 	TransIDExt string `json:"transIDExt"`
 	// F_trans_mode 1: 中介 2：直付 3：预付 4：保理交易
-	TransMode CashdeskTransMode `json:"transMode"`
+	TransMode CashdeskPayTransMode `json:"transMode"`
 	// 交易类型 1：ETC 2:油卡 3：招采
-	TransType CashdeskTransType `json:"transType"`
+	TransType CashdeskPayTransType `json:"transType"`
 	// user_agent
 	UserAgent string `json:"userAgent"`
 }
 
 type TransQuery struct {
+	// 银行端付款时间
+	BankPayTime golib_tools_timelib.MySQLTimestamp `json:"bankPayTime"`
 	// 买家账号ID
 	BuyerAccountID uint64 `json:"buyerAccountID,string"`
+	// 买家外部通道账户ID
+	BuyerChannelAccountID uint64 `json:"buyerChannelAccountID,string"`
 	// 卖家子账户类型
-	BuyerSubAccountType CashdeskSubAccountType `json:"buyerSubAccountType"`
+	BuyerSubAccountType CashdeskPaySubAccountType `json:"buyerSubAccountType"`
 	// 实际支付金额
 	CashAmount int64 `json:"cashAmount"`
 	// 备注
@@ -598,7 +412,7 @@ type TransQuery struct {
 	// 交易创建时间
 	CreateTime golib_tools_timelib.MySQLTimestamp `json:"createTime"`
 	// 币种
-	Currency CashdeskCurrencyType `json:"currency"`
+	Currency CashdeskPayCurrencyType `json:"currency"`
 	// 交易结束时间
 	EndTime golib_tools_timelib.MySQLTimestamp `json:"endTime"`
 	// 交易手续费
@@ -610,21 +424,23 @@ type TransQuery struct {
 	// 交易付款时间
 	PayTime golib_tools_timelib.MySQLTimestamp `json:"payTime"`
 	// 付款类型 1:余额支付 2：充值支付
-	PayType CashdeskPayType `json:"payType"`
+	PayType CashdeskPayPayType `json:"payType"`
 	// 支付使用积分
 	Points int64 `json:"points"`
 	// 积分抵扣金额
 	PointsAmount int64 `json:"pointsAmount"`
 	// 卖家账号ID
 	SellerAccountID uint64 `json:"sellerAccountID,string"`
+	// 卖家外部通道账户ID
+	SellerChannelAccountID uint64 `json:"sellerChannelAccountID,string"`
 	// 卖家子账户类型
-	SellerSubAccountType CashdeskSubAccountType `json:"sellerSubAccountType"`
+	SellerSubAccountType CashdeskPaySubAccountType `json:"sellerSubAccountType"`
 	// 结算模式
-	SettlementType CashdeskSettlementType `json:"settlementType"`
+	SettlementType CashdeskPaySettlementType `json:"settlementType"`
 	// 商户ID
 	SpID uint64 `json:"spID,string"`
 	// 交易状态
-	State CashdeskTransState `json:"state"`
+	State CashdeskPayTransState `json:"state"`
 	// 交易总金额
 	TotalAmount int64 `json:"totalAmount"`
 	// 交易单ID
@@ -632,28 +448,14 @@ type TransQuery struct {
 	// 外部交易单号
 	TransIDExt string `json:"transIDExt"`
 	// F_trans_mode 1: 中介 2：直付 3：预付 4：保理交易
-	TransMode CashdeskTransMode `json:"transMode"`
+	TransMode CashdeskPayTransMode `json:"transMode"`
 	// 交易类型 1：ETC 2:油卡 3：招采
-	TransType CashdeskTransType `json:"transType"`
-}
-
-type UnbindFastpayReqBody struct {
-	// 银行卡号
-	BankCardNo string `json:"bankCardNo" validate:"@string[1,32]"`
-	// 外部用户id
-	UserID string `json:"userID" validate:"@string[1,64]"`
+	TransType CashdeskPayTransType `json:"transType"`
 }
 
 type UpdateTransReqBody struct {
 	// 随机字符串
-	RandString string `json:"randString" validate:"@string[1,32]"`
+	RandString string `default:"" json:"randString" validate:"@string[1,32]"`
 	// 更新订单金额(单位为分)
-	TotalAmount int64 `json:"totalAmount" validate:"@int64[1,9007199254740991]"`
-}
-
-type UserCardQueryRespBody struct {
-	// 数据
-	Data []AccountCardSignLimit `json:"data"`
-	// 总数
-	Total int32 `json:"total"`
+	TotalAmount int64 `default:"" json:"totalAmount" validate:"@int64[1,9007199254740991]"`
 }

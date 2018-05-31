@@ -92,8 +92,10 @@ func (g *TypeGenerator) TypeIndirect(schema *oas.Schema) (string, bool) {
 			return g.Importer.Use("golib/tools/httplib.Uint64List"), true
 		}
 
-		if schema.Type == "string" || schema.Type == "boolean" || schema.Enum != nil {
-			typeFullName := fmt.Sprint(schema.Extensions[gen.XNamed])
+		typeFullName := fmt.Sprint(schema.Extensions[gen.XNamed])
+		isInCommonLib := strings.Contains(typeFullName, "golib/tools")
+
+		if schema.Type == "string" || schema.Type == "boolean" || schema.Enum != nil || isInCommonLib {
 
 			pkgImportName, typeName := loaderx.GetPkgImportPathAndExpose(typeFullName)
 
@@ -106,6 +108,7 @@ func (g *TypeGenerator) TypeIndirect(schema *oas.Schema) (string, bool) {
 			if schema.Type == "boolean" {
 				typeName = "Bool"
 				pkgImportName = "golib/tools/courier/enumeration"
+				isInCommonLib = true
 			}
 
 			return g.Importer.Use(fmt.Sprintf("%s.%s", pkgImportName, typeName)), true
@@ -187,11 +190,21 @@ func (g *TypeGenerator) FieldFrom(name string, propSchema *oas.Schema, requiredF
 	field.Comment = propSchema.Description
 
 	if propSchema.Extensions[gen.XTagJSON] != nil {
-		field.AddTag("json", fmt.Sprintf("%s", propSchema.Extensions[gen.XTagJSON]))
+		tagName := fmt.Sprintf("%s", propSchema.Extensions[gen.XTagJSON])
+		flags := make([]string, 0)
+		if !isRequired && !strings.Contains(tagName, "omitempty") {
+			flags = append(flags, "omitempty")
+		}
+		field.AddTag("json", tagName, flags...)
 	}
 
 	if propSchema.Extensions[gen.XTagName] != nil {
-		field.AddTag("name", fmt.Sprintf("%s", propSchema.Extensions[gen.XTagName]))
+		tagName := fmt.Sprintf("%s", propSchema.Extensions[gen.XTagName])
+		flags := make([]string, 0)
+		if !isRequired && !strings.Contains(tagName, "omitempty") {
+			flags = append(flags, "omitempty")
+		}
+		field.AddTag("name", tagName, flags...)
 	}
 
 	if propSchema.Extensions[gen.XTagXML] != nil {
@@ -210,12 +223,8 @@ func (g *TypeGenerator) FieldFrom(name string, propSchema *oas.Schema, requiredF
 		field.AddTag("validate", fmt.Sprintf("%s", propSchema.Extensions[gen.XTagValidate]))
 	}
 
-	if !isRequired {
-		if propSchema.Default != nil {
-			field.AddTag("default", fmt.Sprintf("%v", propSchema.Default))
-		} else {
-			field.AddTag("default", "")
-		}
+	if propSchema.Default != nil {
+		field.AddTag("default", fmt.Sprintf("%v", propSchema.Default))
 	}
 
 	field.Type, _ = g.Type(propSchema)

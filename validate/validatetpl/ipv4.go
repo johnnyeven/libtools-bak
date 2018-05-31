@@ -10,7 +10,7 @@ const (
 )
 
 var (
-	ipv4_valid_regx = regexp.MustCompile(`^((\d{1,2}|1\d{2}|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d{2}|2[0-4]\d|25[0-5])$`)
+	reIpAddress = regexp.MustCompile(`^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$`)
 )
 
 func ValidateIPv4(v interface{}) (bool, string) {
@@ -19,7 +19,7 @@ func ValidateIPv4(v interface{}) (bool, string) {
 		return false, InvalidIPv4Type
 	}
 
-	if !ipv4_valid_regx.MatchString(s) {
+	if !reIpAddress.MatchString(s) {
 		return false, InvalidIPv4Value
 	}
 	return true, ""
@@ -31,7 +31,7 @@ func ValidateIPv4OrEmpty(v interface{}) (bool, string) {
 		return false, InvalidIPv4Type
 	}
 
-	if s != "" && !ipv4_valid_regx.MatchString(s) {
+	if s != "" && !reIpAddress.MatchString(s) {
 		return false, InvalidIPv4Value
 	}
 	return true, ""

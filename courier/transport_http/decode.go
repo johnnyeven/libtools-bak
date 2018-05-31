@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"reflect"
 
+	"golib/tools/courier/httpx"
+
 	"github.com/julienschmidt/httprouter"
 
 	"golib/tools/courier"
@@ -15,6 +17,14 @@ func createHttpRequestDecoder(r *http.Request, params *httprouter.Params) courie
 	return func(op courier.IOperator, rv reflect.Value) (err error) {
 		if httpRequestTransformer, ok := op.(IHttpRequestTransformer); ok {
 			httpRequestTransformer.TransformHttpRequest(r)
+		}
+
+		requestID := r.Header.Get(httpx.HeaderRequestID)
+		if requestID != "" {
+			_, version, exists := courier.ParseVersionSwitch(requestID)
+			if exists {
+				r.Header.Add(courier.VersionSwitchKey, version)
+			}
 		}
 
 		return transform.MarshalParameters(transform.ParameterGroupFromReflectValue(rv), &ParameterValuesGetter{

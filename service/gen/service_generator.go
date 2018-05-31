@@ -52,7 +52,7 @@ func init() {
 	{{ .PureUse "golib/tools/servicex" }}.ConfP(&Config)
 
 	{{ if .Data.DatabaseName }}
-		{{ .PureUse .Data.Root "database" }}.DB{{ .ExposeVar .Data.DatabaseName }}.MigrateTo(Config.MasterDB.Get(), !{{ .PureUse "golib/tools/servicex" }}.AutoMigrate)
+		{{ .PureUse .Data.Root "database" }}.DB{{ .ExposeVar .Data.DatabaseName }}.MustMigrateTo(Config.MasterDB.Get(), !{{ .PureUse "golib/tools/servicex" }}.AutoMigrate)
 	{{ end }}
 }
 

@@ -47,7 +47,7 @@ func (scanner *DefinitionScanner) BindSchemas(openapi *oas.OpenAPI) {
 		schema.AddExtension(XNamed, fmt.Sprintf("%s.%s", typeName.Pkg().Path(), typeName.Name()))
 		defKey := toDefID(typeName.Type().String())
 		if _, exists := openapi.Components.Schemas[defKey]; exists {
-			logrus.Warnf("`%s` already used by %s", defKey, typeName.String())
+			logrus.Panicf("`%s` already used by %s", defKey, typeName.String())
 		} else {
 			openapi.AddSchema(toDefID(typeName.Type().String()), schema)
 		}
@@ -116,6 +116,15 @@ func (scanner *DefinitionScanner) addDef(typeName *types.TypeName, schema *oas.S
 
 func (scanner *DefinitionScanner) getSchemaByType(tpe types.Type) *oas.Schema {
 	switch tpe.(type) {
+	case *types.Interface:
+		return &oas.Schema{
+			SchemaObject: oas.SchemaObject{
+				Type: oas.TypeObject,
+				AdditionalProperties: &oas.SchemaOrBool{
+					Allows: true,
+				},
+			},
+		}
 	case *types.Named:
 		named := tpe.(*types.Named)
 		if named.String() == "mime/multipart.FileHeader" {
@@ -190,8 +199,20 @@ func (scanner *DefinitionScanner) getSchemaByType(tpe types.Type) *oas.Schema {
 				continue
 			}
 
+			if name == "" {
+				name = field.Name()
+			}
+
 			defaultValue, hasDefault := structFieldTags.Lookup("default")
 			validate, hasValidate := structFieldTags.Lookup("validate")
+
+			required := true
+			if hasOmitempty, ok := flags["omitempty"]; ok {
+				required = !hasOmitempty
+			} else {
+				// todo don't use non-default as required
+				required = !hasDefault
+			}
 
 			propSchema := scanner.getSchemaByType(structFieldType)
 
@@ -238,9 +259,9 @@ func (scanner *DefinitionScanner) getSchemaByType(tpe types.Type) *oas.Schema {
 					},
 				)
 				composedSchema.SpecExtensions = propSchema.SpecExtensions
-				structSchema.SetProperty(name, composedSchema, !hasDefault)
+				structSchema.SetProperty(name, composedSchema, required)
 			} else {
-				structSchema.SetProperty(name, propSchema, !hasDefault)
+				structSchema.SetProperty(name, propSchema, required)
 			}
 
 		}

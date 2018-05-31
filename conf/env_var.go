@@ -1,6 +1,7 @@
 package conf
 
 import (
+	"go/ast"
 	"reflect"
 	"sort"
 	"strings"
@@ -91,6 +92,36 @@ func collectEnvVars(rv reflect.Value, envVarKey string, tagConfOption TagConfOpt
 		})
 	}
 	return
+}
+
+func walkStructField(rv reflect.Value, forSet bool, fn func(fieldValue reflect.Value, field reflect.StructField) bool) {
+	reflectType := rv.Type()
+	for i := 0; i < reflectType.NumField(); i++ {
+		field := reflectType.Field(i)
+		fieldValue := rv.Field(i)
+		if !ast.IsExported(field.Name) {
+			continue
+		}
+
+		if forSet && (!fieldValue.IsValid() || !fieldValue.CanSet()) {
+			continue
+		}
+
+		next := fn(fieldValue, field)
+		if !next {
+			break
+		}
+	}
+}
+
+func resolveEnvVarKeyByField(pre string, field reflect.StructField) string {
+	if field.Anonymous {
+		return pre
+	}
+	if pre == "" {
+		return strings.ToUpper(field.Name)
+	}
+	return strings.ToUpper(pre + "_" + field.Name)
 }
 
 func CollectEnvVars(rv reflect.Value, envVarKey string) (envVars EnvVars, err error) {

@@ -13,9 +13,9 @@ import (
 type Redis struct {
 	Name           string
 	Protocol       string
-	Host           string `conf:"upstream"`
+	Host           string `conf:"upstream" validate:"@hostname"`
 	Port           int
-	Password       presets.Password `conf:"env"`
+	Password       presets.Password `conf:"env" validate:"@string(0,)"`
 	ConnectTimeout time.Duration
 	ReadTimeout    time.Duration
 	WriteTimeout   time.Duration

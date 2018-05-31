@@ -12,18 +12,18 @@ var reEnvVar = regexp.MustCompile("(\\$?\\$)\\{?([A-Z0-9_]+)\\}?")
 
 type EnvVars map[string]string
 
-func (envVars EnvVars) LoadFromEnv() {
+func (envVars EnvVars) AddEnvVar(key, value string) {
+	envVars[key] = value
+}
+
+func (envVars EnvVars) LoadFromEnviron() {
 	for _, keyPair := range os.Environ() {
 		keyValue := strings.Split(keyPair, "=")
-		envVars[keyValue[0]] = keyValue[1]
+		envVars.AddEnvVar(keyValue[0], keyValue[1])
 	}
 }
 
-func ParseByEnv(s string) string {
-	envVars := EnvVars{}
-
-	envVars.LoadFromEnv()
-
+func (envVars EnvVars) Parse(s string) string {
 	result := reEnvVar.ReplaceAllStringFunc(s, func(str string) string {
 		matched := reEnvVar.FindAllStringSubmatch(str, -1)[0]
 
@@ -34,11 +34,10 @@ func ParseByEnv(s string) string {
 
 		if value, ok := envVars[matched[2]]; ok {
 			return value
-		} else {
-			logrus.Errorf("Missing environment variable ${%s}", matched[2])
 		}
 
-		return ""
+		logrus.Errorf("Missing environment variable ${%s}", matched[2])
+		return "${" + matched[2] + "}"
 	})
 
 	return result

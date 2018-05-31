@@ -30,7 +30,7 @@ type Vendor struct {
 }
 
 func (v *Vendor) ListImportPath() []string {
-	slice := []string{}
+	slice := make([]string, 0)
 	for _, p := range v.Package {
 		path := p.Path
 		slice = append(slice, path)

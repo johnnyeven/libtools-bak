@@ -2,12 +2,20 @@ package sqlx
 
 import (
 	"fmt"
+	"os"
 	"reflect"
 
-	"github.com/sirupsen/logrus"
-
 	"golib/tools/sqlx/builder"
+
+	"github.com/sirupsen/logrus"
 )
+
+func NewFeatureDatabase(name string) *Database {
+	if projectFeature, exists := os.LookupEnv("PROJECT_FEATURE"); exists && projectFeature != "" {
+		name = name + "__" + projectFeature
+	}
+	return NewDatabase(name)
+}
 
 func NewDatabase(name string) *Database {
 	return &Database{
@@ -70,51 +78,63 @@ func (database *Database) Update(model Model, zeroFields ...string) *builder.Stm
 	return table.Update().Set(table.AssignsByFieldValues(fieldValues)...)
 }
 
+func (database *Database) MustMigrateTo(db *DB, dryRun bool) {
+	if err := database.MigrateTo(db, dryRun); err != nil {
+		logrus.Panic(err)
+	}
+}
+
 func (database *Database) MigrateTo(db *DB, dryRun bool) error {
-	logrus.Debugf("=================== migrating database `%s` ====================", database.Name)
-	defer logrus.Debugf("=================== migrated database `%s` ====================", database.Name)
+	database.Register(&SqlMetaEnum{})
 
 	currentDatabase := DBFromInformationSchema(db, database.Name, database.Tables.TableNames()...)
 
 	if !dryRun {
-		tasks := NewTasks(db)
+		logrus.Debugf("=================== migrating database `%s` ====================", database.Name)
+		defer logrus.Debugf("=================== migrated database `%s` ====================", database.Name)
 
 		if currentDatabase == nil {
-			currentDatabase = NewDatabase(database.Name)
-			tasks = tasks.With(func(db *DB) error {
-				return db.Do(currentDatabase.Create(true)).Err()
-			})
+			currentDatabase = &Database{
+				Database: builder.DB(database.Name),
+			}
+			if err := db.Do(currentDatabase.Create(true)).Err(); err != nil {
+				return err
+			}
 		}
 
 		for name, table := range database.Tables {
 			currentTable := currentDatabase.Table(name)
 			if currentTable == nil {
-				stmt := table.Create(true)
-				tasks = tasks.With(func(db *DB) error {
-					return db.Do(stmt).Err()
-				})
+				if err := db.Do(table.Create(true)).Err(); err != nil {
+					return err
+				}
 				continue
 			}
 
 			stmt := currentTable.Diff(table)
 			if stmt != nil {
-				tasks = tasks.With(func(db *DB) error {
-					return db.Do(stmt).Err()
-				})
+				if err := db.Do(stmt).Err(); err != nil {
+					return err
+				}
 				continue
 			}
 		}
 
-		err := tasks.Do()
-		if err != nil {
+		if err := database.SyncEnum(db); err != nil {
 			return err
 		}
+
 		return nil
 	}
 
 	if currentDatabase == nil {
-		currentDatabase = NewDatabase(database.Name)
+		currentDatabase = &Database{
+			Database: builder.DB(database.Name),
+		}
+
+		fmt.Printf("=================== need to migrate database `%s` ====================\n", database.Name)
 		fmt.Println(currentDatabase.Create(true).Query)
+		fmt.Printf("=================== need to migrate database `%s` ====================\n", database.Name)
 	}
 
 	for name, table := range database.Tables {
@@ -129,6 +149,10 @@ func (database *Database) MigrateTo(db *DB, dryRun bool) error {
 			fmt.Println(stmt.Query)
 			continue
 		}
+	}
+
+	if err := database.SyncEnum(db); err != nil {
+		return err
 	}
 
 	return nil

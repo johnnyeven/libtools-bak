@@ -10,11 +10,20 @@ import (
 	golib_tools_courier_client "golib/tools/courier/client"
 )
 
+type ClientDemoInterface interface {
+	Create(req CreateRequest, metas ...golib_tools_courier.Metadata) (resp *CreateResponse, err error)
+	FileDownload(metas ...golib_tools_courier.Metadata) (resp *FileDownloadResponse, err error)
+	FormMultipartWithFile(req FormMultipartWithFileRequest, metas ...golib_tools_courier.Metadata) (resp *FormMultipartWithFileResponse, err error)
+	FormMultipartWithFiles(req FormMultipartWithFilesRequest, metas ...golib_tools_courier.Metadata) (resp *FormMultipartWithFilesResponse, err error)
+	FormURLEncoded(req FormURLEncodedRequest, metas ...golib_tools_courier.Metadata) (resp *FormURLEncodedResponse, err error)
+	GetByID(req GetByIDRequest, metas ...golib_tools_courier.Metadata) (resp *GetByIDResponse, err error)
+}
+
 type ClientDemo struct {
 	golib_tools_courier_client.Client
 }
 
-func (c ClientDemo) MarshalDefaults(v interface{}) {
+func (ClientDemo) MarshalDefaults(v interface{}) {
 	if cl, ok := v.(*ClientDemo); ok {
 		cl.Name = "demo"
 		cl.Client.MarshalDefaults(&cl.Client)
@@ -40,11 +49,11 @@ type CreateRequest struct {
 	Body Data `fmt:"json" in:"body"`
 }
 
-func (c ClientDemo) Create(req CreateRequest) (resp *CreateResponse, err error) {
+func (c ClientDemo) Create(req CreateRequest, metas ...golib_tools_courier.Metadata) (resp *CreateResponse, err error) {
 	resp = &CreateResponse{}
 	resp.Meta = golib_tools_courier.Metadata{}
 
-	err = c.Request(c.Name+".Create", "POST", "/demo/crud/", req).
+	err = c.Request(c.Name+".Create", "POST", "/demo/crud/", req, metas...).
 		Do().
 		BindMeta(resp.Meta).
 		Into(&resp.Body)
@@ -57,11 +66,11 @@ type CreateResponse struct {
 	Body []byte
 }
 
-func (c ClientDemo) FileDownload() (resp *FileDownloadResponse, err error) {
+func (c ClientDemo) FileDownload(metas ...golib_tools_courier.Metadata) (resp *FileDownloadResponse, err error) {
 	resp = &FileDownloadResponse{}
 	resp.Meta = golib_tools_courier.Metadata{}
 
-	err = c.Request(c.Name+".FileDownload", "GET", "/demo/files", nil).
+	err = c.Request(c.Name+".FileDownload", "GET", "/demo/files", nil, metas...).
 		Do().
 		BindMeta(resp.Meta).
 		Into(&resp.Body)
@@ -78,21 +87,21 @@ type FormMultipartWithFileRequest struct {
 	//
 	Body struct {
 		//
-		Data Data `default:"" json:"data"`
+		Data Data `json:"data,omitempty"`
 		//
 		File *mime_multipart.FileHeader `json:"file"`
 		//
-		Slice []string `default:"" json:"slice"`
+		Slice []string `json:"slice,omitempty"`
 		//
-		String string `default:"" json:"string"`
+		String string `json:"string,omitempty"`
 	} `in:"formData,multipart"`
 }
 
-func (c ClientDemo) FormMultipartWithFile(req FormMultipartWithFileRequest) (resp *FormMultipartWithFileResponse, err error) {
+func (c ClientDemo) FormMultipartWithFile(req FormMultipartWithFileRequest, metas ...golib_tools_courier.Metadata) (resp *FormMultipartWithFileResponse, err error) {
 	resp = &FormMultipartWithFileResponse{}
 	resp.Meta = golib_tools_courier.Metadata{}
 
-	err = c.Request(c.Name+".FormMultipartWithFile", "POST", "/demo/forms/multipart", req).
+	err = c.Request(c.Name+".FormMultipartWithFile", "POST", "/demo/forms/multipart", req, metas...).
 		Do().
 		BindMeta(resp.Meta).
 		Into(&resp.Body)
@@ -113,11 +122,11 @@ type FormMultipartWithFilesRequest struct {
 	} `in:"formData,multipart"`
 }
 
-func (c ClientDemo) FormMultipartWithFiles(req FormMultipartWithFilesRequest) (resp *FormMultipartWithFilesResponse, err error) {
+func (c ClientDemo) FormMultipartWithFiles(req FormMultipartWithFilesRequest, metas ...golib_tools_courier.Metadata) (resp *FormMultipartWithFilesResponse, err error) {
 	resp = &FormMultipartWithFilesResponse{}
 	resp.Meta = golib_tools_courier.Metadata{}
 
-	err = c.Request(c.Name+".FormMultipartWithFiles", "POST", "/demo/forms/multipart-with-files", req).
+	err = c.Request(c.Name+".FormMultipartWithFiles", "POST", "/demo/forms/multipart-with-files", req, metas...).
 		Do().
 		BindMeta(resp.Meta).
 		Into(&resp.Body)
@@ -142,11 +151,11 @@ type FormURLEncodedRequest struct {
 	} `in:"formData"`
 }
 
-func (c ClientDemo) FormURLEncoded(req FormURLEncodedRequest) (resp *FormURLEncodedResponse, err error) {
+func (c ClientDemo) FormURLEncoded(req FormURLEncodedRequest, metas ...golib_tools_courier.Metadata) (resp *FormURLEncodedResponse, err error) {
 	resp = &FormURLEncodedResponse{}
 	resp.Meta = golib_tools_courier.Metadata{}
 
-	err = c.Request(c.Name+".FormURLEncoded", "POST", "/demo/forms/url-encoded", req).
+	err = c.Request(c.Name+".FormURLEncoded", "POST", "/demo/forms/url-encoded", req, metas...).
 		Do().
 		BindMeta(resp.Meta).
 		Into(&resp.Body)
@@ -165,16 +174,16 @@ type GetByIDRequest struct {
 	//
 	ID string `in:"path" name:"id"`
 	//
-	Name string `default:"" in:"query" name:"name"`
+	Name string `in:"query" name:"name,omitempty"`
 	//
-	Label []string `default:"" in:"query" name:"label"`
+	Label []string `in:"query" name:"label,omitempty"`
 }
 
-func (c ClientDemo) GetByID(req GetByIDRequest) (resp *GetByIDResponse, err error) {
+func (c ClientDemo) GetByID(req GetByIDRequest, metas ...golib_tools_courier.Metadata) (resp *GetByIDResponse, err error) {
 	resp = &GetByIDResponse{}
 	resp.Meta = golib_tools_courier.Metadata{}
 
-	err = c.Request(c.Name+".GetByID", "GET", "/demo/crud/:id", req).
+	err = c.Request(c.Name+".GetByID", "GET", "/demo/crud/:id", req, metas...).
 		Do().
 		BindMeta(resp.Meta).
 		Into(&resp.Body)
@@ -187,11 +196,11 @@ type GetByIDResponse struct {
 	Body GetByID
 }
 
-func (c ClientDemo) Swagger() (resp *SwaggerResponse, err error) {
+func (c ClientDemo) Swagger(metas ...golib_tools_courier.Metadata) (resp *SwaggerResponse, err error) {
 	resp = &SwaggerResponse{}
 	resp.Meta = golib_tools_courier.Metadata{}
 
-	err = c.Request(c.Name+".Swagger", "GET", "/demo", nil).
+	err = c.Request(c.Name+".Swagger", "GET", "/demo", nil, metas...).
 		Do().
 		BindMeta(resp.Meta).
 		Into(&resp.Body)

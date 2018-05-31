@@ -9,6 +9,8 @@ import (
 	"net/http"
 	"testing"
 
+	"golib/tools/courier"
+
 	"github.com/stretchr/testify/assert"
 
 	"golib/tools/courier/httpx"
@@ -58,7 +60,42 @@ func TestCreateHttpRequestDecoder(t *testing.T) {
 	getItem := GetItem{}
 	err = MarshalOperator(req, &getItem)
 	tt.Nil(err)
+
 	tt.Equal(request, getItem)
+}
+
+func TestCreateHttpRequestDecoder_VersionSwitch(t *testing.T) {
+	tt := assert.New(t)
+
+	{
+		respData := struct {
+			courier.WithVersionSwitch
+			courier.EmptyOperator
+		}{}
+
+		req, _ := transform.NewRequest("GET", "/", nil, courier.MetadataWithVersionSwitch("VERSION"))
+
+		err := MarshalOperator(req, &respData)
+		tt.NoError(err)
+
+		tt.Equal(respData.XVersion, "VERSION")
+	}
+
+	{
+		respData := struct {
+			courier.WithVersionSwitch
+			courier.EmptyOperator
+		}{}
+
+		req, _ := transform.NewRequest("GET", "/", nil, courier.Metadata{
+			httpx.HeaderRequestID: []string{courier.ModifyRequestIDWithVersionSwitch("adadasd", "VERSION")},
+		})
+
+		err := MarshalOperator(req, &respData)
+		tt.NoError(err)
+
+		tt.Equal(respData.XVersion, "VERSION")
+	}
 }
 
 type PostForm struct {

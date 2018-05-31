@@ -3,7 +3,10 @@ package builder
 import (
 	"fmt"
 	"regexp"
+	"sort"
 	"strings"
+
+	"golib/tools/env"
 )
 
 type TableDef interface {
@@ -63,10 +66,17 @@ func (t *Table) Cond(query string, args ...interface{}) *Condition {
 type FieldValues map[string]interface{}
 
 func (t *Table) ColumnsAndValuesByFieldValues(fieldValues FieldValues) (columns Columns, args []interface{}) {
-	for fieldName, value := range fieldValues {
+	fieldNames := make([]string, 0)
+	for fieldName := range fieldValues {
+		fieldNames = append(fieldNames, fieldName)
+	}
+
+	sort.Strings(fieldNames)
+
+	for _, fieldName := range fieldNames {
 		if col := t.F(fieldName); col != nil {
 			columns.Add(col)
-			args = append(args, value)
+			args = append(args, fieldValues[fieldName])
 		}
 	}
 	return
@@ -129,10 +139,12 @@ func (t *Table) Diff(table *Table) *Stmt {
 	joiner := ""
 
 	if colsChanged {
-		colsDiffResult.colsForDelete.Range(func(col *Column, idx int) {
-			expr = expr.ConcatBy(joiner, col.Drop())
-			joiner = ", "
-		})
+		if Configuration.DropColumnWhenMigration || env.IsOnline() {
+			colsDiffResult.colsForDelete.Range(func(col *Column, idx int) {
+				expr = expr.ConcatBy(joiner, col.Drop())
+				joiner = ", "
+			})
+		}
 		colsDiffResult.colsForUpdate.Range(func(col *Column, idx int) {
 			expr = expr.ConcatBy(joiner, col.Modify())
 			joiner = ", "

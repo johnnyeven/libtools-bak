@@ -11,7 +11,11 @@ func TestParseByEnv(t *testing.T) {
 	tt := assert.New(t)
 
 	os.Setenv("TEST", "1")
-	tt.Equal("1", ParseByEnv("${TEST}"))
-	tt.Equal("", ParseByEnv("${MISSING}"))
-	tt.Equal("${IGNORE}", ParseByEnv("$${IGNORE}"))
+
+	envVar := EnvVars{}
+	envVar.LoadFromEnviron()
+
+	tt.Equal("1", envVar.Parse("${TEST}"))
+	tt.Equal("${MISSING}", envVar.Parse("${MISSING}"))
+	tt.Equal("${IGNORE}", envVar.Parse("$${IGNORE}"))
 }

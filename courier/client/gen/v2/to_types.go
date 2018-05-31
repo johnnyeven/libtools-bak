@@ -86,8 +86,12 @@ func (g *TypeGenerator) TypeIndirect(schema *spec.Schema) string {
 			return g.Importer.Use("golib/tools/httplib.Uint64List")
 		}
 
-		if schema.Type.Contains("string") || schema.Type.Contains("boolean") || schema.Enum != nil {
-			typeFullName := fmt.Sprint(schema.Extensions[gen.XNamed])
+		typeFullName := fmt.Sprint(schema.Extensions[gen.XNamed])
+
+		if schema.Type.Contains("string") ||
+			schema.Type.Contains("boolean") ||
+			schema.Enum != nil ||
+			strings.Contains(typeFullName, "golib/tools") {
 
 			pkgImportName, typeName := loaderx.GetPkgImportPathAndExpose(typeFullName)
 
@@ -189,19 +193,29 @@ func (g *TypeGenerator) FieldFrom(name string, propSchema *spec.Schema, required
 	}
 
 	if propSchema.Extensions[gen.XTagJSON] != nil {
-		field.AddTag("json", fmt.Sprintf("%s", propSchema.Extensions[gen.XTagJSON]))
+		tagName := fmt.Sprintf("%s", propSchema.Extensions[gen.XTagJSON])
+		flags := make([]string, 0)
+		if !isRequired && !strings.Contains(tagName, "omitempty") {
+			flags = append(flags, "omitempty")
+		}
+		field.AddTag("json", tagName, flags...)
+	}
+
+	if propSchema.Extensions[gen.XTagName] != nil {
+		tagName := fmt.Sprintf("%s", propSchema.Extensions[gen.XTagName])
+		flags := make([]string, 0)
+		if !isRequired && !strings.Contains(tagName, "omitempty") {
+			flags = append(flags, "omitempty")
+		}
+		field.AddTag("name", tagName, flags...)
 	}
 
 	if propSchema.Extensions[gen.XTagValidate] != nil {
 		field.AddTag("validate", fmt.Sprintf("%s", propSchema.Extensions[gen.XTagValidate]))
 	}
 
-	if !isRequired {
-		if propSchema.Default != nil {
-			field.AddTag("default", fmt.Sprintf("%v", propSchema.Default))
-		} else {
-			field.AddTag("default", "")
-		}
+	if propSchema.Default != nil {
+		field.AddTag("default", fmt.Sprintf("%v", propSchema.Default))
 	}
 
 	field.Type = g.Type(propSchema)

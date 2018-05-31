@@ -35,7 +35,7 @@ func getSign(req *http.Request, query url.Values, secretExchanger SecretExchange
 	if accessKey != "" && randString != "" {
 		secret, errForExchange := secretExchanger(accessKey)
 		if errForExchange != nil {
-			err = status_error.InvalidSecret.StatusError().WithDesc(err.Error())
+			err = status_error.InvalidSecret.StatusError().WithDesc(errForExchange.Error())
 			return
 		}
 		bodyBytes := make([]byte, 0)

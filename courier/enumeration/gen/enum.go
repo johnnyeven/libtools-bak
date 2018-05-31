@@ -58,6 +58,7 @@ func (m *Enum) WriteAll(w io.Writer) {
 	m.WriteInitFunc(w)
 	m.WriteParseXFromString(w)
 	m.WriteParseXFromLabelString(w)
+	m.WriteEnumDescriptor(w)
 	m.WriteStringer(w)
 	m.WriteLabeler(w)
 	m.WriteTextMarshalerAndUnmarshaler(w)
@@ -191,6 +192,26 @@ func (v `+m.Name+`) Label() string {
 	return "UNKNOWN"
 }
 	`)
+}
+
+func (m *Enum) WriteEnumDescriptor(w io.Writer) {
+	io.WriteString(w, `
+func (`+m.Name+`) EnumType() string {
+	return "`+m.Name+`"
+}
+
+func (`+m.Name+`) Enums() map[int][]string {
+	return map[int][]string{
+`)
+
+	for _, option := range m.Options {
+		io.WriteString(w, fmt.Sprintf(`int(%s): {%s, %s},
+`, m.ConstKey(option.Value), strconv.Quote(option.Value.(string)), strconv.Quote(option.Label)))
+	}
+
+	io.WriteString(w, `
+	}
+}`)
 }
 
 func (m *Enum) WriteTextMarshalerAndUnmarshaler(w io.Writer) {

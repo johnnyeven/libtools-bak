@@ -32,6 +32,11 @@ func (m Metadata) Set(key string, values ...string) {
 	m[key] = values
 }
 
+func (m Metadata) Has(key string) bool {
+	_, ok := m[key]
+	return ok
+}
+
 func (m Metadata) Get(key string) string {
 	if v := m[key]; len(v) > 0 {
 		return v[0]

@@ -46,6 +46,9 @@ func (scanner *StatusErrorScanner) StatusErrorsInFunc(typeFunc *types.Func) stat
 		return statusErrorCodeMap
 	}
 
+	// force initial to fix recursion
+	scanner.errorsUsed[typeFunc] = status_error.StatusErrorCodeMap{}
+
 	pkgInfo := scanner.program.Package(typeFunc.Pkg().Path())
 	funcDecl := loaderx.FuncDeclOfTypeFunc(pkgInfo, typeFunc)
 

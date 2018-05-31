@@ -34,7 +34,9 @@ type Dockerfile struct {
 }
 
 func (d *Dockerfile) String() string {
-	return executil.ParseByEnv(GetDockerfileTemplate(*d))
+	envVars := executil.EnvVars{}
+	envVars.LoadFromEnviron()
+	return envVars.Parse(GetDockerfileTemplate(*d))
 }
 
 func (d Dockerfile) AddContent(from string, to string) *Dockerfile {
@@ -82,7 +84,7 @@ func (d Dockerfile) WithCmd(cmd ...string) *Dockerfile {
 }
 
 func GetDockerfileTemplate(d Dockerfile) string {
-	dockerfileConfig := []string{}
+	dockerfileConfig := make([]string, 0)
 
 	appendDockerConfig := func(dockerKey string, value string) {
 		dockerfileConfig = append(
@@ -116,7 +118,7 @@ func GetDockerfileTemplate(d Dockerfile) string {
 				}
 			case reflect.Slice:
 				jsonArray := godash.StringIncludes(dockerFlags, "array")
-				slice := []string{}
+				slice := make([]string, 0)
 				for i := 0; i < value.Len(); i++ {
 					slice = append(slice, value.Index(i).String())
 				}

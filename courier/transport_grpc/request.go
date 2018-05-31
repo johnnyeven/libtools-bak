@@ -23,6 +23,7 @@ type GRPCRequest struct {
 	Method     string
 	Timeout    time.Duration
 	Req        interface{}
+	Metadata   courier.Metadata
 }
 
 func (grpcRequest *GRPCRequest) Do() (result courier.Result) {
@@ -30,9 +31,10 @@ func (grpcRequest *GRPCRequest) Do() (result courier.Result) {
 	d := duration.NewDuration()
 	defer func() {
 		logger := d.ToLogger().WithFields(logrus.Fields{
-			"grpc":    grpcRequest.BaseURL,
-			"service": grpcRequest.ServerName,
-			"method":  grpcRequest.Method,
+			"grpc":     grpcRequest.BaseURL,
+			"service":  grpcRequest.ServerName,
+			"method":   grpcRequest.Method,
+			"metadata": grpcRequest.Metadata,
 		})
 
 		if result.Err == nil {

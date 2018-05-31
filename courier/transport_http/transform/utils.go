@@ -4,6 +4,7 @@ import (
 	"encoding"
 	"encoding/json"
 	"reflect"
+	"strconv"
 	"strings"
 
 	"github.com/sirupsen/logrus"
@@ -34,17 +35,17 @@ func GetStructFieldDisplayName(field *reflect.StructField) string {
 	return field.Name
 }
 
-func GetParameterDisplayName(field *reflect.StructField) string {
-	if fieldName, exists, _ := GetTagName(field); exists && fieldName != "" {
-		return fieldName
+func GetParameterDisplayName(field *reflect.StructField) (string, TagFlags) {
+	if fieldName, exists, flags := GetTagName(field); exists && fieldName != "" {
+		return fieldName, flags
 	}
-	if jsonName, exists, _ := GetTagJSON(field); exists && jsonName != "" {
+	if jsonName, exists, flags := GetTagJSON(field); exists && jsonName != "" {
 		if !env.IsOnline() {
 			logrus.Warnf("%s `%s`, deprecated `json` tag for naming parameter, please use `name` tag instead", field.Name, field.Tag)
 		}
-		return jsonName
+		return jsonName, flags
 	}
-	return field.Name
+	return field.Name, TagFlags{}
 }
 
 func GetTagJSON(field *reflect.StructField) (name string, exists bool, tagFlags TagFlags) {
@@ -143,4 +144,98 @@ func ResolveCommaSplitValues(tpe reflect.Type, ss ...string) (values []string) {
 		}
 	}
 	return ss
+}
+
+func LocateJSONPath(data []byte, offset int64) string {
+	i := 0
+	arrayPaths := map[string]bool{}
+	arrayIdxSet := map[string]int{}
+	pathWalker := &PathWalker{}
+
+	markObjectKey := func() {
+		jsonKey, l := nextString(data[i:])
+		i += l
+
+		if i < int(offset) && len(jsonKey) > 0 {
+			key, _ := strconv.Unquote(string(jsonKey))
+			pathWalker.Enter(key)
+		}
+	}
+
+	markArrayIdx := func(path string) {
+		if arrayPaths[path] {
+			arrayIdxSet[path]++
+		} else {
+			arrayPaths[path] = true
+		}
+		pathWalker.Enter(arrayIdxSet[path])
+	}
+
+	for i < int(offset) {
+		i += nextToken(data[i:])
+		char := data[i]
+
+		switch char {
+		case '"':
+			_, l := nextString(data[i:])
+			i += l
+		case '[', '{':
+			i++
+
+			if char == '[' {
+				markArrayIdx(pathWalker.String())
+			} else {
+				markObjectKey()
+			}
+		case '}', ']', ',':
+			i++
+			pathWalker.Exit()
+
+			if char == ',' {
+				path := pathWalker.String()
+
+				if _, ok := arrayPaths[path]; ok {
+					markArrayIdx(path)
+				} else {
+					markObjectKey()
+				}
+			}
+		default:
+			i++
+		}
+	}
+
+	return pathWalker.String()
+}
+
+func nextToken(data []byte) int {
+	for i, c := range data {
+		switch c {
+		case ' ', '\n', '\r', '\t':
+			continue
+		default:
+			return i
+		}
+	}
+	return -1
+}
+
+func nextString(data []byte) (finalData []byte, l int) {
+	quoteStartAt := -1
+	for i, c := range data {
+		switch c {
+		case '"':
+			if i > 0 && string(data[i-1]) == "\\" {
+				continue
+			}
+			if quoteStartAt >= 0 {
+				return data[quoteStartAt : i+1], i + 1
+			} else {
+				quoteStartAt = i
+			}
+		default:
+			continue
+		}
+	}
+	return nil, 0
 }

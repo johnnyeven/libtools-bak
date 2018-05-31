@@ -43,6 +43,16 @@ func ParseStateFromLabelString(s string) (State, error) {
 	return STATE_UNKNOWN, InvalidState
 }
 
+func (State) EnumType() string {
+	return "State"
+}
+
+func (State) Enums() map[int][]string {
+	return map[int][]string{
+		int(STATE__ACTIVE): {"ACTIVE", "激活"},
+		int(STATE__CLOSED): {"CLOSED", "关闭"},
+	}
+}
 func (v State) String() string {
 	switch v {
 	case STATE_UNKNOWN:

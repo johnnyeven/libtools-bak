@@ -1,15 +1,31 @@
 package sqlx
 
-import (
-	"errors"
-)
+import "fmt"
+
+func NewSqlError(tpe sqlErrType, msg string) *SqlError {
+	return &SqlError{
+		Type: tpe,
+		Msg:  msg,
+	}
+}
+
+type SqlError struct {
+	Type sqlErrType
+	Msg  string
+}
+
+func (e *SqlError) Error() string {
+	return fmt.Sprintf("Sqlx [%s] %s", e.Type, e.Msg)
+}
+
+type sqlErrType string
 
 var (
-	ErrSqlInvalid        = errors.New("sql invalid")
-	ErrInvalidScanTarget = errors.New("can not scan to a none pointer value")
-	ErrNotFound          = errors.New("record is not found")
-	ErrSelectShouldOne   = errors.New("more than one records found, but only one")
-	ErrConflict          = errors.New("record conflict")
+	sqlErrTypeInvalidSql        sqlErrType = "InvalidSql"
+	sqlErrTypeInvalidScanTarget sqlErrType = "InvalidScanTarget"
+	sqlErrTypeNotFound          sqlErrType = "NotFound"
+	sqlErrTypeSelectShouldOne   sqlErrType = "SelectShouldOne"
+	sqlErrTypeConflict          sqlErrType = "Conflict"
 )
 
 var DuplicateEntryErrNumber uint16 = 1062
@@ -44,29 +60,37 @@ func (r dbErr) WithConflict(err error) *dbErr {
 }
 
 func (r *dbErr) IsNotFound() bool {
-	return r.err == ErrNotFound
+	if sqlErr, ok := r.err.(*SqlError); ok {
+		return sqlErr.Type == sqlErrTypeNotFound
+	}
+	return false
 }
 
 func (r *dbErr) IsConflict() bool {
-	return r.err == ErrConflict
+	if sqlErr, ok := r.err.(*SqlError); ok {
+		return sqlErr.Type == sqlErrTypeConflict
+	}
+	return false
 }
 
 func (r *dbErr) Err() error {
 	if r.err == nil {
 		return nil
 	}
-	switch r.err {
-	case ErrNotFound:
-		if r.errNotFound != nil {
-			return r.errNotFound
+	if sqlErr, ok := r.err.(*SqlError); ok {
+		switch sqlErr.Type {
+		case sqlErrTypeNotFound:
+			if r.errNotFound != nil {
+				return r.errNotFound
+			}
+		case sqlErrTypeConflict:
+			if r.errConflict != nil {
+				return r.errConflict
+			}
 		}
-	case ErrConflict:
-		if r.errConflict != nil {
-			return r.errConflict
+		if r.errDefault != nil {
+			return r.errDefault
 		}
-	}
-	if r.errDefault != nil {
-		return r.errDefault
 	}
 	return r.err
 }

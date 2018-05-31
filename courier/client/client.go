@@ -20,7 +20,7 @@ type Client struct {
 	// used in service
 	Service       string
 	Version       string
-	Host          string `conf:"env,upstream"`
+	Host          string `conf:"env,upstream" validate:"@hostname"`
 	Mode          string
 	Port          int16
 	Timeout       time.Duration
@@ -71,8 +71,10 @@ func (c Client) GetBaseURL(protocol string) (url string) {
 
 func (c *Client) Request(id, httpMethod, uri string, req interface{}, metas ...courier.Metadata) IRequest {
 	requestID := context.GetLogID()
+	metadata := courier.MetadataMerge(metas...)
+
 	if !env.IsOnline() {
-		if requestIDInMeta := courier.MetadataMerge(metas...).Get(httpx.HeaderRequestID); requestIDInMeta != "" {
+		if requestIDInMeta := metadata.Get(httpx.HeaderRequestID); requestIDInMeta != "" {
 			requestID = requestIDInMeta
 		}
 		mocker, err := ParseMockID(c.Service, requestID)
@@ -85,6 +87,17 @@ func (c *Client) Request(id, httpMethod, uri string, req interface{}, metas ...c
 		}
 	}
 
+	if metadata.Has(courier.VersionSwitchKey) {
+		requestID = courier.ModifyRequestIDWithVersionSwitch(requestID, metadata.Get(courier.VersionSwitchKey))
+	} else {
+		if _, v, exists := courier.ParseVersionSwitch(requestID); exists {
+			metadata.Set(courier.VersionSwitchKey, v)
+		}
+	}
+
+	metadata.Add(httpx.HeaderRequestID, requestID)
+	metadata.Add(httpx.HeaderUserAgent, c.Service+" "+c.Version)
+
 	switch strings.ToLower(c.Mode) {
 	case "grpc":
 		serverName, method := parseID(id)
@@ -95,18 +108,18 @@ func (c *Client) Request(id, httpMethod, uri string, req interface{}, metas ...c
 			Timeout:    c.Timeout,
 			RequestID:  requestID,
 			Req:        req,
+			Metadata:   metadata,
 		}
 	default:
 		return &transport_http.HttpRequest{
-			UserAgent:     c.Service + " " + c.Version,
 			BaseURL:       c.GetBaseURL(c.Mode),
 			Method:        httpMethod,
 			URI:           uri,
 			ID:            id,
 			Timeout:       c.Timeout,
-			RequestID:     requestID,
 			WrapTransport: c.WrapTransport,
 			Req:           req,
+			Metadata:      metadata,
 		}
 	}
 }

@@ -61,15 +61,13 @@ func ForEachFuncResult(program *loader.Program, typeFunc *types.Func, walker fun
 	resultLength := results.Len()
 
 	returnStmtList := make([]*ast.ReturnStmt, 0)
+
+	// collect all return stmt
 	ast.Inspect(funcDecl, func(node ast.Node) bool {
 		switch node.(type) {
-		case *ast.AssignStmt:
-			assignStmt := node.(*ast.AssignStmt)
-			if len(assignStmt.Rhs) == 1 {
-				if _, ok := assignStmt.Rhs[0].(*ast.FuncLit); ok {
-					return false
-				}
-			}
+		case *ast.FuncLit:
+			// skip func inline declaration
+			return false
 		case *ast.ReturnStmt:
 			returnStmtList = append(returnStmtList, node.(*ast.ReturnStmt))
 		}

@@ -2,11 +2,10 @@ package transform
 
 import (
 	"encoding"
+	"encoding/json"
 	"io"
 	"io/ioutil"
 	"reflect"
-
-	"golib/json"
 
 	"golib/tools/courier/status_error"
 	"golib/tools/reflectx"
@@ -14,8 +13,10 @@ import (
 )
 
 func NewParameterMeta(field *reflect.StructField, rv reflect.Value, tagIn string, tagInFlags TagFlags) *ParameterMeta {
+	name, nameFlags := GetParameterDisplayName(field)
+
 	p := &ParameterMeta{
-		Name:    GetParameterDisplayName(field),
+		Name:    name,
 		In:      tagIn,
 		InFlags: tagInFlags,
 		Field:   field,
@@ -41,9 +42,16 @@ func NewParameterMeta(field *reflect.StructField, rv reflect.Value, tagIn string
 		p.Format = "json"
 	}
 
-	defaultValue, exists := GetTagDefault(field)
-	p.Required = !exists
+	defaultValue, hasDefaultTag := GetTagDefault(field)
 	p.DefaultValue = defaultValue
+
+	p.Required = true
+	if hasOmitempty, ok := nameFlags["omitempty"]; ok {
+		p.Required = !hasOmitempty
+	} else {
+		// todo don't use non-default as required
+		p.Required = !hasDefaultTag
+	}
 
 	tagValidate, _ := GetTagValidate(field)
 	p.TagValidate = tagValidate
@@ -291,7 +299,7 @@ func structUnmarshal(in string, rootField string, format string, data []byte, v 
 	if err != nil {
 		statusError := status_error.InvalidBodyStruct.StatusError()
 		if unmarshalTypeErr, ok := err.(*json.UnmarshalTypeError); ok {
-			return statusError.WithErrorField(in, unmarshalTypeErr.Path, unmarshalTypeErr.Error())
+			return statusError.WithErrorField(in, LocateJSONPath(data, unmarshalTypeErr.Offset), unmarshalTypeErr.Error())
 		}
 		return statusError.WithErrorField(in, rootField, "参数格式错误").WithDesc(err.Error())
 	}

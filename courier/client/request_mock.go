@@ -44,7 +44,7 @@ func ParseMockID(service string, requestID string) (mock *Mocker, err error) {
 	for _, requestID := range requestIDs {
 		prefix := service + ":"
 		if strings.HasPrefix(requestID, prefix) {
-			mock, err = mock.From(strings.TrimLeft(requestID, prefix))
+			mock, err = mock.From(strings.Replace(requestID, prefix, "", 1))
 			return
 		}
 	}

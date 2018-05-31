@@ -62,6 +62,18 @@ func ParseDemoResourceStatusFromLabelString(s string) (DemoResourceStatus, error
 	return DEMO_RESOURCE_STATUS_UNKNOWN, InvalidDemoResourceStatus
 }
 
+func (DemoResourceStatus) EnumType() string {
+	return "DemoResourceStatus"
+}
+
+func (DemoResourceStatus) Enums() map[int][]string {
+	return map[int][]string{
+		int(DEMO_RESOURCE_STATUS__RUNNING):          {"RUNNING", "运行中"},
+		int(DEMO_RESOURCE_STATUS__RECYCLING):        {"RECYCLING", "回收中"},
+		int(DEMO_RESOURCE_STATUS__TRANSFORMING_OUT): {"TRANSFORMING_OUT", "资源转出中"},
+		int(DEMO_RESOURCE_STATUS__TRANSFORMING_IN):  {"TRANSFORMING_IN", "资源转入中"},
+	}
+}
 func (v DemoResourceStatus) String() string {
 	switch v {
 	case DEMO_RESOURCE_STATUS_UNKNOWN:

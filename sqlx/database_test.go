@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"os"
 	"testing"
 	"time"
 
@@ -46,6 +47,17 @@ const (
 	GenderMale Gender = iota + 1
 	GenderFemale
 )
+
+func (Gender) EnumType() string {
+	return "Gender"
+}
+
+func (Gender) Enums() map[int][]string {
+	return map[int][]string{
+		int(GenderMale):   {"male", "男"},
+		int(GenderFemale): {"female", "女"},
+	}
+}
 
 func (g Gender) String() string {
 	switch g {
@@ -117,7 +129,8 @@ func (user2 *User2) Indexes() sqlx.Indexes {
 func TestMigrate(t *testing.T) {
 	tt := assert.New(t)
 
-	dbTest := sqlx.NewDatabase("test_for_migrate")
+	os.Setenv("PROJECT_FEATURE", "test")
+	dbTest := sqlx.NewFeatureDatabase("test_for_migrate")
 	defer func() {
 		err := db.Do(dbTest.Drop()).Err()
 		tt.Nil(err)
@@ -200,6 +213,7 @@ func TestCRUD(t *testing.T) {
 		{
 			user.BeforeInsert()
 			err := db.Do(dbTest.Insert(&user).Comment("Insert Conflict")).Err()
+			t.Log(err)
 			tt.True(sqlx.DBErr(err).IsConflict())
 
 			{
@@ -258,7 +272,7 @@ func TestSelect(t *testing.T) {
 	{
 		user := User{}
 		err := db.Do(table.Select().Where(table.F("ID").Eq(11))).Scan(&user).Err()
-		tt.Equal(sqlx.ErrNotFound, err)
+		tt.True(sqlx.DBErr(err).IsNotFound())
 	}
 	{
 		count := 0

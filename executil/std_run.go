@@ -13,7 +13,11 @@ import (
 
 func StdRun(cmd *exec.Cmd) {
 	cwd, _ := os.Getwd()
-	fmt.Fprintf(os.Stdout, "%s %s\n", color.CyanString(path.Join(cwd, cmd.Dir)), ParseByEnv(strings.Join(cmd.Args, " ")))
+
+	envVars := EnvVars{}
+	envVars.LoadFromEnviron()
+
+	fmt.Fprintf(os.Stdout, "%s %s\n", color.CyanString(path.Join(cwd, cmd.Dir)), envVars.Parse(strings.Join(cmd.Args, " ")))
 	{
 		stdoutPipe, err := cmd.StdoutPipe()
 		if err != nil {

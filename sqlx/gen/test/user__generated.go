@@ -481,6 +481,8 @@ func (user *User) List(db *golib_tools_sqlx.DB, condition *golib_tools_sqlx_buil
 
 	table := user.T()
 
+	condition = golib_tools_sqlx_builder.And(condition, table.F("Enabled").Eq(golib_tools_courier_enumeration.BOOL__TRUE))
+
 	stmt := table.Select().
 		Comment("User.List").
 		Where(condition)
@@ -495,9 +497,13 @@ func (user *User) ListByStruct(db *golib_tools_sqlx.DB) (userList UserList, err 
 
 	table := user.T()
 
+	condition := user.ConditionByStruct()
+
+	condition = golib_tools_sqlx_builder.And(condition, table.F("Enabled").Eq(golib_tools_courier_enumeration.BOOL__TRUE))
+
 	stmt := table.Select().
 		Comment("User.ListByStruct").
-		Where(user.ConditionByStruct())
+		Where(condition)
 
 	err = db.Do(stmt).Scan(&userList).Err()
 
@@ -511,6 +517,10 @@ func (userList *UserList) BatchFetchByIDList(db *golib_tools_sqlx.DB, idList []u
 }
 
 func (user *User) BatchFetchByIDList(db *golib_tools_sqlx.DB, idList []uint64) (userList UserList, err error) {
+	if len(idList) == 0 {
+		return UserList{}, nil
+	}
+
 	table := user.T()
 
 	condition := table.F("ID").In(idList)
@@ -533,6 +543,10 @@ func (userList *UserList) BatchFetchByNameList(db *golib_tools_sqlx.DB, nameList
 }
 
 func (user *User) BatchFetchByNameList(db *golib_tools_sqlx.DB, nameList []string) (userList UserList, err error) {
+	if len(nameList) == 0 {
+		return UserList{}, nil
+	}
+
 	table := user.T()
 
 	condition := table.F("Name").In(nameList)
@@ -555,6 +569,10 @@ func (userList *UserList) BatchFetchByNicknameList(db *golib_tools_sqlx.DB, nick
 }
 
 func (user *User) BatchFetchByNicknameList(db *golib_tools_sqlx.DB, nicknameList []string) (userList UserList, err error) {
+	if len(nicknameList) == 0 {
+		return UserList{}, nil
+	}
+
 	table := user.T()
 
 	condition := table.F("Nickname").In(nicknameList)
@@ -577,6 +595,10 @@ func (userList *UserList) BatchFetchByUsernameList(db *golib_tools_sqlx.DB, user
 }
 
 func (user *User) BatchFetchByUsernameList(db *golib_tools_sqlx.DB, usernameList []string) (userList UserList, err error) {
+	if len(usernameList) == 0 {
+		return UserList{}, nil
+	}
+
 	table := user.T()
 
 	condition := table.F("Username").In(usernameList)

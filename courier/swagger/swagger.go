@@ -33,6 +33,7 @@ func (s Swagger) Output(c context.Context) (interface{}, error) {
 	return &JSONBytes{}, nil
 }
 
+// swagger:strfmt json
 type JSONBytes struct {
 	bytes.Buffer
 }

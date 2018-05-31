@@ -5,6 +5,8 @@ import (
 	"testing"
 	"time"
 
+	"golib/tools/courier"
+
 	"github.com/davecgh/go-spew/spew"
 	"github.com/stretchr/testify/assert"
 
@@ -58,4 +60,25 @@ func TestClient_DoRequest(t *testing.T) {
 		tt.Equal("USA", ipInfo.Country)
 		tt.Equal("US", ipInfo.CountryCode)
 	}
+}
+
+func TestClient_DoRequestWithMetadata(t *testing.T) {
+	tt := assert.New(t)
+
+	ipInfoClient := Client{
+		Service: "test",
+		Mode:    "http",
+		Host:    "ip-api.com",
+		Timeout: 100 * time.Second,
+	}
+
+	ipInfo := IpInfo{}
+
+	err := ipInfoClient.Request("id", "GET", "/json", nil, courier.MetadataWithVersionSwitch("VERSION")).
+		Do().
+		Into(&ipInfo)
+
+	tt.Nil(err)
+
+	spew.Dump(ipInfo)
 }

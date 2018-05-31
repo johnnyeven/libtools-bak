@@ -3,11 +3,16 @@ package gen
 import (
 	"fmt"
 	"go/ast"
+	"go/build"
 	"go/types"
 	"net/http"
+	"os"
+	"path/filepath"
 	"reflect"
 	"runtime/debug"
 	"strings"
+
+	"golib/tools/courier/transport_http/transform"
 
 	"github.com/morlay/oas"
 	"github.com/sirupsen/logrus"
@@ -61,14 +66,14 @@ func (scanner *OperatorScanner) Operator(typeName *types.TypeName) *Operator {
 
 	defer func() {
 		if e := recover(); e != nil {
-			logrus.Errorf("scan Operator `%v` faield, panic: %s; calltrace: %s", typeName, fmt.Sprint(e), string(debug.Stack()))
+			logrus.Errorf("scan Operator `%v` failed, panic: %s; calltrace: %s", typeName, fmt.Sprint(e), string(debug.Stack()))
 		}
 	}()
 
 	if typeStruct, ok := typeName.Type().Underlying().(*types.Struct); ok {
 		operator := Operator{
 			ID:  typeName.Name(),
-			Tag: typeName.Pkg().Name(),
+			Tag: getTagNameByPkgPath(typeName.Pkg().Path()),
 		}
 
 		scanner.bindParameterOrRequestBody(&operator, typeStruct)
@@ -86,6 +91,13 @@ func (scanner *OperatorScanner) Operator(typeName *types.TypeName) *Operator {
 	}
 
 	return nil
+}
+
+func getTagNameByPkgPath(pkgPath string) string {
+	cwd, _ := os.Getwd()
+	p, _ := build.Default.Import(pkgPath, "", build.FindOnly)
+	tag, _ := filepath.Rel(cwd, p.Dir)
+	return strings.Replace(tag, "routes/", "", 1)
 }
 
 func (scanner *OperatorScanner) bindWebSocketMessages(op *Operator, schema *oas.Schema, typeVar *types.Var) {
@@ -280,7 +292,7 @@ func (scanner *OperatorScanner) bindParameterOrRequestBody(op *Operator, typeStr
 			panic(fmt.Errorf("missing tag `name` or `json` for parameter %s of %s", fieldName, op.ID))
 		}
 
-		param = scanner.getNonBodyParameter(name, location, structFieldTags, fieldType)
+		param = scanner.getNonBodyParameter(name, flags, location, structFieldTags, fieldType)
 
 		if param.Schema != nil && flags != nil && flags["string"] {
 			param.Schema.Type = oas.TypeString
@@ -319,13 +331,22 @@ func (scanner *OperatorScanner) getRequestBody(t types.Type, location string, is
 	return reqBody
 }
 
-func (scanner *OperatorScanner) getNonBodyParameter(name string, location string, tags reflect.StructTag, t types.Type) *oas.Parameter {
+func (scanner *OperatorScanner) getNonBodyParameter(name string, nameFlags transform.TagFlags, location string, tags reflect.StructTag, t types.Type) *oas.Parameter {
 	schema := scanner.DefinitionScanner.getSchemaByType(t)
 
 	defaultValue, hasDefault := tags.Lookup("default")
 	if hasDefault {
 		schema.Default = defaultValue
 	}
+
+	required := true
+	if hasOmitempty, ok := nameFlags["omitempty"]; ok {
+		required = !hasOmitempty
+	} else {
+		// todo don't use non-default as required
+		required = !hasDefault
+	}
+
 	validate, hasValidate := tags.Lookup("validate")
 	if hasValidate {
 		BindValidateFromValidateTagString(schema, validate)
@@ -343,11 +364,11 @@ func (scanner *OperatorScanner) getNonBodyParameter(name string, location string
 
 	switch location {
 	case "query":
-		return oas.QueryParameter(name, schema, !hasDefault)
+		return oas.QueryParameter(name, schema, required)
 	case "cookie":
-		return oas.CookieParameter(name, schema, !hasDefault)
+		return oas.CookieParameter(name, schema, required)
 	case "header":
-		return oas.HeaderParameter(name, schema, !hasDefault)
+		return oas.HeaderParameter(name, schema, required)
 	case "path":
 		return oas.PathParameter(name, schema)
 	}

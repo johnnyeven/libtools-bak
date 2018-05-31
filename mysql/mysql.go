@@ -19,10 +19,10 @@ import (
 
 type MySQL struct {
 	Name            string
-	Host            string `conf:"upstream"`
+	Host            string `conf:"upstream" validate:"@hostname"`
 	Port            int
-	User            string           `conf:"env"`
-	Password        presets.Password `conf:"env"`
+	User            string           `conf:"env" validate:"@string[1,)"`
+	Password        presets.Password `conf:"env" validate:"@string[1,)"`
 	Extra           string
 	PoolSize        int
 	ConnMaxLifetime time.Duration

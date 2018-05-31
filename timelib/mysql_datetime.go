@@ -73,7 +73,7 @@ func (dt MySQLDatetime) MarshalText() ([]byte, error) {
 
 func (dt *MySQLDatetime) UnmarshalText(data []byte) (err error) {
 	str := string(data)
-	if len(str) == 0 {
+	if len(str) == 0 || str == "0" {
 		str = MySQLDatetimeZero.String()
 	}
 	*dt, err = ParseMySQLDatetimeFromString(str)
@@ -85,7 +85,8 @@ func (dt MySQLDatetime) Unix() int64 {
 }
 
 func (dt MySQLDatetime) IsZero() bool {
-	return dt.Unix() == MySQLDatetimeZero.Unix()
+	unix := dt.Unix()
+	return unix == 0 || unix == MySQLDatetimeZero.Unix()
 }
 
 func (dt MySQLDatetime) In(loc *time.Location) MySQLDatetime {

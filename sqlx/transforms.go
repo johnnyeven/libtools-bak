@@ -81,7 +81,14 @@ func ScanDefToTable(rv reflect.Value, table *builder.Table) {
 		if !exists {
 			panic(fmt.Errorf("%s.%s sql tag must defined for sql type", table.Name, structField.Name))
 		}
+
 		col := builder.Col(table, columnName).Type(sqlType).Field(structField.Name)
+
+		if structField.Type.AssignableTo(reflect.TypeOf((*EnumTypeDescriber)(nil)).Elem()) {
+			enumTypeDescriber := reflect.New(structField.Type).Interface().(EnumTypeDescriber)
+			col = col.Enum(enumTypeDescriber.EnumType(), enumTypeDescriber.Enums())
+		}
+
 		finalSql := col.ColumnType.String()
 		if sqlType != finalSql {
 			panic(fmt.Errorf("%s.%s sql tag may be `%s`, current `%s`", table.Name, structField.Name, finalSql, sqlType))

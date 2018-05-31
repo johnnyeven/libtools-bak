@@ -42,6 +42,17 @@ func TestTime(t *testing.T) {
 func TestTime2(t *testing.T) {
 	//tt := assert.New(t)
 	fomat := "20060102150405"
-	datetime, _ := ParseMySQLDatetimeFromStringWithCustomFormatterInCST("20160312104325", fomat)
+	datetime, _ := ParseMySQLDatetimeFromStringWithFormatterInCST("20160312104325", fomat)
 	t.Logf("====%s\n", datetime.String())
+}
+
+func TestDateDiff(t *testing.T) {
+	startTime1, _ := time.Parse(time.RFC3339, "2018-03-31T12:00:00+08:00")
+	startTime2, _ := time.Parse(time.RFC3339, "2018-04-01T12:00:00+08:00")
+	startTime3, _ := time.Parse(time.RFC3339, "2018-04-30T12:00:00+08:00")
+	endTime1 := time.Now()
+	t.Logf("%s - %s = %d\n", endTime1, startTime1, CountDateDiff(startTime1, endTime1, CST))
+	t.Logf("%s - %s = %d\n", endTime1, startTime2, CountDateDiff(startTime2, endTime1, CST))
+	t.Logf("%s - %s = %d\n", endTime1, startTime3, CountDateDiff(startTime3, endTime1, CST))
+	t.Logf("%s - %s = %d\n", endTime1, endTime1, CountDateDiff(endTime1, endTime1, CST))
 }

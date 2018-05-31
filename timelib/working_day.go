@@ -8,6 +8,7 @@ import (
 const (
 	WORKING_DAYS = 5
 	WEEKEND_DAYS = 2
+	DAY_SECONDS  = 86400
 )
 
 // 根据指定时区获取当天第一秒
@@ -35,4 +36,9 @@ func AddWorkingDaysInLocation(t time.Time, days int, loc *time.Location) time.Ti
 	}
 	realDays := days + weekendDays
 	return locTime.AddDate(0, 0, realDays)
+}
+
+// 计算日期偏差
+func CountDateDiff(startTime, endTime time.Time, loc *time.Location) int64 {
+	return (GetTodayFirstSecInLocation(endTime, loc).Unix() - GetTodayFirstSecInLocation(startTime, loc).Unix()) / DAY_SECONDS
 }

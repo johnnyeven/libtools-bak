@@ -57,4 +57,5 @@ func init() {
 	AddValidateFunc("@crontab", ValidateCrontab)
 	AddValidateFunc("@crontabOrEmpty", ValidateCrontabOrEmpty)
 	AddValidateFunc("@bankCard", ValidateBankCard)
+	AddValidateFunc("@plateNo", ValidatePlateNo)
 }

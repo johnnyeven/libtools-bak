@@ -3,7 +3,7 @@
 *.swp
 .tmp
 *.out
-.idea/
+.idea
 
 libtools
 !tools/

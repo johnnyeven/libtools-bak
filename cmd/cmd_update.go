@@ -18,9 +18,7 @@ var cmdUpdate = &cobra.Command{
 		vendor, err := govendor.LoadGoVendorJSON("./vendor/vendor.json")
 		if err == nil {
 			importPathList := vendor.ListImportPath()
-			for _, importPath := range importPathList {
-				govendor.UpdatePkg(importPath)
-			}
+			govendor.UpdatePkgs(importPathList...)
 			if cmdUpdateFlagUpdate {
 				executil.StdRun(exec.Command("govendor", "update", "+v"))
 			}

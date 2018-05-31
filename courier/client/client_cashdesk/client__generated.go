@@ -11,6 +11,28 @@ import (
 	golib_tools_courier_client "golib/tools/courier/client"
 )
 
+type ClientCashdeskInterface interface {
+	CancelTrans(req CancelTransRequest) (resp *CancelTransResponse, err error)
+	CheckHealth() (resp *CheckHealthResponse, err error)
+	CreateTrans(req CreateTransRequest) (resp *CreateTransResponse, err error)
+	EBankPay(req EBankPayRequest) (resp *EBankPayResponse, err error)
+	GetAreaBankByBankCode(req GetAreaBankByBankCodeRequest) (resp *GetAreaBankByBankCodeResponse, err error)
+	GetAreaBankList(req GetAreaBankListRequest) (resp *GetAreaBankListResponse, err error)
+	GetAreaList(req GetAreaListRequest) (resp *GetAreaListResponse, err error)
+	GetBankByID(req GetBankByIDRequest) (resp *GetBankByIDResponse, err error)
+	GetBankList(req GetBankListRequest) (resp *GetBankListResponse, err error)
+	GetPabWhiteListTrans(req GetPabWhiteListTransRequest) (resp *GetPabWhiteListTransResponse, err error)
+	GetSign(req GetSignRequest) (resp *GetSignResponse, err error)
+	GetTransByOrderNo(req GetTransByOrderNoRequest) (resp *GetTransByOrderNoResponse, err error)
+	OldTransQuery(req OldTransQueryRequest) (resp *OldTransQueryResponse, err error)
+	PabPay(req PabPayRequest) (resp *PabPayResponse, err error)
+	PabQueryByCertificate(req PabQueryByCertificateRequest) (resp *PabQueryByCertificateResponse, err error)
+	PabQueryByUser(req PabQueryByUserRequest) (resp *PabQueryByUserResponse, err error)
+	TransListQuery(req TransListQueryRequest) (resp *TransListQueryResponse, err error)
+	UpdateTrans(req UpdateTransRequest) (resp *UpdateTransResponse, err error)
+	WithSwagger() (resp *WithSwaggerResponse, err error)
+}
+
 type ClientCashdesk struct {
 	golib_tools_courier_client.Client
 }
@@ -42,7 +64,7 @@ type CancelTransRequest struct {
 	// 外部用户id
 	UserID string `in:"path" name:"userID" validate:"@string[1,64]"`
 	//
-	Body CancelTransBody `default:"" in:"body" name:"body"`
+	Body CancelTransBody `in:"body" name:"body,omitempty"`
 }
 
 func (c ClientCashdesk) CancelTrans(req CancelTransRequest) (resp *CancelTransResponse, err error) {
@@ -62,6 +84,23 @@ type CancelTransResponse struct {
 	Body string
 }
 
+func (c ClientCashdesk) CheckHealth() (resp *CheckHealthResponse, err error) {
+	resp = &CheckHealthResponse{}
+	resp.Meta = golib_tools_courier.Metadata{}
+
+	err = c.Request(c.Name+".CheckHealth", "HEAD", "/cashdesk", nil).
+		Do().
+		BindMeta(resp.Meta).
+		Into(&resp.Body)
+
+	return
+}
+
+type CheckHealthResponse struct {
+	Meta golib_tools_courier.Metadata
+	Body string
+}
+
 type CreateTransRequest struct {
 	// 商户的access key
 	AccessKey string `in:"header" name:"AccessKey" validate:"@string[1,128]"`
@@ -70,7 +109,7 @@ type CreateTransRequest struct {
 	// 签名
 	Sign string `in:"query" name:"sign" validate:"@string[1,32]"`
 	//
-	Body CreateTransReqBody `default:"" in:"body" name:"body"`
+	Body CreateTransReqBody `in:"body" name:"body,omitempty"`
 }
 
 func (c ClientCashdesk) CreateTrans(req CreateTransRequest) (resp *CreateTransResponse, err error) {
@@ -94,7 +133,7 @@ type EBankPayRequest struct {
 	// 交易单号
 	TransID uint64 `in:"path" name:"transID" validate:"@uint64[0,]"`
 	//
-	Body EBankPayReqBody `default:"" in:"body" name:"body"`
+	Body EBankPayReqBody `in:"body" name:"body,omitempty"`
 }
 
 func (c ClientCashdesk) EBankPay(req EBankPayRequest) (resp *EBankPayResponse, err error) {
@@ -112,120 +151,6 @@ func (c ClientCashdesk) EBankPay(req EBankPayRequest) (resp *EBankPayResponse, e
 type EBankPayResponse struct {
 	Meta golib_tools_courier.Metadata
 	Body string
-}
-
-type FasptaySignVerifyRequest struct {
-	//
-	Body FastpaySignVerifyReqBody `default:"" in:"body" name:"body"`
-}
-
-func (c ClientCashdesk) FasptaySignVerify(req FasptaySignVerifyRequest) (resp *FasptaySignVerifyResponse, err error) {
-	resp = &FasptaySignVerifyResponse{}
-	resp.Meta = golib_tools_courier.Metadata{}
-
-	err = c.Request(c.Name+".FasptaySignVerify", "POST", "/cashdesk/v0/contract/fastpay/verify", req).
-		Do().
-		BindMeta(resp.Meta).
-		Into(&resp.Body)
-
-	return
-}
-
-type FasptaySignVerifyResponse struct {
-	Meta golib_tools_courier.Metadata
-	Body string
-}
-
-type FastpayMessageRequest struct {
-	// 交易号
-	TransID uint64 `default:"0" in:"path" name:"transID" validate:"@uint64[0,]"`
-	//
-	Body FastpayMessageReqBody `default:"" in:"body" name:"body"`
-}
-
-func (c ClientCashdesk) FastpayMessage(req FastpayMessageRequest) (resp *FastpayMessageResponse, err error) {
-	resp = &FastpayMessageResponse{}
-	resp.Meta = golib_tools_courier.Metadata{}
-
-	err = c.Request(c.Name+".FastpayMessage", "POST", "/cashdesk/v0/trans/:transID/fastpay/message", req).
-		Do().
-		BindMeta(resp.Meta).
-		Into(&resp.Body)
-
-	return
-}
-
-type FastpayMessageResponse struct {
-	Meta golib_tools_courier.Metadata
-	Body FastpayMessageRespBody
-}
-
-type FastpayResignMessageRequest struct {
-	//
-	Body FastpayResignMessageReqBody `default:"" in:"body" name:"body"`
-}
-
-func (c ClientCashdesk) FastpayResignMessage(req FastpayResignMessageRequest) (resp *FastpayResignMessageResponse, err error) {
-	resp = &FastpayResignMessageResponse{}
-	resp.Meta = golib_tools_courier.Metadata{}
-
-	err = c.Request(c.Name+".FastpayResignMessage", "POST", "/cashdesk/v0/contract/fastpay/remessage", req).
-		Do().
-		BindMeta(resp.Meta).
-		Into(&resp.Body)
-
-	return
-}
-
-type FastpayResignMessageResponse struct {
-	Meta golib_tools_courier.Metadata
-	Body string
-}
-
-type FastpaySignMessageRequest struct {
-	//
-	Body FastpaySignMessageReqBody `default:"" in:"body" name:"body"`
-}
-
-func (c ClientCashdesk) FastpaySignMessage(req FastpaySignMessageRequest) (resp *FastpaySignMessageResponse, err error) {
-	resp = &FastpaySignMessageResponse{}
-	resp.Meta = golib_tools_courier.Metadata{}
-
-	err = c.Request(c.Name+".FastpaySignMessage", "POST", "/cashdesk/v0/contract/fastpay/message", req).
-		Do().
-		BindMeta(resp.Meta).
-		Into(&resp.Body)
-
-	return
-}
-
-type FastpaySignMessageResponse struct {
-	Meta golib_tools_courier.Metadata
-	Body FastpaySignMessageRespBody
-}
-
-type FastpayVerifyRequest struct {
-	// 交易号
-	TransID uint64 `default:"0" in:"path" name:"transID" validate:"@uint64[0,]"`
-	//
-	Body FastpayVerifyReqBody `default:"" in:"body" name:"body"`
-}
-
-func (c ClientCashdesk) FastpayVerify(req FastpayVerifyRequest) (resp *FastpayVerifyResponse, err error) {
-	resp = &FastpayVerifyResponse{}
-	resp.Meta = golib_tools_courier.Metadata{}
-
-	err = c.Request(c.Name+".FastpayVerify", "POST", "/cashdesk/v0/trans/:transID/fastpay/verify", req).
-		Do().
-		BindMeta(resp.Meta).
-		Into(&resp.Body)
-
-	return
-}
-
-type FastpayVerifyResponse struct {
-	Meta golib_tools_courier.Metadata
-	Body FastpayVerifyRespBody
 }
 
 type GetAreaBankByBankCodeRequest struct {
@@ -276,11 +201,11 @@ type GetAreaBankListResponse struct {
 
 type GetAreaListRequest struct {
 	// 上级地区编码
-	ParentCode string `default:"" in:"query" name:"parentCode" validate:"@string[0,10]"`
+	ParentCode string `in:"query" name:"parentCode,omitempty" validate:"@string[0,10]"`
 	// 深度(需要往下几层)
-	Depth int32 `default:"1" in:"query" name:"depth" validate:"@int32[1,4]"`
+	Depth int32 `default:"1" in:"query" name:"depth,omitempty" validate:"@int32[1,4]"`
 	// 当前深度(上级地区编码处在第几层)
-	DepthNow int32 `default:"0" in:"query" name:"depthNow" validate:"@int32[0,4]"`
+	DepthNow int32 `default:"0" in:"query" name:"depthNow,omitempty" validate:"@int32[0,4]"`
 }
 
 func (c ClientCashdesk) GetAreaList(req GetAreaListRequest) (resp *GetAreaListResponse, err error) {
@@ -324,9 +249,9 @@ type GetBankByIDResponse struct {
 
 type GetBankListRequest struct {
 	// 是否支持银联鉴权
-	SupportUnionpayAuth golib_tools_courier_enumeration.Bool `default:"" in:"query" name:"supportUnionpayAuth" validate:"@string{,TRUE,FALSE}"`
+	SupportUnionpayAuth golib_tools_courier_enumeration.Bool `in:"query" name:"supportUnionpayAuth,omitempty" validate:"@string{,TRUE,FALSE}"`
 	// 是否有超级网银联行号
-	HaveSuperBankCode golib_tools_courier_enumeration.Bool `default:"" in:"query" name:"haveSuperBankCode" validate:"@string{,TRUE,FALSE}"`
+	HaveSuperBankCode golib_tools_courier_enumeration.Bool `in:"query" name:"haveSuperBankCode,omitempty" validate:"@string{,TRUE,FALSE}"`
 }
 
 func (c ClientCashdesk) GetBankList(req GetBankListRequest) (resp *GetBankListResponse, err error) {
@@ -348,21 +273,21 @@ type GetBankListResponse struct {
 
 type GetPabWhiteListTransRequest struct {
 	// 创建起始时间筛选 eg:2016-01-12T00:00:00Z
-	CreateStartDate golib_tools_timelib.MySQLTimestamp `default:"" in:"query" name:"createStartDate"`
+	CreateStartDate golib_tools_timelib.MySQLTimestamp `in:"query" name:"createStartDate,omitempty"`
 	// 创建结束时间筛选
-	CreateEndDate golib_tools_timelib.MySQLTimestamp `default:"" in:"query" name:"createEndDate"`
+	CreateEndDate golib_tools_timelib.MySQLTimestamp `in:"query" name:"createEndDate,omitempty"`
 	// 分页大小，默认为10，-1为查询所有
-	Size int32 `default:"10" in:"query" name:"size" validate:"@int32[-1,100]"`
+	Size int32 `default:"10" in:"query" name:"size,omitempty" validate:"@int32[-1,100]"`
 	// 分页偏移，默认为0
-	Offset int32 `default:"0" in:"query" name:"offset" validate:"@int32[0,]"`
+	Offset int32 `default:"0" in:"query" name:"offset,omitempty" validate:"@int32[0,]"`
 	// 买家账户ID
-	BuyerAccountID uint64 `default:"0" in:"query" name:"buyerAccountID" validate:"@uint64[0,]"`
+	BuyerAccountID uint64 `default:"0" in:"query" name:"buyerAccountID,omitempty" validate:"@uint64[0,]"`
 	// 卖家账户ID
-	SellerAccountID uint64 `default:"0" in:"query" name:"sellerAccountID" validate:"@uint64[0,]"`
+	SellerAccountID uint64 `default:"0" in:"query" name:"sellerAccountID,omitempty" validate:"@uint64[0,]"`
 	// 外部交易单号
-	TransIDExt string `default:"" in:"query" name:"transIDExt" validate:"@string[0,64]"`
+	TransIDExt string `in:"query" name:"transIDExt,omitempty" validate:"@string[0,64]"`
 	// 内部交易单号
-	TransID uint64 `default:"0" in:"path" name:"transID" validate:"@uint64[0,]"`
+	TransID uint64 `default:"0" in:"path" name:"transID,omitempty" validate:"@uint64[0,]"`
 }
 
 func (c ClientCashdesk) GetPabWhiteListTrans(req GetPabWhiteListTransRequest) (resp *GetPabWhiteListTransResponse, err error) {
@@ -388,7 +313,7 @@ type GetSignRequest struct {
 	// 签名算法
 	SignAlgorithm CashdeskSignAlgorithm `in:"query" name:"signAlgorithm"`
 	//
-	Body []KVPair `default:"" in:"body" name:"body"`
+	Body []KVPair `in:"body" name:"body,omitempty"`
 }
 
 func (c ClientCashdesk) GetSign(req GetSignRequest) (resp *GetSignResponse, err error) {
@@ -414,9 +339,9 @@ type GetTransByOrderNoRequest struct {
 	// 商户AccessKey
 	AccessKey string `in:"header" name:"accessKey" validate:"@string[1,128]"`
 	// 是否启用Mock(仅测试环境生效)
-	UseMock bool `default:"false" in:"query" name:"useMock"`
+	UseMock bool `default:"false" in:"query" name:"useMock,omitempty"`
 	// 模拟银行订单查询结果(仅UserMock为true生效)
-	MockState CashdeskPayState `default:"" in:"query" name:"mockState"`
+	MockState CashdeskPayState `in:"query" name:"mockState,omitempty"`
 }
 
 func (c ClientCashdesk) GetTransByOrderNo(req GetTransByOrderNoRequest) (resp *GetTransByOrderNoResponse, err error) {
@@ -442,11 +367,11 @@ type OldTransQueryRequest struct {
 	// 交易单id
 	TransID uint64 `in:"path" name:"transID" validate:"@uint64[1,]"`
 	// 是否启用Mock(仅测试环境生效)
-	UseMock bool `default:"false" in:"query" name:"useMock"`
+	UseMock bool `default:"false" in:"query" name:"useMock,omitempty"`
 	// 买家身份证(UseMock为true时有效)
-	BuyerID string `default:"" in:"query" name:"buyerID"`
+	BuyerID string `in:"query" name:"buyerID,omitempty"`
 	// 期望返回的支付状态(UseMock为true时有效)
-	PayStatus CashdeskPayState `default:"" in:"query" name:"payStatus"`
+	PayStatus CashdeskPayState `in:"query" name:"payStatus,omitempty"`
 }
 
 func (c ClientCashdesk) OldTransQuery(req OldTransQueryRequest) (resp *OldTransQueryResponse, err error) {
@@ -468,9 +393,9 @@ type OldTransQueryResponse struct {
 
 type PabPayRequest struct {
 	// 交易号
-	TransID uint64 `default:"0" in:"path" name:"transID" validate:"@uint64[1,]"`
+	TransID uint64 `default:"0" in:"path" name:"transID,omitempty" validate:"@uint64[1,]"`
 	//
-	Body PabPayReqBody `default:"" in:"body" name:"body"`
+	Body PabPayReqBody `in:"body" name:"body,omitempty"`
 }
 
 func (c ClientCashdesk) PabPay(req PabPayRequest) (resp *PabPayResponse, err error) {
@@ -536,68 +461,21 @@ type PabQueryByUserResponse struct {
 	Body PabLinkModel
 }
 
-type PayRouteRequest struct {
-	// 终端类型
-	PlatformType CashdeskPlatformType `in:"query" name:"platformType"`
-	// user-agent
-	UserAgent string `in:"header" name:"User-Agent"`
-	// 外部用户id
-	UserID string `in:"query" name:"userID" validate:"@string[1,64]"`
-	// 交易单id,若无,则为纯充值
-	TransID uint64 `default:"0" in:"query" name:"transID" validate:"@uint64[0,]"`
-	// 充值金额,若为0,则使用交易单金额
-	Amount int64 `default:"0" in:"query" name:"amount" validate:"@int64[0,9007199254740991]"`
-}
-
-func (c ClientCashdesk) PayRoute(req PayRouteRequest) (resp *PayRouteResponse, err error) {
-	resp = &PayRouteResponse{}
-	resp.Meta = golib_tools_courier.Metadata{}
-
-	err = c.Request(c.Name+".PayRoute", "GET", "/cashdesk/v0/route/pay", req).
-		Do().
-		BindMeta(resp.Meta).
-		Into(&resp.Body)
-
-	return
-}
-
-type PayRouteResponse struct {
-	Meta golib_tools_courier.Metadata
-	Body PayRouteRespBody
-}
-
-func (c ClientCashdesk) Swagger() (resp *SwaggerResponse, err error) {
-	resp = &SwaggerResponse{}
-	resp.Meta = golib_tools_courier.Metadata{}
-
-	err = c.Request(c.Name+".Swagger", "GET", "/cashdesk", nil).
-		Do().
-		BindMeta(resp.Meta).
-		Into(&resp.Body)
-
-	return
-}
-
-type SwaggerResponse struct {
-	Meta golib_tools_courier.Metadata
-	Body string
-}
-
 type TransListQueryRequest struct {
 	// 外部用户id
 	UserID string `in:"path" name:"userID" validate:"@string[1,64]"`
 	// 起始时间
-	StartTime golib_tools_timelib.MySQLTimestamp `default:"" in:"query" name:"startTime"`
+	StartTime golib_tools_timelib.MySQLTimestamp `in:"query" name:"startTime,omitempty"`
 	// 终止时间
-	EndTime golib_tools_timelib.MySQLTimestamp `default:"" in:"query" name:"endTime"`
+	EndTime golib_tools_timelib.MySQLTimestamp `in:"query" name:"endTime,omitempty"`
 	// 交易状态
-	TransState CashdeskTransState `default:"" in:"query" name:"transState"`
+	TransState CashdeskTransState `in:"query" name:"transState,omitempty"`
 	// 交易类型
-	TransType CashdeskTransType `default:"" in:"query" name:"transType"`
+	TransType CashdeskTransType `in:"query" name:"transType,omitempty"`
 	// 偏移,默认为0
-	Offset int32 `default:"0" in:"query" name:"offset" validate:"@int32[0,]"`
+	Offset int32 `default:"0" in:"query" name:"offset,omitempty" validate:"@int32[0,]"`
 	// 查询数量
-	Size int32 `default:"10" in:"query" name:"size" validate:"@int32[1,50]"`
+	Size int32 `default:"10" in:"query" name:"size,omitempty" validate:"@int32[1,50]"`
 }
 
 func (c ClientCashdesk) TransListQuery(req TransListQueryRequest) (resp *TransListQueryResponse, err error) {
@@ -617,28 +495,6 @@ type TransListQueryResponse struct {
 	Body QueryTransResponseBody
 }
 
-type UnbindFastpayRequest struct {
-	//
-	Body UnbindFastpayReqBody `default:"" in:"body" name:"body"`
-}
-
-func (c ClientCashdesk) UnbindFastpay(req UnbindFastpayRequest) (resp *UnbindFastpayResponse, err error) {
-	resp = &UnbindFastpayResponse{}
-	resp.Meta = golib_tools_courier.Metadata{}
-
-	err = c.Request(c.Name+".UnbindFastpay", "DELETE", "/cashdesk/v0/contract/fastpay", req).
-		Do().
-		BindMeta(resp.Meta).
-		Into(&resp.Body)
-
-	return
-}
-
-type UnbindFastpayResponse struct {
-	Meta golib_tools_courier.Metadata
-	Body string
-}
-
 type UpdateTransRequest struct {
 	// 交易单号
 	TransID uint64 `in:"path" name:"transID" validate:"@uint64[1,]"`
@@ -647,13 +503,13 @@ type UpdateTransRequest struct {
 	// 签名算法
 	SignAlgorithm CashdeskSignAlgorithm `in:"query" name:"signAlgorithm"`
 	// 是否启用Mock(仅测试环境生效)
-	UseMock bool `default:"false" in:"query" name:"useMock"`
+	UseMock bool `default:"false" in:"query" name:"useMock,omitempty"`
 	// 模拟银行订单查询结果(仅UserMock为true生效)
-	MockState CashdeskPayState `default:"" in:"query" name:"mockState"`
+	MockState CashdeskPayState `in:"query" name:"mockState,omitempty"`
 	// 签名
 	Sign string `in:"query" name:"sign" validate:"@string[1,32]"`
 	//
-	Body UpdateTransReqBody `default:"" in:"body" name:"body"`
+	Body UpdateTransReqBody `in:"body" name:"body,omitempty"`
 }
 
 func (c ClientCashdesk) UpdateTrans(req UpdateTransRequest) (resp *UpdateTransResponse, err error) {
@@ -673,16 +529,11 @@ type UpdateTransResponse struct {
 	Body string
 }
 
-type UserCardQueryRequest struct {
-	// 外部用户id
-	UserID string `in:"path" name:"userID" validate:"@string[1,64]"`
-}
-
-func (c ClientCashdesk) UserCardQuery(req UserCardQueryRequest) (resp *UserCardQueryResponse, err error) {
-	resp = &UserCardQueryResponse{}
+func (c ClientCashdesk) WithSwagger() (resp *WithSwaggerResponse, err error) {
+	resp = &WithSwaggerResponse{}
 	resp.Meta = golib_tools_courier.Metadata{}
 
-	err = c.Request(c.Name+".UserCardQuery", "GET", "/cashdesk/v0/user/:userID/card", req).
+	err = c.Request(c.Name+".WithSwagger", "GET", "/cashdesk", nil).
 		Do().
 		BindMeta(resp.Meta).
 		Into(&resp.Body)
@@ -690,7 +541,7 @@ func (c ClientCashdesk) UserCardQuery(req UserCardQueryRequest) (resp *UserCardQ
 	return
 }
 
-type UserCardQueryResponse struct {
+type WithSwaggerResponse struct {
 	Meta golib_tools_courier.Metadata
-	Body UserCardQueryRespBody
+	Body string
 }

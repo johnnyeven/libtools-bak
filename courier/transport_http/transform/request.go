@@ -13,15 +13,16 @@ import (
 	"strings"
 	"time"
 
+	"golib/tools/courier"
 	"golib/tools/courier/httpx"
 	"golib/tools/courier/status_error"
 )
 
-func NewRequest(method string, uri string, v interface{}) (*http.Request, error) {
+func NewRequest(method string, uri string, v interface{}, metadatas ...courier.Metadata) (*http.Request, error) {
 	if v == nil {
-		return NewHttpRequestFromParameterGroup(method, uri, nil)
+		return NewHttpRequestFromParameterGroup(method, uri, nil, metadatas...)
 	}
-	return NewHttpRequestFromParameterGroup(method, uri, ParameterGroupFromValue(v))
+	return NewHttpRequestFromParameterGroup(method, uri, ParameterGroupFromValue(v), metadatas...)
 }
 
 func CloneRequestBody(req *http.Request) ([]byte, error) {
@@ -34,7 +35,7 @@ func CloneRequestBody(req *http.Request) ([]byte, error) {
 	return bodyBytes, nil
 }
 
-func NewHttpRequestFromParameterGroup(method string, uri string, m *ParameterGroup) (req *http.Request, err error) {
+func NewHttpRequestFromParameterGroup(method string, uri string, m *ParameterGroup, metadatas ...courier.Metadata) (req *http.Request, err error) {
 	body := &bytes.Buffer{}
 	multipartWriter := (*multipart.Writer)(nil)
 
@@ -125,6 +126,14 @@ func NewHttpRequestFromParameterGroup(method string, uri string, m *ParameterGro
 	}
 
 	req.Close = true
+
+	if metadatas != nil {
+		for key, values := range courier.MetadataMerge(metadatas...) {
+			for _, v := range values {
+				req.Header.Add(key, v)
+			}
+		}
+	}
 
 	if m == nil {
 		return

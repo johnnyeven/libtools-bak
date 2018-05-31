@@ -6,6 +6,8 @@ import (
 	"strconv"
 	"testing"
 
+	"golib/tools/timelib"
+
 	"github.com/stretchr/testify/assert"
 
 	"golib/tools/ptr"
@@ -48,11 +50,19 @@ func (g *Gender) UnmarshalJSON(data []byte) error {
 func TestScanner(t *testing.T) {
 	tt := assert.New(t)
 
+	type Sub struct {
+		Name string `json:"name,omitempty"`
+	}
+
 	type TestModel struct {
-		Gender         Gender   `json:"gender" default:""`
-		String         *string  `json:"string" default:""`
-		Slice          []string `json:"slice"`
-		RequiredString *string  `json:"requiredString"`
+		Gender              Gender   `json:"gender" default:""`
+		Slice               []string `json:"slice"`
+		PtrString           *string  `json:"ptrString" default:""`
+		PtrStringUseInput   *string  `json:"ptrStringUseInput" default:"2"`
+		PtrStringUseDefault *string  `json:"ptrStringUseDefault" default:"2"`
+		RequiredString      *string  `json:"requiredString"`
+		Struct              Sub      `json:"struct"`
+		PtrStruct           *Sub     `json:"ptrStruct,omitempty"`
 	}
 
 	cases := []struct {
@@ -66,10 +76,13 @@ func TestScanner(t *testing.T) {
 			desc:  "normal",
 			valid: true,
 			model: TestModel{
-				RequiredString: ptr.String(""),
+				PtrStringUseInput: ptr.String(""),
+				RequiredString:    ptr.String(""),
 			},
 			finalModel: TestModel{
-				RequiredString: ptr.String(""),
+				PtrStringUseInput:   ptr.String(""),
+				PtrStringUseDefault: ptr.String("2"),
+				RequiredString:      ptr.String(""),
 			},
 		},
 	}
@@ -97,11 +110,12 @@ type TestSubModel2 struct {
 
 type TestModel2 struct {
 	a        string
-	Gender   Gender        `json:"gender" default:"trans"`
-	SliceLen []string      `json:"slice_len" validate:"@array[1,]"`
-	Slice    []string      `json:"slice" validate:"@array[1,]:@string[1,]"`
-	Hook     string        `json:"hook"`
-	Object   TestSubModel1 `json:"object"`
+	Gender   Gender                 `json:"gender" default:"trans"`
+	SliceLen []string               `json:"slice_len" validate:"@array[1,]"`
+	Slice    []string               `json:"slice" validate:"@array[1,]:@string[1,]"`
+	Hook     string                 `json:"hook"`
+	Object   TestSubModel1          `json:"object"`
+	Time     timelib.MySQLTimestamp `json:"time"`
 }
 
 func (v TestModel2) ValidateHook() string {
@@ -146,6 +160,7 @@ func TestScannerWithValidateErrors(t *testing.T) {
 				"slice_len":              "切片元素个数不在[1， 0]范围内，当前个数：0",
 				"slice":                  "切片元素不满足校验[字符串长度不在[1， 1024]范围内，当前长度：0]",
 				"hook":                   "hook failed",
+				"time":                   "缺失必填字段",
 				"object.string":          "字符串长度不在[1， 1024]范围内，当前长度：0",
 				"object.slice[0].string": "字符串长度不在[1， 1024]范围内，当前长度：0",
 			},
@@ -231,10 +246,15 @@ func TestMarshalAndValidate(t *testing.T) {
 				needToSetDefault: true,
 			},
 			{
-				desc:             "empty string should set default",
-				V:                ptr.String(""),
+				desc:             "nil string should set default",
 				defaultValue:     "1",
 				needToSetDefault: true,
+			},
+			{
+				desc:             "ptr string should key value",
+				V:                ptr.String(""),
+				defaultValue:     "1",
+				needToSetDefault: false,
 			},
 		}
 

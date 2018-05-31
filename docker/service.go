@@ -3,6 +3,8 @@ package docker
 import (
 	"fmt"
 	"strings"
+
+	"golib/tools/ptr"
 )
 
 func NewService(image string) *Service {
@@ -11,8 +13,8 @@ func NewService(image string) *Service {
 
 type Service struct {
 	Image          Image             `yaml:"image"`
-	EntryPoint     StringMayArray    `yaml:"entrypoint,omitempty"`
-	Command        StringMayArray    `yaml:"command,omitempty"`
+	EntryPoint     MaybeListString   `yaml:"entrypoint,omitempty"`
+	Command        MaybeListString   `yaml:"command,omitempty"`
 	Labels         map[string]string `yaml:"labels,omitempty"`
 	Environment    map[string]string `yaml:"environment,omitempty"`
 	Ports          []Port            `yaml:"ports,omitempty"`
@@ -23,10 +25,66 @@ type Service struct {
 	WorkingDir     string            `yaml:"working_dir,omitempty"`
 	DnsSearch      []string          `yaml:"dns_search,omitempty"`
 	Dns            []string          `yaml:"dns,omitempty"`
-	TTY            bool              `yaml:"tty,omitempty"`
-	MemLimit       int64             `yaml:"mem_limit,omitempty"`
-	MemSwapLimit   int64             `yaml:"memswap_limit,omitempty"`
-	MemReservation int64             `yaml:"mem_reservation,omitempty"`
+	TTY            *bool             `yaml:"tty,omitempty"`
+	MemLimit       *int64            `yaml:"mem_limit,omitempty"`
+	MemSwapLimit   *int64            `yaml:"memswap_limit,omitempty"`
+	MemReservation *int64            `yaml:"mem_reservation,omitempty"`
+}
+
+func (service Service) Merge(nextService *Service) *Service {
+	if !nextService.Image.IsZero() {
+		service.Image = nextService.Image
+	}
+
+	if !nextService.Command.IsZero() {
+		service.Command = nextService.Command
+	}
+
+	if service.Labels == nil {
+		service.Labels = nextService.Labels
+	} else {
+		for key, value := range nextService.Labels {
+			service.Labels[key] = value
+		}
+	}
+
+	if service.Environment == nil {
+		service.Environment = nextService.Environment
+	} else {
+		for key, value := range nextService.Environment {
+			service.Environment[key] = value
+		}
+	}
+
+	service.Ports = append(service.Ports, nextService.Ports...)
+	service.Volumes = append(service.Volumes, nextService.Volumes...)
+	service.VolumesFrom = append(service.VolumesFrom, nextService.VolumesFrom...)
+
+	if nextService.WorkingDir != "" {
+		service.WorkingDir = nextService.WorkingDir
+	}
+
+	if len(nextService.Dns) > 0 {
+		service.Dns = nextService.Dns
+	}
+
+	if len(nextService.DnsSearch) > 0 {
+		service.DnsSearch = nextService.DnsSearch
+	}
+
+	if nextService.TTY != nil {
+		service.TTY = nextService.TTY
+	}
+
+	if nextService.MemLimit != nil {
+		service.MemLimit = nextService.MemLimit
+	}
+
+	if nextService.MemLimit != nil {
+		service.MemLimit = nextService.MemLimit
+	}
+
+	return &service
 }
 
 func (service Service) addPort(port int16, containerPort int16, protocol Protocol) *Service {
@@ -62,7 +120,7 @@ func (service Service) WithImage(image string) *Service {
 }
 
 func (service Service) EnableTTY() *Service {
-	service.TTY = true
+	service.TTY = ptr.Bool(true)
 	return &service
 }
 
@@ -99,7 +157,7 @@ func (service Service) AddUDPPort(port int16, containerPort int16) *Service {
 }
 
 func (service Service) SetCommand(commands ...string) *Service {
-	service.Command = FromStringList(commands...)
+	service.Command = MaybeListStringFromStringList(commands...)
 	return &service
 }
 

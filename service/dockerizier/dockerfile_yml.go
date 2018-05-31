@@ -31,7 +31,7 @@ func toDockerFileYML(envVars conf.EnvVars, serviceName string) string {
 	}
 
 	d = d.WithWorkDir("/go/bin")
-	d = d.WithCmd("./"+serviceName, "-c", "false")
+	d = d.WithCmd("./"+serviceName, "-c=false")
 	d = d.WithExpose("80")
 
 	d = d.AddContent("./config", "./config")

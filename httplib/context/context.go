@@ -8,7 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"golib/json"
+	"encoding/json"
 )
 
 func GetTestContextBody(c *gin.Context) []byte {

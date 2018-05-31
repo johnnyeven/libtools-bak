@@ -10,6 +10,10 @@ type Image struct {
 	Version string
 }
 
+func (image Image) IsZero() bool {
+	return image.Name == ""
+}
+
 func ParseImageString(s string) (*Image, error) {
 	i := Image{}
 	nameAndVersion := strings.Split(s, ":")

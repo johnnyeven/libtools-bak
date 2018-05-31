@@ -12,6 +12,7 @@ import (
 	"golib/tools/service/dockerizier"
 )
 
+// @deprecated
 func New(serviceName string) *Service {
 	serve := Service{Name: serviceName}
 	return &serve
@@ -40,7 +41,7 @@ func (s *Service) ConfP(c interface{}) {
 }
 
 func (s *Service) Execute() {
-	if projectFeature, exists := os.LookupEnv("PROJECT_FEATURE"); exists {
+	if projectFeature, exists := os.LookupEnv("PROJECT_FEATURE"); exists && projectFeature != "" {
 		s.Name = s.Name + "--" + projectFeature
 	}
 

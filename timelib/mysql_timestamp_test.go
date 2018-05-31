@@ -15,6 +15,9 @@ func TestTimestamp(t *testing.T) {
 	tt.Equal("2017-03-27T23:58:59+08:00", dt.String())
 	tt.Equal("2017-03-27T23:58:59+08:00", dt.Format(time.RFC3339))
 	tt.Equal(int64(1490630339), dt.Unix())
+	tt.Equal(MySQLTimestampUnixZero.Unix(), int64(0))
+	tt.Equal(MySQLTimestampUnixZero.IsZero(), true)
+	tt.Equal("1970-01-01T08:00:00+08:00", MySQLTimestampUnixZero.String())
 
 	{
 		dateString, err := dt.MarshalText()
@@ -43,6 +46,11 @@ func TestTimestamp(t *testing.T) {
 	{
 		dt3 := MySQLTimestampZero
 		err := dt3.UnmarshalText([]byte("\"\""))
+		tt.NoError(err)
+	}
+	{
+		dt3 := MySQLTimestampZero
+		err := dt3.UnmarshalText([]byte("0"))
 		tt.NoError(err)
 	}
 }

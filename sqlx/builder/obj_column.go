@@ -67,7 +67,7 @@ func (cols *Columns) Fields(fieldNames ...string) (columns *Columns) {
 }
 
 func (cols *Columns) FieldNames() []string {
-	fieldNames := []string{}
+	fieldNames := make([]string, 0)
 	cols.Range(func(col *Column, idx int) {
 		fieldNames = append(fieldNames, col.FieldName)
 	})
@@ -230,6 +230,12 @@ func (c Column) Type(tpe string) *Column {
 		panic(fmt.Errorf("%s %s", c.Name, err))
 	}
 	c.ColumnType = *columnType
+	return &c
+}
+
+func (c Column) Enum(enumType string, enums map[int][]string) *Column {
+	c.ColumnType.EnumType = enumType
+	c.ColumnType.Enums = enums
 	return &c
 }
 

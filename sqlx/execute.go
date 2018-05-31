@@ -16,12 +16,12 @@ func Do(db *DB, stmt builder.Statement) (result *Result) {
 
 	e := stmt.Expr()
 	if e == nil {
-		result.err = ErrSqlInvalid
+		result.err = NewSqlError(sqlErrTypeInvalidSql, "")
 		return
 	}
 	if e.Err != nil {
-		logrus.Errorf("%s", e.Err)
-		result.err = ErrSqlInvalid
+		result.err = NewSqlError(sqlErrTypeInvalidSql, e.Err.Error())
+		logrus.Errorf("%s", result.err)
 		return
 	}
 
@@ -39,7 +39,7 @@ func Do(db *DB, stmt builder.Statement) (result *Result) {
 		sqlResult, execErr := db.Exec(e.Query, e.Args...)
 		if execErr != nil {
 			if mysqlErr, ok := execErr.(*mysql.MySQLError); ok && mysqlErr.Number == DuplicateEntryErrNumber {
-				result.err = ErrConflict
+				result.err = NewSqlError(sqlErrTypeConflict, mysqlErr.Error())
 			} else {
 				result.err = execErr
 			}
@@ -76,89 +76,98 @@ func (r *Result) Scan(v interface{}) *Result {
 	if r.Rows != nil {
 		defer r.Rows.Close()
 
-		modelType := reflect.TypeOf(v)
-		if modelType.Kind() != reflect.Ptr {
-			r.err = ErrInvalidScanTarget
-			return r
-		}
-
-		modelType = modelType.Elem()
-
-		isSlice := false
-		if modelType.Kind() == reflect.Slice {
-			modelType = modelType.Elem()
-			isSlice = true
-		}
-
-		if modelType.Kind() == reflect.Struct || isSlice {
-			columns, getErr := r.Rows.Columns()
-			if getErr != nil {
-				r.err = getErr
-				return r
-			}
-
-			rv := reflect.Indirect(reflect.ValueOf(v))
-
-			rowLength := 0
-
+		if scanner, ok := v.(sql.Scanner); ok {
 			for r.Rows.Next() {
-				if !isSlice && rowLength > 1 {
-					r.err = ErrSelectShouldOne
-					return r
-				}
-
-				rowLength++
-				length := len(columns)
-				dest := make([]interface{}, length)
-				itemRv := rv
-
-				if isSlice {
-					itemRv = reflect.New(modelType).Elem()
-				}
-
-				destIndexes := make(map[int]bool, length)
-
-				ForEachStructFieldValue(itemRv, func(structFieldValue reflect.Value, structField reflect.StructField, columnName string) {
-					idx := stringIndexOf(columns, columnName)
-					if idx >= 0 {
-						dest[idx] = structFieldValue.Addr().Interface()
-						destIndexes[idx] = true
-					}
-				})
-
-				for index := range dest {
-					if !destIndexes[index] {
-						placeholder := emptyScanner(0)
-						dest[index] = &placeholder
-					} else {
-						// todo null ignore
-						dest[index] = newNullableScanner(dest[index])
-					}
-				}
-
-				if scanErr := r.Rows.Scan(dest...); scanErr != nil {
+				if scanErr := r.Rows.Scan(scanner); scanErr != nil {
 					r.err = scanErr
 					return r
 				}
-
-				if isSlice {
-					rv.Set(reflect.Append(rv, itemRv))
-				}
-			}
-
-			if !isSlice && rowLength == 0 {
-				r.err = ErrNotFound
-				return r
 			}
 		} else {
-			for r.Rows.Next() {
-				if scanErr := r.Rows.Scan(v); scanErr != nil {
-					r.err = scanErr
+
+			modelType := reflect.TypeOf(v)
+			if modelType.Kind() != reflect.Ptr {
+				r.err = NewSqlError(sqlErrTypeInvalidScanTarget, "can not scan to a none pointer variable")
+				return r
+			}
+
+			modelType = modelType.Elem()
+
+			isSlice := false
+			if modelType.Kind() == reflect.Slice {
+				modelType = modelType.Elem()
+				isSlice = true
+			}
+
+			if modelType.Kind() == reflect.Struct || isSlice {
+				columns, getErr := r.Rows.Columns()
+				if getErr != nil {
+					r.err = getErr
 					return r
+				}
+
+				rv := reflect.Indirect(reflect.ValueOf(v))
+
+				rowLength := 0
+
+				for r.Rows.Next() {
+					if !isSlice && rowLength > 1 {
+						r.err = NewSqlError(sqlErrTypeSelectShouldOne, "more than one records found, but only one")
+						return r
+					}
+
+					rowLength++
+					length := len(columns)
+					dest := make([]interface{}, length)
+					itemRv := rv
+
+					if isSlice {
+						itemRv = reflect.New(modelType).Elem()
+					}
+
+					destIndexes := make(map[int]bool, length)
+
+					ForEachStructFieldValue(itemRv, func(structFieldValue reflect.Value, structField reflect.StructField, columnName string) {
+						idx := stringIndexOf(columns, columnName)
+						if idx >= 0 {
+							dest[idx] = structFieldValue.Addr().Interface()
+							destIndexes[idx] = true
+						}
+					})
+
+					for index := range dest {
+						if !destIndexes[index] {
+							placeholder := emptyScanner(0)
+							dest[index] = &placeholder
+						} else {
+							// todo null ignore
+							dest[index] = newNullableScanner(dest[index])
+						}
+					}
+
+					if scanErr := r.Rows.Scan(dest...); scanErr != nil {
+						r.err = scanErr
+						return r
+					}
+
+					if isSlice {
+						rv.Set(reflect.Append(rv, itemRv))
+					}
+				}
+
+				if !isSlice && rowLength == 0 {
+					r.err = NewSqlError(sqlErrTypeNotFound, "record is not found")
+					return r
+				}
+			} else {
+				for r.Rows.Next() {
+					if scanErr := r.Rows.Scan(v); scanErr != nil {
+						r.err = scanErr
+						return r
+					}
 				}
 			}
 		}
-
 		if err := r.Rows.Err(); err != nil {
 			r.err = err
 			return r

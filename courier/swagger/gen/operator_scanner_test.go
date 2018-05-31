@@ -38,7 +38,7 @@ func TestOperatorScanner(t *testing.T) {
 	type Op struct {
 		With
 		Param string  ^^name:"param" in:"path"^^
-		Status Status  ^^name:"status" in:"query" validate:"@string{A}"^^
+		Status Status  ^^name:"status,omitempty" in:"query" validate:"@string{A}"^^
 		FormData struct {
 			Name string ^^name:"status"^^
 		}  ^^in:"formData"^^
@@ -91,9 +91,8 @@ func TestOperatorScanner(t *testing.T) {
 			},
 		},
 		"status": {
-			"name":     "status",
-			"in":       "query",
-			"required": true,
+			"name": "status",
+			"in":   "query",
 			"schema": map[string]interface{}{
 				"allOf": []map[string]interface{}{
 					{

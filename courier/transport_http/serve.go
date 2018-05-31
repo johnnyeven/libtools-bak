@@ -1,9 +1,11 @@
 package transport_http
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"os"
+	"os/signal"
 	"reflect"
 	"regexp"
 	"sort"
@@ -69,6 +71,17 @@ func (s *ServeHTTP) Serve(router *courier.Router) error {
 		WriteTimeout: s.WriteTimeout,
 		ReadTimeout:  s.ReadTimeout,
 	}
+
+	idleConnsClosed := make(chan struct{})
+	go func() {
+		sigint := make(chan os.Signal, 1)
+		signal.Notify(sigint, os.Interrupt)
+		<-sigint
+		if err := srv.Shutdown(context.Background()); err != nil {
+			fmt.Printf("HTTP server Shutdown: %v", err)
+		}
+		close(idleConnsClosed)
+	}()
 
 	fmt.Printf("[Courier] listen on %s\n", srv.Addr)
 	return srv.ListenAndServe()

@@ -10,7 +10,8 @@ import (
 )
 
 var (
-	MySQLTimestampZero = MySQLTimestamp(time.Time{})
+	MySQLTimestampZero     = MySQLTimestamp(time.Time{})
+	MySQLTimestampUnixZero = MySQLTimestamp(time.Unix(0, 0))
 )
 
 // swagger:strfmt date-time
@@ -82,8 +83,7 @@ func (dt *MySQLTimestamp) UnmarshalText(data []byte) (err error) {
 			str = str[1 : len(str)-1]
 		}
 	}
-
-	if len(str) == 0 {
+	if len(str) == 0 || str == "0" {
 		str = MySQLDatetimeZero.String()
 	}
 	*dt, err = ParseMySQLTimestampFromString(str)
@@ -95,7 +95,8 @@ func (dt MySQLTimestamp) Unix() int64 {
 }
 
 func (dt MySQLTimestamp) IsZero() bool {
-	return dt.Unix() == MySQLTimestampZero.Unix()
+	unix := dt.Unix()
+	return unix == 0 || unix == MySQLTimestampZero.Unix()
 }
 
 func (dt MySQLTimestamp) In(loc *time.Location) MySQLTimestamp {

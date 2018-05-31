@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/garyburd/redigo/redis"
+	"github.com/gomodule/redigo/redis"
 	"github.com/sirupsen/logrus"
 )
 
@@ -155,11 +155,25 @@ func (cache *RedisCache) MGetValue(keys []interface{}) ([]interface{}, error) {
 	defer conn.Close()
 	return redis.Values(RedisDo(conn)("MGET", keys...))
 }
+
 func (cache *RedisCache) HSet(key, field string, value interface{}) (interface{}, error) {
 	conn := cache.Pool.Get()
 	defer conn.Close()
 	return RedisDo(conn)("HSET", key, field, value)
 }
+
+func (cache *RedisCache) HSetWithExpire(key string, timeout time.Duration) (interface{}, error) {
+	conn := cache.Pool.Get()
+	defer conn.Close()
+
+	reply, err := RedisDo(conn)("HSET", key, nil, nil)
+	if err != nil {
+		return reply, err
+	}
+
+	return RedisDo(conn)("EXPIRE", key, formatSec(timeout))
+}
+
 func (cache *RedisCache) HMset(value []interface{}) (interface{}, error) {
 	conn := cache.Pool.Get()
 	defer conn.Close()

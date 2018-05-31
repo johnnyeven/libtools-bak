@@ -1,7 +1,7 @@
 package validatetpl
 
 import (
-	"github.com/robfig/cron"
+	"gopkg.in/robfig/cron.v2"
 )
 
 const (

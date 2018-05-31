@@ -4,6 +4,8 @@ import (
 	"reflect"
 	"testing"
 
+	"golib/tools/ptr"
+
 	"github.com/stretchr/testify/assert"
 
 	"golib/tools/conf/presets"
@@ -26,14 +28,18 @@ func TestEnvVar(t *testing.T) {
 	tt := assert.New(t)
 
 	c := struct {
-		Array    []string
-		Password presets.Password `conf:"env"`
+		Array     []string
+		Password  presets.Password `conf:"env"`
+		PtrString *string          `conf:"env"`
+		Host      string           `validate:"@hostname"`
 		SubConfig
 	}{}
 
 	c.Password = "123456"
 	c.Key = "123456"
+	c.PtrString = ptr.String("123456")
 	c.Array = []string{"1", "2"}
+	c.Password = "host/"
 
 	rv := reflect.Indirect(reflect.ValueOf(c))
 

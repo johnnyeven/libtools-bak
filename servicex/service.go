@@ -17,9 +17,11 @@ var (
 )
 
 func init() {
-	if projectFeature, exists := os.LookupEnv(EnvVarKeyProjectFeature); exists {
+	if projectFeature, exists := os.LookupEnv(EnvVarKeyProjectFeature); exists && projectFeature != "" {
 		SetServiceName(ServiceName + "--" + projectFeature)
 	}
+
+	command.AddCommand(run)
 
 	command.PersistentFlags().
 		StringVarP(&envConfigPrefix, "env-config-prefix", "e", "S", "prefix for env var config")
@@ -35,6 +37,14 @@ var command = &cobra.Command{
 	},
 }
 
+var run = &cobra.Command{
+	Use: "run",
+	Run: func(cmd *cobra.Command, args []string) {
+		Args = args
+	},
+}
+
+var Args []string
 var ServiceName string
 var AutoMigrate bool
 
@@ -52,6 +62,7 @@ func ConfP(c interface{}) {
 	if tpe.Kind() != reflect.Ptr {
 		panic(fmt.Errorf("ConfP pass ptr for setting value"))
 	}
+
 	os.Setenv(EnvVarKeyProjectName, ServiceName)
 
 	envVars = conf.UnmarshalConf(c, envConfigPrefix)

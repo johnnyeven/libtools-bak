@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"golib/json"
+	"encoding/json"
 )
 
 type Uint64List []uint64

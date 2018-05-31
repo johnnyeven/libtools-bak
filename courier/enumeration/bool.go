@@ -25,6 +25,13 @@ func (v Bool) True() bool {
 	return v == BOOL__TRUE
 }
 
+func (Bool) Enums() map[int][]string {
+	return map[int][]string{
+		int(BOOL__TRUE):  {"TRUE", "true"},
+		int(BOOL__FALSE): {"FALSE", "false"},
+	}
+}
+
 func BoolFromBool(b bool) Bool {
 	if b {
 		return BOOL__TRUE

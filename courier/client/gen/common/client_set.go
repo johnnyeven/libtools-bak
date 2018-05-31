@@ -36,8 +36,44 @@ func (c *ClientSet) AddOp(op Op) {
 }
 
 func (c *ClientSet) WriteAll(w io.Writer) {
+	c.WriteTypeInterface(w)
 	c.WriteTypeClient(w)
 	c.WriteOperations(w)
+}
+func (c *ClientSet) WriteTypeInterface(w io.Writer) {
+	keys := make([]string, 0)
+	for key := range c.Ops {
+		if key == "Swagger" {
+			continue
+		}
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+
+	io.WriteString(w, `type `+c.ClientName+`Interface interface {
+`)
+
+	for _, key := range keys {
+		op := c.Ops[key]
+
+		reqVar := ""
+		reqType := ""
+		reqTypeInParams := ""
+
+		if op.HasRequest() {
+			reqVar = "req"
+			reqType = RequestOf(op.ID())
+			reqTypeInParams = reqType + ", "
+		}
+
+		interfaceMethod := op.ID() + `(` + reqVar + ` ` + reqTypeInParams + `metas... ` + c.Importer.Use("golib/tools/courier.Metadata") + `) (resp *` + ResponseOf(op.ID()) + `, err error)
+`
+
+		io.WriteString(w, interfaceMethod)
+	}
+
+	io.WriteString(w, `}
+`)
 }
 
 func (c *ClientSet) WriteOperations(w io.Writer) {
@@ -52,24 +88,28 @@ func (c *ClientSet) WriteOperations(w io.Writer) {
 
 		reqVar := ""
 		reqType := ""
+		reqTypeInParams := ""
 		reqVarInUse := "nil"
 
 		if op.HasRequest() {
 			reqVar = "req"
 			reqVarInUse = reqVar
 			reqType = RequestOf(op.ID())
+			reqTypeInParams = reqType + ", "
 
 			io.WriteString(w, `
 type `+reqType+" ")
 			op.WriteReqType(w, c.Importer)
 		}
 
+		interfaceMethod := op.ID() + `(` + reqVar + ` ` + reqTypeInParams + `metas... ` + c.Importer.Use("golib/tools/courier.Metadata") + `) (resp *` + ResponseOf(op.ID()) + `, err error)`
+
 		io.WriteString(w, `
-func (c `+c.ClientName+`) `+op.ID()+`(`+reqVar+` `+reqType+`) (resp *`+ResponseOf(op.ID())+`, err error) {
+func (c `+c.ClientName+`) `+interfaceMethod+` {
 	resp = &`+ResponseOf(op.ID())+`{}
 	resp.Meta = `+c.Importer.Use("golib/tools/courier.Metadata")+`{}
 
-	err = c.Request(c.Name + ".`+op.ID()+`", "`+op.Method()+`", "`+op.Path()+`", `+reqVarInUse+`).
+	err = c.Request(c.Name + ".`+op.ID()+`", "`+op.Method()+`", "`+op.Path()+`", `+reqVarInUse+`, metas...).
 		Do().
 		BindMeta(resp.Meta).
 		Into(&resp.Body)

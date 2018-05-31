@@ -115,6 +115,9 @@ type ColumnType struct {
 	Zerofill bool
 	NotNull  bool
 
+	EnumType string
+	Enums    map[int][]string
+
 	HasDefault bool
 	Default    string
 
@@ -123,6 +126,10 @@ type ColumnType struct {
 	OnUpdateByCurrentTimestamp bool
 
 	Comment string
+}
+
+func (columnType ColumnType) IsEnum() bool {
+	return columnType.EnumType != "" && len(columnType.Enums) > 0
 }
 
 func (columnType ColumnType) DeAlias() *ColumnType {

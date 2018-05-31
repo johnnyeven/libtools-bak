@@ -51,19 +51,28 @@ func ToEnums(serviceName string, pkgName string) string {
 	buf := &bytes.Buffer{}
 	imports := &bytes.Buffer{}
 
-	for name, enum := range serviceEnumMap[serviceName] {
+	names := make([]string, 0)
+
+	for name := range serviceEnumMap[serviceName] {
+		names = append(names, name)
+	}
+
+	sort.Strings(names)
+
+	for _, name := range names {
 		if name == "Bool" {
 			continue
 		}
-
+		enum := serviceEnumMap[serviceName][name]
 		buf.Write(ToEnumDefines(name, enum))
 	}
 
-	for name, enum := range serviceEnumMap[serviceName] {
+	for _, name := range names {
 		if name == "Bool" {
 			continue
 		}
 
+		enum := serviceEnumMap[serviceName][name]
 		e := gen.NewEnum("", pkgName, name, swagger_gen.Enum(enum), false)
 		e.WriteAll(buf)
 		e.Importer.WriteToImports(imports)
@@ -107,7 +116,7 @@ const (
 
 const (
 `)
-			buf.WriteString(codegen.ToUpperSnakeCase(name) + `__` + item.Value.(string) + fmt.Sprintf("= iota + %d", v) + `// ` + item.Label + `
+			buf.WriteString(codegen.ToUpperSnakeCase(name) + `__` + item.Value.(string) + fmt.Sprintf(" %s = iota + %d", name, v) + `// ` + item.Label + `
 `)
 			index = v + 1
 			continue

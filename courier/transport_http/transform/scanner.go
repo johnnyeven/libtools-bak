@@ -1,11 +1,11 @@
 package transform
 
 import (
+	"encoding"
+	"encoding/json"
 	"fmt"
 	"go/ast"
 	"reflect"
-
-	"golib/json"
 
 	"golib/tools/reflectx"
 	"golib/tools/strutil"
@@ -36,7 +36,20 @@ func (vs *Scanner) setErrMsg(path string, msg string) {
 }
 
 func (vs *Scanner) marshalAndValidate(rv reflect.Value, tpe reflect.Type, defaultValue string, required bool, tagValidate string, tagErrMsg string) {
-	if _, ok := rv.Addr().Interface().(json.Unmarshaler); ok {
+	v := rv.Interface()
+	if rv.Kind() != reflect.Ptr {
+		v = rv.Addr().Interface()
+	}
+
+	if _, ok := v.(encoding.TextUnmarshaler); ok {
+		errMsg := MarshalAndValidate(rv, tpe, defaultValue, required, tagValidate, tagErrMsg)
+		if errMsg != "" {
+			vs.setErrMsg(vs.walker.String(), errMsg)
+		}
+		return
+	}
+
+	if _, ok := v.(json.Unmarshaler); ok {
 		errMsg := MarshalAndValidate(rv, tpe, defaultValue, required, tagValidate, tagErrMsg)
 		if errMsg != "" {
 			vs.setErrMsg(vs.walker.String(), errMsg)
@@ -48,6 +61,18 @@ func (vs *Scanner) marshalAndValidate(rv reflect.Value, tpe reflect.Type, defaul
 
 	switch tpe.Kind() {
 	case reflect.Struct:
+		if rv.Kind() == reflect.Ptr {
+			errMsg := MarshalAndValidate(rv, tpe, defaultValue, required, tagValidate, tagErrMsg)
+			if errMsg != "" {
+				vs.setErrMsg(vs.walker.String(), errMsg)
+				return
+			}
+
+			if rv.IsNil() {
+				return
+			}
+		}
+
 		rv = reflectx.Indirect(rv)
 
 		for i := 0; i < tpe.NumField(); i++ {
@@ -56,17 +81,25 @@ func (vs *Scanner) marshalAndValidate(rv reflect.Value, tpe reflect.Type, defaul
 				continue
 			}
 
-			jsonTag, exists := field.Tag.Lookup("json")
+			jsonTag, exists, jsonFlags := GetTagJSON(&field)
 			if (exists && jsonTag != "-") || field.Anonymous {
 				if !field.Anonymous {
 					vs.walker.Enter(GetStructFieldDisplayName(&field))
 				}
 
 				tagValidate, _ := GetTagValidate(&field)
-				defaultValue, notRequired := GetTagDefault(&field)
+				defaultValue, hasDefaultValue := GetTagDefault(&field)
 				tagErrMsg, _ := GetTagErrMsg(&field)
 
-				vs.marshalAndValidate(rv.Field(i), field.Type, defaultValue, !notRequired, tagValidate, tagErrMsg)
+				required := true
+				if hasOmitempty, ok := jsonFlags["omitempty"]; ok {
+					required = !hasOmitempty
+				} else {
+					// todo don't use non-default as required
+					required = !hasDefaultValue
+				}
+
+				vs.marshalAndValidate(rv.Field(i), field.Type, defaultValue, required, tagValidate, tagErrMsg)
 
 				if rv.NumMethod() > 0 {
 					validateHook := rv.MethodByName(fmt.Sprintf("Validate%s", field.Name))
@@ -107,27 +140,46 @@ func (vs *Scanner) marshalAndValidate(rv reflect.Value, tpe reflect.Type, defaul
 
 var ErrMsgForRequired = "缺失必填字段"
 
-func MarshalAndValidate(rv reflect.Value, tpe reflect.Type, defaultValue string, isRequired bool, tagValidate string, tagErrMsg string) string {
+func MarshalAndValidate(
+	rv reflect.Value, tpe reflect.Type,
+	defaultValue string, isRequired bool,
+	tagValidate string, tagErrMsg string,
+) string {
 	isPtr := rv.Kind() == reflect.Ptr
-	if isPtr && rv.IsNil() {
-		if isRequired {
-			return ErrMsgForRequired
+
+	if isPtr {
+		if rv.IsNil() {
+			if isRequired {
+				return ErrMsgForRequired
+			}
+
+			// when not required，should set value
+			if tpe.Kind() != reflect.Struct && defaultValue != "" && rv.CanSet() {
+				rv.Set(reflect.New(reflectx.IndirectType(tpe)))
+				rv = reflect.Indirect(rv)
+
+				err := strutil.ConvertFromStr(defaultValue, rv)
+				if err != nil {
+					return fmt.Sprintf("%s can't set wrong default value %s", rv.Type().Name(), defaultValue)
+				}
+			}
 		}
-		if defaultValue == "" {
-			// key nil for patch check
-			return ""
+
+		if tagValidate != "" {
+			rv = reflect.Indirect(rv)
+			isValid, msg := validate.ValidateItem(tagValidate, rv.Interface(), tagErrMsg)
+			if !isValid {
+				return msg
+			}
 		}
-		// when not required，should initial value
-		if rv.CanSet() {
-			rv.Set(reflect.New(reflectx.IndirectType(tpe)))
-		}
+
+		return ""
 	}
 
 	rv = reflect.Indirect(rv)
-
 	isEmptyValue := reflectx.IsEmptyValue(rv)
 
-	if !isPtr && isEmptyValue && isRequired {
+	if isEmptyValue && isRequired {
 		return ErrMsgForRequired
 	}
 
@@ -159,6 +211,10 @@ func (pw *PathWalker) Enter(i interface{}) {
 
 func (pw *PathWalker) Exit() {
 	pw.path = pw.path[:len(pw.path)-1]
+}
+
+func (pw *PathWalker) Paths() []interface{} {
+	return pw.path
 }
 
 func (pw *PathWalker) String() string {

@@ -41,4 +41,10 @@ func TestDatetime(t *testing.T) {
 		tt.Equal(dt, dt2)
 		tt.False(dt2.IsZero())
 	}
+
+	{
+		dt3 := MySQLTimestampZero
+		err := dt3.UnmarshalText([]byte("0"))
+		tt.NoError(err)
+	}
 }

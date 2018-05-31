@@ -79,6 +79,7 @@ func (op *OpenAPIOperation) WriteReqType(w io.Writer, importer *codegen.Importer
 		field := common.NewField(fieldName)
 		field.AddTag("in", string(parameter.In))
 		field.AddTag("name", parameter.Name)
+
 		field.Comment = parameter.Description
 
 		if parameter.Extensions[gen.XTagValidate] != nil {
@@ -87,10 +88,12 @@ func (op *OpenAPIOperation) WriteReqType(w io.Writer, importer *codegen.Importer
 
 		if !parameter.Required {
 			if schema != nil {
-				field.AddTag("default", fmt.Sprintf("%v", schema.Default))
-			} else {
-				field.AddTag("default", "")
+				d := fmt.Sprintf("%v", schema.Default)
+				if schema.Default != nil && d != "" {
+					field.AddTag("default", d)
+				}
 			}
+			field.AddTag("name", parameter.Name, "omitempty")
 		}
 
 		if schema != nil {

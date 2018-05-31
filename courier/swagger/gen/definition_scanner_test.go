@@ -30,7 +30,7 @@ func TestDefinitionScanner(t *testing.T) {
 	type Struct struct {
 		// name
 		Name      *string ^^json:"name" validate:"@string[0,)"^^
-		Id        **string ^^json:"id" default:""^^
+		Id        **string ^^json:"id,omitempty"^^
 		Enum      Enum ^^json:"enum"^^
 	}
 
@@ -113,7 +113,7 @@ func TestDefinitionScanner(t *testing.T) {
 					},
 					"id": map[string]interface{}{
 						XField:   "Id",
-						XTagJSON: "id",
+						XTagJSON: "id,omitempty",
 						XPointer: 2,
 						"type":   "string",
 					},

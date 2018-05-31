@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"encoding/xml"
 
-	golib_json "golib/json"
-
 	"golib/tools/courier/httpx"
 )
 
@@ -14,7 +12,7 @@ func init() {
 		Key:         "json",
 		ContentType: httpx.MIMEJSON,
 		Marshal:     json.Marshal,
-		Unmarshal:   golib_json.Unmarshal,
+		Unmarshal:   json.Unmarshal,
 	})
 	RegisterContentTransformer(&ContentTransformer{
 		Key:         "xml",

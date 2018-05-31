@@ -68,6 +68,10 @@ func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "golib/
 	
 	table := {{ var .StructName }}.T()
 
+	{{ if .HasSoftDelete }}
+		condition = {{ use "golib/tools/sqlx/builder" }}.And(condition, table.F("{{ .FieldSoftDelete }}").Eq({{ use .ConstSoftDeleteTrue }}))
+	{{ end }}
+
 	stmt := table.Select().
 		Comment("{{ .StructName }}.{{ $method }}").
 		Where(condition)
@@ -87,9 +91,15 @@ func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "golib/
 
 	table := {{ var .StructName }}.T()
 
+	condition := {{ var .StructName }}.ConditionByStruct()
+
+	{{ if .HasSoftDelete }}
+		condition = {{ use "golib/tools/sqlx/builder" }}.And(condition, table.F("{{ .FieldSoftDelete }}").Eq({{ use .ConstSoftDeleteTrue }}))
+	{{ end }}
+
 	stmt := table.Select().
 		Comment("{{ .StructName }}.{{ $method }}").
-		Where({{ var .StructName }}.ConditionByStruct())
+		Where(condition)
 
 	err = db.Do(stmt).Scan(&{{ var .StructName }}List).Err()
 
@@ -147,6 +157,10 @@ func ({{ var .StructName }}List *{{ .StructName }}List) BatchFetchBy{{ $field }}
 }
 
 func ({{ var .StructName }} *{{ .StructName }}) BatchFetchBy{{ $field }}List(db *{{ use "golib/tools/sqlx" }}.DB, {{ var $field }}List []{{ $fieldType }}) ({{ var .StructName }}List {{ .StructName }}List, err error) {
+	if len({{ var $field }}List) == 0 {
+		return {{ .StructName }}List{}, nil
+	}
+
 	table :=  {{ var .StructName }}.T()
 
 	condition := table.F("{{ $field }}").In({{ var $field }}List)

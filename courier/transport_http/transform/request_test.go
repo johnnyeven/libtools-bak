@@ -15,7 +15,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 	"github.com/stretchr/testify/assert"
 
-	"golib/json"
+	"encoding/json"
 
 	"golib/tools/courier/enumeration"
 	"golib/tools/courier/status_error"

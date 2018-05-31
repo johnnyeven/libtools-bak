@@ -2,6 +2,7 @@ package transform
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"reflect"
@@ -10,8 +11,6 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-
-	"golib/json"
 
 	"golib/tools/courier/status_error"
 	"golib/tools/ptr"
@@ -96,6 +95,7 @@ func TestParameterMeta(t *testing.T) {
 		PointerWithDefaults *string                `name:"pointer" in:"path" validate:"@string[3,]"`
 		Bytes               []byte                 `name:"bytes" in:"query" style:"form,explode" `
 		CreateTime          timelib.MySQLTimestamp `name:"createTime" in:"query" default:""`
+		UpdateTime          timelib.MySQLTimestamp `name:"updateTime,omitempty" in:"query"`
 		Data                Data                   `in:"body"`
 		PtrData             *Data                  `in:"body"`
 		DataSlice           []string               `in:"body"`
@@ -190,7 +190,7 @@ func TestParameterMeta(t *testing.T) {
 			{
 				err := p.UnmarshalStringAndValidate("10")
 				tt.Equal(ptr.String("10"), p.Value.Interface())
-				tt.NotNil(err)
+				tt.Error(err)
 				tt.Equal(status_error.ErrorFields{
 					status_error.NewErrorField("path", "pointer", "字符串长度不在[3， 1024]范围内，当前长度：2"),
 				}, status_error.FromError(err).ErrorFields.Sort())
@@ -198,25 +198,30 @@ func TestParameterMeta(t *testing.T) {
 			{
 				err := p.UnmarshalStringAndValidate("100")
 				tt.Equal(ptr.String("100"), p.Value.Interface())
-				tt.Nil(err)
+				tt.NoError(err)
 			}
 		case "bytes":
 			{
 				err := p.UnmarshalStringAndValidate("111")
-				tt.Nil(err)
+				tt.NoError(err)
 				tt.Equal([]byte("111"), p.Value.Interface())
 			}
 		case "slice":
 			{
 				err := p.UnmarshalStringAndValidate("111", "222")
-				tt.Nil(err)
+				tt.NoError(err)
 				tt.Equal([]string{"111", "222"}, p.Value.Interface())
 			}
 		case "array":
 			{
 				err := p.UnmarshalStringAndValidate("111", "222")
-				tt.Nil(err)
+				tt.NoError(err)
 				tt.Equal([5]string{"111", "222", "", "", ""}, p.Value.Interface())
+			}
+		case "updateTime":
+			{
+				err := p.UnmarshalStringAndValidate()
+				tt.NoError(err)
 			}
 		case "createTime":
 			{
@@ -271,7 +276,7 @@ func TestParameterMeta(t *testing.T) {
 				err := p.UnmarshalFromReader(buf)
 				tt.NotNil(err)
 				tt.Equal(status_error.ErrorFields{
-					status_error.NewErrorField("body", "pointer", "json: pointer cannot unmarshal number into value of type string"),
+					status_error.NewErrorField("body", "pointer", "json: cannot unmarshal number into Go struct field Data.pointer of type string"),
 				}, status_error.FromError(err).ErrorFields.Sort())
 			}
 			{

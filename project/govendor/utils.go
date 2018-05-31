@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"sort"
 	"strings"
 
 	"golib/tools/executil"
@@ -26,14 +27,34 @@ func isLocalPkg(pkgName string) bool {
 	return false
 }
 
-func UpdatePkg(importPath string) {
-	if !isLocalPkg(importPath) {
-		executil.StdRun(exec.Command("go", "get", "-u", "-v", importPath))
-		return
+func UpdatePkgs(importPaths ...string) {
+	sort.Strings(importPaths)
+	needToUpdates := map[string]bool{}
+
+	for _, importPath := range importPaths {
+		isSubPkg := false
+		for p := range needToUpdates {
+			if strings.HasPrefix(importPath, p) {
+				isSubPkg = true
+			}
+		}
+		if !isSubPkg {
+			needToUpdates[importPath] = true
+		}
 	}
 
+	for importPath := range needToUpdates {
+		UpdatePkg(importPath)
+	}
+}
+
+func UpdatePkg(importPath string) {
 	pkg, err := build.Import(importPath, "", build.FindOnly)
 	if err != nil {
+		if !isLocalPkg(importPath) {
+			executil.StdRun(exec.Command("go", "get", "-v", importPath))
+			return
+		}
 		goPath := os.Getenv("GOPATH")
 		os.Chdir(path.Join(strings.Split(goPath, ":")[0], "src"))
 
