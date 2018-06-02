@@ -25,7 +25,7 @@ type MySQL struct {
 
 func (m MySQL) DockerDefaults() conf.DockerDefaults {
 	return conf.DockerDefaults{
-		"Host": conf.RancherInternal("tool-dbs", m.Name),
+		"Host": conf.RancherInternal("db-routers", m.Name),
 		"Port": 3306,
 	}
 }

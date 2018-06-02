@@ -7,5 +7,5 @@ RUN sed -i "s|http://dl-cdn.alpinelinux.org|http://mirrors.aliyun.com|g" /etc/ap
 RUN apk add --no-cache curl git openssh wget unzip \
     && go get -u github.com/kardianos/govendor
 
-COPY . /go/src/golib/tools
-RUN cd /go/src/golib/tools && go install
+COPY . /go/src/profzone/libtools
+RUN cd /go/src/profzone/libtools && go install
