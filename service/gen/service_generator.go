@@ -8,6 +8,7 @@ import (
 )
 
 type ServiceGenerator struct {
+	PathName     string
 	ServiceName  string
 	DatabaseName string
 	Root         string
@@ -38,7 +39,7 @@ func (g *ServiceGenerator) Output(cwd string) codegen.Outputs {
 			Block(`
 		var DB{{ .ExposeVar .Data.DatabaseName }} = {{ ( .PureUse "profzone/libtools/sqlx" )}}.NewDatabase("{{ .Data.DatabaseName }}")
 `,
-			).
+		).
 			OutputTo(outputs)
 
 		outputs.WriteFiles()
@@ -89,7 +90,7 @@ var Config = struct {
 {{ end }}
 }
 `,
-		).OutputTo(outputs)
+	).OutputTo(outputs)
 
 	codegen.NewGenFile("types", path.Join(g.ServiceName, "constants/types/doc.go")).WithData(g).Block(`
 // Defined enum types here
@@ -135,7 +136,7 @@ const (
 	InternalError {{ .PureUse "profzone/libtools/courier/status_error" }}.StatusErrorCode = http.StatusInternalServerError*1e6 + ServiceStatusErrorCode + iota
 )
 		`,
-		).
+	).
 		OutputTo(outputs)
 
 	codegen.NewGenFile("routes", path.Join(g.ServiceName, "routes/root.go")).
@@ -152,10 +153,10 @@ type GroupRoot struct {
 }
 
 func (root GroupRoot) Path() string {
-	return "/{{ .Data.ServiceName }}"
+	return "/{{ .Data.PathName }}"
 }
 `,
-		).
+	).
 		OutputTo(outputs)
 
 	outputs.WriteFiles()
@@ -168,7 +169,7 @@ func (root GroupRoot) Path() string {
 		{{( .PureUse .Data.Root "global" )}}.Config.Server.Serve({{ ( .PureUse .Data.Root "routes" ) }}.RootRouter)
 	}
 	`,
-		).
+	).
 		OutputTo(outputs)
 
 	return outputs

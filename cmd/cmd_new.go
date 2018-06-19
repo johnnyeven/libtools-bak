@@ -7,6 +7,7 @@ import (
 
 	"profzone/libtools/codegen"
 	"profzone/libtools/service/gen"
+	"strings"
 )
 
 var cmdNewFlagName string
@@ -26,8 +27,9 @@ var cmdNew = &cobra.Command{
 		if len(args) == 0 {
 			panic(fmt.Errorf("need service name"))
 		}
-
+		pathName := strings.Replace(args[0], "service-", "", 1)
 		clientGenerator := gen.ServiceGenerator{
+			PathName:     pathName,
 			ServiceName:  args[0],
 			DatabaseName: cmdNewFlagName,
 		}

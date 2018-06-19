@@ -8,8 +8,8 @@ import (
 )
 
 var (
-	Image     = "${G7PAY_DOCKER_REGISTRY}/${PROJECT_GROUP}/${PROJECT_NAME}:${PROJECT_VERSION}"
-	FromImage = "${G7PAY_DOCKER_REGISTRY}/g7/env-golang:latest"
+	Image     = "${PROFZONE_DOCKER_REGISTRY}/${PROJECT_GROUP}/${PROJECT_NAME}:${PROJECT_VERSION}"
+	FromImage = "${PROFZONE_DOCKER_REGISTRY}/profzone/golang:runtime"
 )
 
 func toDockerFileYML(envVars conf.EnvVars, serviceName string) string {
