@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"strings"
 
-	"profzone/libtools/codegen"
+	"github.com/profzone/libtools/codegen"
 )
 
 func RequestOf(id string) string {

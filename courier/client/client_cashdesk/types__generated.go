@@ -1,8 +1,8 @@
 package client_cashdesk
 
 import (
-	golib_tools_courier_enumeration "profzone/libtools/courier/enumeration"
-	golib_tools_timelib "profzone/libtools/timelib"
+	golib_tools_courier_enumeration "github.com/profzone/libtools/courier/enumeration"
+	golib_tools_timelib "github.com/profzone/libtools/timelib"
 )
 
 type AreaBank struct {

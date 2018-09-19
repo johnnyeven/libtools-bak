@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"profzone/libtools/redis"
+	"github.com/profzone/libtools/redis"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"

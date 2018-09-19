@@ -9,13 +9,13 @@ import (
 	"net/http"
 	"testing"
 
-	"profzone/libtools/courier"
+	"github.com/profzone/libtools/courier"
 
 	"github.com/stretchr/testify/assert"
 
-	"profzone/libtools/courier/httpx"
-	"profzone/libtools/courier/transport_http/transform"
-	"profzone/libtools/ptr"
+	"github.com/profzone/libtools/courier/httpx"
+	"github.com/profzone/libtools/courier/transport_http/transform"
+	"github.com/profzone/libtools/ptr"
 )
 
 type GetItem struct {

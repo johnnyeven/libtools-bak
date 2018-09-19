@@ -12,7 +12,7 @@ import (
 
 	"encoding/json"
 
-	"profzone/libtools/codegen"
+	"github.com/profzone/libtools/codegen"
 )
 
 type SwaggerGenerator struct {

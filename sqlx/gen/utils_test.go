@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"profzone/libtools/sqlx"
+	"github.com/profzone/libtools/sqlx"
 )
 
 func TestParseIndexesFromDoc(t *testing.T) {

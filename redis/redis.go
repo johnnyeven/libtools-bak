@@ -5,9 +5,9 @@ import (
 	"os"
 	"time"
 
-	"profzone/libtools/conf"
-	"profzone/libtools/conf/presets"
-	"profzone/libtools/env"
+	"github.com/profzone/libtools/conf"
+	"github.com/profzone/libtools/conf/presets"
+	"github.com/profzone/libtools/env"
 )
 
 type Redis struct {

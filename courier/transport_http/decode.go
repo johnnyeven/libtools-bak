@@ -4,13 +4,13 @@ import (
 	"net/http"
 	"reflect"
 
-	"profzone/libtools/courier/httpx"
+	"github.com/profzone/libtools/courier/httpx"
 
 	"github.com/julienschmidt/httprouter"
 
-	"profzone/libtools/courier"
-	"profzone/libtools/courier/transport_http/transform"
-	"profzone/libtools/reflectx"
+	"github.com/profzone/libtools/courier"
+	"github.com/profzone/libtools/courier/transport_http/transform"
+	"github.com/profzone/libtools/reflectx"
 )
 
 func createHttpRequestDecoder(r *http.Request, params *httprouter.Params) courier.OperatorDecoder {

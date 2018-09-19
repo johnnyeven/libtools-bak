@@ -5,7 +5,7 @@ import (
 	"crypto/x509"
 	"net/http"
 
-	"profzone/libtools/courier/transport_http"
+	"github.com/profzone/libtools/courier/transport_http"
 )
 
 func NewInsecureTLSTransport(rootCA []byte) transport_http.TransportWrapper {

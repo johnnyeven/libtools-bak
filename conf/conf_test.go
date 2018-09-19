@@ -6,11 +6,11 @@ import (
 	"testing"
 	"time"
 
-	"profzone/libtools/conf/presets"
-	"profzone/libtools/courier/transport_http/transform"
-	"profzone/libtools/ptr"
+	"github.com/profzone/libtools/conf/presets"
+	"github.com/profzone/libtools/courier/transport_http/transform"
+	"github.com/profzone/libtools/ptr"
 
-	"profzone/libtools/conf"
+	"github.com/profzone/libtools/conf"
 
 	"github.com/stretchr/testify/assert"
 )

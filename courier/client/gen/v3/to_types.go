@@ -9,12 +9,12 @@ import (
 
 	"github.com/morlay/oas"
 
-	"profzone/libtools/codegen"
-	"profzone/libtools/codegen/loaderx"
-	"profzone/libtools/courier/client/gen/common"
-	"profzone/libtools/courier/client/gen/enums"
-	"profzone/libtools/courier/swagger/gen"
-	"profzone/libtools/godash"
+	"github.com/profzone/libtools/codegen"
+	"github.com/profzone/libtools/codegen/loaderx"
+	"github.com/profzone/libtools/courier/client/gen/common"
+	"github.com/profzone/libtools/courier/client/gen/enums"
+	"github.com/profzone/libtools/courier/swagger/gen"
+	"github.com/profzone/libtools/godash"
 )
 
 func ToTypes(serviceName string, pkgName string, openAPI *oas.OpenAPI) string {
@@ -89,7 +89,7 @@ func (g *TypeGenerator) TypeIndirect(schema *oas.Schema) (string, bool) {
 
 	if schema.Extensions[gen.XNamed] != nil {
 		if schema.Type == "array" && schema.Items != nil && schema.Items.Format == "uint64" {
-			return g.Importer.Use("profzone/libtools/httplib.Uint64List"), true
+			return g.Importer.Use("github.com/profzone/libtools/httplib.Uint64List"), true
 		}
 
 		typeFullName := fmt.Sprint(schema.Extensions[gen.XNamed])
@@ -107,7 +107,7 @@ func (g *TypeGenerator) TypeIndirect(schema *oas.Schema) (string, bool) {
 
 			if schema.Type == "boolean" {
 				typeName = "Bool"
-				pkgImportName = "profzone/libtools/courier/enumeration"
+				pkgImportName = "github.com/profzone/libtools/courier/enumeration"
 				isInCommonLib = true
 			}
 

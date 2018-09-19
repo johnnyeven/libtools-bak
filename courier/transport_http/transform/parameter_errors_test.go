@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"profzone/libtools/courier/status_error"
+	"github.com/profzone/libtools/courier/status_error"
 )
 
 func TestParameterErrors(t *testing.T) {

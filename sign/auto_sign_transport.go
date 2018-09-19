@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"profzone/libtools/courier/transport_http"
+	"github.com/profzone/libtools/courier/transport_http"
 )
 
 var _ interface {

@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"profzone/libtools/codegen/loaderx"
+	"github.com/profzone/libtools/codegen/loaderx"
 )
 
 func TestStatusErrorScanner(t *testing.T) {
@@ -15,7 +15,7 @@ func TestStatusErrorScanner(t *testing.T) {
 	package main
 
 	import (
-		"profzone/libtools/courier/status_error"
+		"github.com/profzone/libtools/courier/status_error"
 		"net/http"
 	)
 

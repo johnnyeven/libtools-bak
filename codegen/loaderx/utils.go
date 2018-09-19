@@ -3,7 +3,7 @@ package loaderx
 import (
 	"strings"
 
-	"profzone/libtools/codegen"
+	"github.com/profzone/libtools/codegen"
 )
 
 func GetPkgImportPathAndExpose(s string) (pkgImportPath string, expose string) {

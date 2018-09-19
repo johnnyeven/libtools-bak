@@ -7,9 +7,9 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"profzone/libtools/conf"
-	"profzone/libtools/log/context"
-	"profzone/libtools/log/hooks"
+	"github.com/profzone/libtools/conf"
+	"github.com/profzone/libtools/log/context"
+	"github.com/profzone/libtools/log/hooks"
 )
 
 type Log struct {

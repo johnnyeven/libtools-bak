@@ -3,7 +3,7 @@ package presets
 import (
 	"time"
 
-	"profzone/libtools/timelib"
+	"github.com/profzone/libtools/timelib"
 )
 
 type OperateTime struct {

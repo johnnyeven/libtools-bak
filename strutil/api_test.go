@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"profzone/libtools/strutil"
+	"github.com/profzone/libtools/strutil"
 )
 
 type Stringer struct {

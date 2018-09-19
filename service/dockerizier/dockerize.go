@@ -5,7 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"profzone/libtools/conf"
+	"github.com/profzone/libtools/conf"
 )
 
 func Dockerize(envVars conf.EnvVars, serviceName string) {

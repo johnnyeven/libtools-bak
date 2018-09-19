@@ -5,8 +5,8 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"profzone/libtools/log"
-	"profzone/libtools/log/context"
+	"github.com/profzone/libtools/log"
+	"github.com/profzone/libtools/log/context"
 )
 
 var logger = log.Log{

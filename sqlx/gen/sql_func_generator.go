@@ -8,8 +8,8 @@ import (
 
 	"golang.org/x/tools/go/loader"
 
-	"profzone/libtools/codegen"
-	"profzone/libtools/codegen/loaderx"
+	"github.com/profzone/libtools/codegen"
+	"github.com/profzone/libtools/codegen/loaderx"
 )
 
 type Config struct {
@@ -42,11 +42,11 @@ func (g *Config) Defaults() {
 	}
 
 	if g.ConstSoftDeleteTrue == "" {
-		g.ConstSoftDeleteTrue = "profzone/libtools/courier/enumeration.BOOL__TRUE"
+		g.ConstSoftDeleteTrue = "github.com/profzone/libtools/courier/enumeration.BOOL__TRUE"
 	}
 
 	if g.ConstSoftDeleteFalse == "" {
-		g.ConstSoftDeleteFalse = "profzone/libtools/courier/enumeration.BOOL__FALSE"
+		g.ConstSoftDeleteFalse = "github.com/profzone/libtools/courier/enumeration.BOOL__FALSE"
 	}
 
 	if g.TableName == "" {

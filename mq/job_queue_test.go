@@ -8,10 +8,10 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 
-	"profzone/libtools/redis"
+	"github.com/profzone/libtools/redis"
 
-	"profzone/libtools/mq"
-	mq_redis "profzone/libtools/mq/redis"
+	"github.com/profzone/libtools/mq"
+	mq_redis "github.com/profzone/libtools/mq/redis"
 )
 
 var r = &redis.Redis{

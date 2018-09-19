@@ -4,10 +4,10 @@ import (
 	"fmt"
 	mime_multipart "mime/multipart"
 
-	golib_tools_courier "profzone/libtools/courier"
-	golib_tools_courier_status_error "profzone/libtools/courier/status_error"
+	golib_tools_courier "github.com/profzone/libtools/courier"
+	golib_tools_courier_status_error "github.com/profzone/libtools/courier/status_error"
 
-	golib_tools_courier_client "profzone/libtools/courier/client"
+	golib_tools_courier_client "github.com/profzone/libtools/courier/client"
 )
 
 type ClientDemoInterface interface {

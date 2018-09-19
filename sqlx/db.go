@@ -5,8 +5,8 @@ import (
 	"errors"
 	"time"
 
-	"profzone/libtools/sqlx/builder"
-	_ "profzone/libtools/sqlx/mysql_logger_driver"
+	"github.com/profzone/libtools/sqlx/builder"
+	_ "github.com/profzone/libtools/sqlx/mysql_logger_driver"
 )
 
 var ErrNotTx = errors.New("db is not *sql.Tx")

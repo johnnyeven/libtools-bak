@@ -23,26 +23,26 @@ func (m *Model) methodsForFetchList() string {
 type {{ .StructName }}List []{{ .StructName }}
 
 // deprecated
-func ({{ var .StructName }}List *{{ .StructName }}List) {{ $method }}(db *{{ use "profzone/libtools/sqlx" }}.DB, size int32, offset int32, conditions ...*{{ use "profzone/libtools/sqlx/builder" }}.Condition) (count int32, err error)	{
+func ({{ var .StructName }}List *{{ .StructName }}List) {{ $method }}(db *{{ use "github.com/profzone/libtools/sqlx" }}.DB, size int32, offset int32, conditions ...*{{ use "github.com/profzone/libtools/sqlx/builder" }}.Condition) (count int32, err error)	{
 	*{{ var .StructName }}List, count, err = (&{{ .StructName }}{}).FetchList(db, size, offset, conditions...)
 	return
 }
 
-func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "profzone/libtools/sqlx" }}.DB, size int32, offset int32, conditions ...*{{ use "profzone/libtools/sqlx/builder" }}.Condition) ({{ var .StructName }}List {{ .StructName }}List, count int32, err error) {
+func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "github.com/profzone/libtools/sqlx" }}.DB, size int32, offset int32, conditions ...*{{ use "github.com/profzone/libtools/sqlx/builder" }}.Condition) ({{ var .StructName }}List {{ .StructName }}List, count int32, err error) {
 	{{ var .StructName }}List = {{ .StructName }}List{}
 
 	table := {{ var .StructName }}.T()
 
-	condition := {{ use "profzone/libtools/sqlx/builder" }}.And(conditions...)
+	condition := {{ use "github.com/profzone/libtools/sqlx/builder" }}.And(conditions...)
 	{{ if .HasSoftDelete }}
-		condition = {{ use "profzone/libtools/sqlx/builder" }}.And(condition, table.F("{{ .FieldSoftDelete }}").Eq({{ use .ConstSoftDeleteTrue }}))
+		condition = {{ use "github.com/profzone/libtools/sqlx/builder" }}.And(condition, table.F("{{ .FieldSoftDelete }}").Eq({{ use .ConstSoftDeleteTrue }}))
 	{{ end }}
 
 	stmt := table.Select().
 		Comment("{{ .StructName }}.{{ $method }}").
 		Where(condition)
 
-	errForCount := db.Do(stmt.For({{ use "profzone/libtools/sqlx/builder" }}.Count({{ use "profzone/libtools/sqlx/builder" }}.Star()))).Scan(&count).Err()
+	errForCount := db.Do(stmt.For({{ use "github.com/profzone/libtools/sqlx/builder" }}.Count({{ use "github.com/profzone/libtools/sqlx/builder" }}.Star()))).Scan(&count).Err()
 	if errForCount != nil {
 		err = errForCount
 		return
@@ -63,13 +63,13 @@ func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "profzo
 		`
 {{ $method := "List" }}
 
-func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "profzone/libtools/sqlx" }}.DB, condition *{{ use "profzone/libtools/sqlx/builder" }}.Condition) ({{ var .StructName }}List {{ .StructName }}List, err error) {
+func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "github.com/profzone/libtools/sqlx" }}.DB, condition *{{ use "github.com/profzone/libtools/sqlx/builder" }}.Condition) ({{ var .StructName }}List {{ .StructName }}List, err error) {
 	{{ var .StructName }}List = {{ .StructName }}List{}
 	
 	table := {{ var .StructName }}.T()
 
 	{{ if .HasSoftDelete }}
-		condition = {{ use "profzone/libtools/sqlx/builder" }}.And(condition, table.F("{{ .FieldSoftDelete }}").Eq({{ use .ConstSoftDeleteTrue }}))
+		condition = {{ use "github.com/profzone/libtools/sqlx/builder" }}.And(condition, table.F("{{ .FieldSoftDelete }}").Eq({{ use .ConstSoftDeleteTrue }}))
 	{{ end }}
 
 	stmt := table.Select().
@@ -86,7 +86,7 @@ func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "profzo
 		`
 {{ $method := "ListByStruct" }}
 
-func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "profzone/libtools/sqlx" }}.DB) ({{ var .StructName }}List {{ .StructName }}List, err error) {
+func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "github.com/profzone/libtools/sqlx" }}.DB) ({{ var .StructName }}List {{ .StructName }}List, err error) {
 	{{ var .StructName }}List = {{ .StructName }}List{}
 
 	table := {{ var .StructName }}.T()
@@ -94,7 +94,7 @@ func ({{ var .StructName }} *{{ .StructName }}) {{ $method }}(db *{{ use "profzo
 	condition := {{ var .StructName }}.ConditionByStruct()
 
 	{{ if .HasSoftDelete }}
-		condition = {{ use "profzone/libtools/sqlx/builder" }}.And(condition, table.F("{{ .FieldSoftDelete }}").Eq({{ use .ConstSoftDeleteTrue }}))
+		condition = {{ use "github.com/profzone/libtools/sqlx/builder" }}.And(condition, table.F("{{ .FieldSoftDelete }}").Eq({{ use .ConstSoftDeleteTrue }}))
 	{{ end }}
 
 	stmt := table.Select().
@@ -151,12 +151,12 @@ func (m *Model) methodsForBatchList() string {
 {{ $fieldType := "%s" }}
 
 // deprecated
-func ({{ var .StructName }}List *{{ .StructName }}List) BatchFetchBy{{ $field }}List(db *{{ use "profzone/libtools/sqlx" }}.DB, {{ var $field }}List []{{ $fieldType }}) (err error)	{
+func ({{ var .StructName }}List *{{ .StructName }}List) BatchFetchBy{{ $field }}List(db *{{ use "github.com/profzone/libtools/sqlx" }}.DB, {{ var $field }}List []{{ $fieldType }}) (err error)	{
 	*{{ var .StructName }}List, err = (&{{ .StructName }}{}).BatchFetchBy{{ $field }}List(db, {{ var $field }}List)
 	return
 }
 
-func ({{ var .StructName }} *{{ .StructName }}) BatchFetchBy{{ $field }}List(db *{{ use "profzone/libtools/sqlx" }}.DB, {{ var $field }}List []{{ $fieldType }}) ({{ var .StructName }}List {{ .StructName }}List, err error) {
+func ({{ var .StructName }} *{{ .StructName }}) BatchFetchBy{{ $field }}List(db *{{ use "github.com/profzone/libtools/sqlx" }}.DB, {{ var $field }}List []{{ $fieldType }}) ({{ var .StructName }}List {{ .StructName }}List, err error) {
 	if len({{ var $field }}List) == 0 {
 		return {{ .StructName }}List{}, nil
 	}

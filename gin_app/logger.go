@@ -7,9 +7,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"
 
-	"profzone/libtools/courier/status_error"
-	"profzone/libtools/duration"
-	"profzone/libtools/log/context"
+	"github.com/profzone/libtools/courier/status_error"
+	"github.com/profzone/libtools/duration"
+	"github.com/profzone/libtools/log/context"
 )
 
 var (

@@ -9,9 +9,9 @@ import (
 
 	"golang.org/x/tools/go/loader"
 
-	"profzone/libtools/codegen"
-	"profzone/libtools/codegen/loaderx"
-	"profzone/libtools/sqlx/builder"
+	"github.com/profzone/libtools/codegen"
+	"github.com/profzone/libtools/codegen/loaderx"
+	"github.com/profzone/libtools/sqlx/builder"
 )
 
 func NewModel(prog *loader.Program, typeName *types.TypeName, comments string, cfg *Config) *Model {

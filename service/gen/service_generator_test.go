@@ -3,7 +3,7 @@ package gen
 import (
 	"testing"
 
-	"profzone/libtools/codegen"
+	"github.com/profzone/libtools/codegen"
 )
 
 func TestGen(t *testing.T) {

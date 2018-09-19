@@ -1,7 +1,7 @@
 package sqlx
 
 import (
-	"profzone/libtools/sqlx/builder"
+	"github.com/profzone/libtools/sqlx/builder"
 )
 
 type EnumTypeDescriber interface {

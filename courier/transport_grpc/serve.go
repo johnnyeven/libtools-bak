@@ -8,8 +8,8 @@ import (
 
 	"google.golang.org/grpc"
 
-	"profzone/libtools/conf"
-	"profzone/libtools/courier"
+	"github.com/profzone/libtools/conf"
+	"github.com/profzone/libtools/courier"
 )
 
 type ServeGRPC struct {

@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"time"
 
-	"profzone/libtools/reflectx"
+	"github.com/profzone/libtools/reflectx"
 )
 
 var StdStringifier = Stringifier{}

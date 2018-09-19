@@ -6,10 +6,10 @@ import (
 	"sort"
 	"strings"
 
-	"profzone/libtools/codegen"
-	"profzone/libtools/courier/enumeration"
-	"profzone/libtools/courier/enumeration/gen"
-	swagger_gen "profzone/libtools/courier/swagger/gen"
+	"github.com/profzone/libtools/codegen"
+	"github.com/profzone/libtools/courier/enumeration"
+	"github.com/profzone/libtools/courier/enumeration/gen"
+	swagger_gen "github.com/profzone/libtools/courier/swagger/gen"
 )
 
 var serviceEnumMap = map[string]map[string]enumeration.Enum{}

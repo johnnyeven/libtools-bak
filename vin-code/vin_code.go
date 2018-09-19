@@ -3,7 +3,7 @@ package vincode
 import (
 	"strings"
 
-	"profzone/libtools/vin-code/misc"
+	"github.com/profzone/libtools/vin-code/misc"
 )
 
 // 专业术语(Technical Terms)

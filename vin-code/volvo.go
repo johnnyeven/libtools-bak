@@ -1,8 +1,8 @@
 package vincode
 
 import (
-	"profzone/libtools/vin-code/mfrs/volvo"
-	"profzone/libtools/vin-code/misc"
+	"github.com/profzone/libtools/vin-code/mfrs/volvo"
+	"github.com/profzone/libtools/vin-code/misc"
 )
 
 /**********************************************************

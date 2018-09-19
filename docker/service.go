@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"profzone/libtools/ptr"
+	"github.com/profzone/libtools/ptr"
 )
 
 func NewService(image string) *Service {

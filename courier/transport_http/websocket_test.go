@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"profzone/libtools/timelib"
+	"github.com/profzone/libtools/timelib"
 )
 
 func TestPayloadMarshalUnMarshal(t *testing.T) {

@@ -1,8 +1,8 @@
 package vincode
 
 import (
-	"profzone/libtools/vin-code/mfrs/msbs"
-	"profzone/libtools/vin-code/misc"
+	"github.com/profzone/libtools/vin-code/mfrs/msbs"
+	"github.com/profzone/libtools/vin-code/misc"
 )
 
 // 三菱

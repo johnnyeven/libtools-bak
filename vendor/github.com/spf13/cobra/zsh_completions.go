@@ -4,29 +4,17 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"os"
 	"strings"
 )
 
-// GenZshCompletionFile generates zsh completion file.
-func (c *Command) GenZshCompletionFile(filename string) error {
-	outFile, err := os.Create(filename)
-	if err != nil {
-		return err
-	}
-	defer outFile.Close()
-
-	return c.GenZshCompletion(outFile)
-}
-
 // GenZshCompletion generates a zsh completion file and writes to the passed writer.
-func (c *Command) GenZshCompletion(w io.Writer) error {
+func (cmd *Command) GenZshCompletion(w io.Writer) error {
 	buf := new(bytes.Buffer)
 
-	writeHeader(buf, c)
-	maxDepth := maxDepth(c)
+	writeHeader(buf, cmd)
+	maxDepth := maxDepth(cmd)
 	writeLevelMapping(buf, maxDepth)
-	writeLevelCases(buf, maxDepth, c)
+	writeLevelCases(buf, maxDepth, cmd)
 
 	_, err := buf.WriteTo(w)
 	return err

@@ -3,7 +3,7 @@ package msbs
 import (
 	"fmt"
 
-	"profzone/libtools/vin-code/vinrune"
+	"github.com/profzone/libtools/vin-code/vinrune"
 )
 
 var (

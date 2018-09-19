@@ -10,10 +10,10 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 
-	"profzone/libtools/courier"
-	"profzone/libtools/courier/httpx"
-	"profzone/libtools/courier/status_error"
-	"profzone/libtools/duration"
+	"github.com/profzone/libtools/courier"
+	"github.com/profzone/libtools/courier/httpx"
+	"github.com/profzone/libtools/courier/status_error"
+	"github.com/profzone/libtools/duration"
 )
 
 type GRPCRequest struct {

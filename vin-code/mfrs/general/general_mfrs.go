@@ -3,7 +3,7 @@ package general
 import (
 	"fmt"
 
-	"profzone/libtools/vin-code/vinrune"
+	"github.com/profzone/libtools/vin-code/vinrune"
 )
 
 // 缺省的解析方式

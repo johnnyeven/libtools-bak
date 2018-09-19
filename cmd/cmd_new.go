@@ -5,8 +5,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"profzone/libtools/codegen"
-	"profzone/libtools/service/gen"
+	"github.com/profzone/libtools/codegen"
+	"github.com/profzone/libtools/service/gen"
 	"strings"
 )
 

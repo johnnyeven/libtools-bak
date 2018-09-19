@@ -1,7 +1,7 @@
 package transform
 
 import (
-	"profzone/libtools/courier/status_error"
+	"github.com/profzone/libtools/courier/status_error"
 )
 
 type ParameterErrors struct {

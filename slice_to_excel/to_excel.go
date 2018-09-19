@@ -6,7 +6,7 @@ import (
 
 	"github.com/tealeg/xlsx"
 
-	"profzone/libtools/timelib"
+	"github.com/profzone/libtools/timelib"
 )
 
 type XLSXLabel interface {

@@ -8,8 +8,8 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 
-	"profzone/libtools/conf"
-	"profzone/libtools/env"
+	"github.com/profzone/libtools/conf"
+	"github.com/profzone/libtools/env"
 )
 
 type GinApp struct {

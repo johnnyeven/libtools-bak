@@ -6,13 +6,13 @@ import (
 	"strings"
 	"time"
 
-	"profzone/libtools/conf"
-	"profzone/libtools/courier"
-	"profzone/libtools/courier/httpx"
-	"profzone/libtools/courier/transport_grpc"
-	"profzone/libtools/courier/transport_http"
-	"profzone/libtools/env"
-	"profzone/libtools/log/context"
+	"github.com/profzone/libtools/conf"
+	"github.com/profzone/libtools/courier"
+	"github.com/profzone/libtools/courier/httpx"
+	"github.com/profzone/libtools/courier/transport_grpc"
+	"github.com/profzone/libtools/courier/transport_http"
+	"github.com/profzone/libtools/env"
+	"github.com/profzone/libtools/log/context"
 )
 
 type Client struct {

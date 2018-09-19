@@ -1,7 +1,7 @@
 package main
 
 import (
-	"profzone/libtools/cmd"
+	"github.com/profzone/libtools/cmd"
 )
 
 func main() {

@@ -5,7 +5,7 @@ import (
 	"os"
 	"reflect"
 
-	"profzone/libtools/sqlx/builder"
+	"github.com/profzone/libtools/sqlx/builder"
 
 	"github.com/sirupsen/logrus"
 )

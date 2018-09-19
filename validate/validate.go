@@ -1,7 +1,7 @@
 package validate
 
 import (
-	"profzone/libtools/validate/validatetpl"
+	"github.com/profzone/libtools/validate/validatetpl"
 )
 
 type ValidateFn func(v interface{}) (bool, string)

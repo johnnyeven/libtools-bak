@@ -253,15 +253,15 @@ import (
     "strings"
 
     {{if eq .UpdateTimeFieldType "timelib.MySQLTimestamp"}}
-    "profzone/libtools/timelib"{{else if eq .CreateTimeFieldType "timelib.MySQLTimestamp"}}
-    "profzone/libtools/timelib"{{end}}
-    "profzone/libtools/mysql/dberr"
+    "github.com/profzone/libtools/timelib"{{else if eq .CreateTimeFieldType "timelib.MySQLTimestamp"}}
+    "github.com/profzone/libtools/timelib"{{end}}
+    "github.com/profzone/libtools/mysql/dberr"
     "golib/gorm"
     "github.com/go-sql-driver/mysql"
     "github.com/sirupsen/logrus"
-    "profzone/libtools/courier/enumeration"
-    "profzone/libtools/httplib"
-    "profzone/libtools/duration"
+    "github.com/profzone/libtools/courier/enumeration"
+    "github.com/profzone/libtools/httplib"
+    "github.com/profzone/libtools/duration"
 ) 
 
 type {{.StructName}}List []{{.StructName}}

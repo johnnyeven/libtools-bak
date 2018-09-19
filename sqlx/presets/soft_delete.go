@@ -1,7 +1,7 @@
 package presets
 
 import (
-	"profzone/libtools/courier/enumeration"
+	"github.com/profzone/libtools/courier/enumeration"
 )
 
 type SoftDelete struct {

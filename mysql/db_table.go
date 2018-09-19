@@ -7,7 +7,7 @@ import (
 
 	"golib/gorm"
 
-	"profzone/libtools/env"
+	"github.com/profzone/libtools/env"
 )
 
 type Model interface {

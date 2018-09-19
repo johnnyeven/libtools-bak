@@ -3,7 +3,7 @@ package service_test
 import (
 	"testing"
 
-	"profzone/libtools/service"
+	"github.com/profzone/libtools/service"
 )
 
 func TestNew(t *testing.T) {

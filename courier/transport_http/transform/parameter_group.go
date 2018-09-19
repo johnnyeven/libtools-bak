@@ -7,8 +7,8 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"profzone/libtools/courier/status_error"
-	"profzone/libtools/reflectx"
+	"github.com/profzone/libtools/courier/status_error"
+	"github.com/profzone/libtools/reflectx"
 )
 
 func ParameterGroupFromValue(v interface{}) (m *ParameterGroup) {

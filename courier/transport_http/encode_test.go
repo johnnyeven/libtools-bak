@@ -8,9 +8,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"profzone/libtools/courier/httpx"
-	"profzone/libtools/courier/status_error"
-	"profzone/libtools/courier/transport_http/transform"
+	"github.com/profzone/libtools/courier/httpx"
+	"github.com/profzone/libtools/courier/status_error"
+	"github.com/profzone/libtools/courier/transport_http/transform"
 )
 
 func NewTestRespWriter() *TestRespWriter {

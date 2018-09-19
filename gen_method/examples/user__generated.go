@@ -11,10 +11,10 @@ import (
 
 	"golib/gorm"
 
-	"profzone/libtools/courier/enumeration"
-	"profzone/libtools/duration"
-	"profzone/libtools/mysql/dberr"
-	"profzone/libtools/timelib"
+	"github.com/profzone/libtools/courier/enumeration"
+	"github.com/profzone/libtools/duration"
+	"github.com/profzone/libtools/mysql/dberr"
+	"github.com/profzone/libtools/timelib"
 )
 
 type UserList []User

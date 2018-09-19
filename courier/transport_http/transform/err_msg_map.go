@@ -3,7 +3,7 @@ package transform
 import (
 	"sort"
 
-	"profzone/libtools/courier/status_error"
+	"github.com/profzone/libtools/courier/status_error"
 )
 
 type ErrMsgMap map[string]string

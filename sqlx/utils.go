@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"regexp"
 
-	"profzone/libtools/sqlx/builder"
+	"github.com/profzone/libtools/sqlx/builder"
 )
 
 var queryRegexp = regexp.MustCompile(`(\$\d+)|\?`)

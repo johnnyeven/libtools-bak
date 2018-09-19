@@ -3,8 +3,8 @@ package cmd
 import (
 	"github.com/spf13/cobra"
 
-	"profzone/libtools/codegen"
-	"profzone/libtools/courier/client/gen"
+	"github.com/profzone/libtools/codegen"
+	"github.com/profzone/libtools/courier/client/gen"
 )
 
 var (
@@ -21,7 +21,7 @@ var cmdGenClient = &cobra.Command{
 			ServiceName: cmdGenClientFlagName,
 			File:        cmdGenClientFlagFile,
 			SpecURL:     cmdGenClientFlagSpecURL,
-			BaseClient:  "profzone/libtools/courier/client.Client",
+			BaseClient:  "github.com/profzone/libtools/courier/client.Client",
 		}
 		codegen.Generate(&clientGenerator)
 	},

@@ -3,7 +3,7 @@ package presets
 import (
 	"database/sql"
 
-	"profzone/libtools/sqlx"
+	"github.com/profzone/libtools/sqlx"
 )
 
 var _ interface {

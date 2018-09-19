@@ -8,10 +8,10 @@ import (
 	"reflect"
 	"strings"
 
-	"profzone/libtools/courier/transport_http/transform"
-	"profzone/libtools/reflectx"
-	"profzone/libtools/strutil"
-	"profzone/libtools/validate"
+	"github.com/profzone/libtools/courier/transport_http/transform"
+	"github.com/profzone/libtools/reflectx"
+	"github.com/profzone/libtools/strutil"
+	"github.com/profzone/libtools/validate"
 
 	"github.com/sirupsen/logrus"
 )

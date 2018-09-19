@@ -1,8 +1,8 @@
 package vincode
 
 import (
-	"profzone/libtools/vin-code/mfrs/general"
-	"profzone/libtools/vin-code/misc"
+	"github.com/profzone/libtools/vin-code/mfrs/general"
+	"github.com/profzone/libtools/vin-code/misc"
 )
 
 // note this file not for GM(通用汽车)

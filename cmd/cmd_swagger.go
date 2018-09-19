@@ -3,8 +3,8 @@ package cmd
 import (
 	"github.com/spf13/cobra"
 
-	"profzone/libtools/codegen"
-	"profzone/libtools/courier/swagger/gen"
+	"github.com/profzone/libtools/codegen"
+	"github.com/profzone/libtools/courier/swagger/gen"
 )
 
 var cmdSwagger = &cobra.Command{
