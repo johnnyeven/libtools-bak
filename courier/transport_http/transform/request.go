@@ -13,9 +13,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/profzone/libtools/courier"
-	"github.com/profzone/libtools/courier/httpx"
-	"github.com/profzone/libtools/courier/status_error"
+	"github.com/johnnyeven/libtools/courier"
+	"github.com/johnnyeven/libtools/courier/httpx"
+	"github.com/johnnyeven/libtools/courier/status_error"
 )
 
 func NewRequest(method string, uri string, v interface{}, metadatas ...courier.Metadata) (*http.Request, error) {

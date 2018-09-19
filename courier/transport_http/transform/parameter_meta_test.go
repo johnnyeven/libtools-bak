@@ -12,10 +12,10 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/profzone/libtools/courier/status_error"
-	"github.com/profzone/libtools/ptr"
-	"github.com/profzone/libtools/reflectx"
-	"github.com/profzone/libtools/timelib"
+	"github.com/johnnyeven/libtools/courier/status_error"
+	"github.com/johnnyeven/libtools/ptr"
+	"github.com/johnnyeven/libtools/reflectx"
+	"github.com/johnnyeven/libtools/timelib"
 )
 
 type JSON string

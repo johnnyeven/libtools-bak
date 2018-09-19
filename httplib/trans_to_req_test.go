@@ -7,11 +7,11 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/profzone/libtools/courier/status_error"
-	"github.com/profzone/libtools/courier/transport_http/transform"
-	"github.com/profzone/libtools/httplib/testify"
-	"github.com/profzone/libtools/timelib"
-	"github.com/profzone/libtools/validate"
+	"github.com/johnnyeven/libtools/courier/status_error"
+	"github.com/johnnyeven/libtools/courier/transport_http/transform"
+	"github.com/johnnyeven/libtools/httplib/testify"
+	"github.com/johnnyeven/libtools/timelib"
+	"github.com/johnnyeven/libtools/validate"
 )
 
 func v_ok(v interface{}) (bool, string) {

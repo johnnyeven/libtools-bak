@@ -10,19 +10,19 @@ import (
 	"strings"
 	"time"
 
-	"github.com/profzone/libtools/conf"
-	"github.com/profzone/libtools/conf/presets"
-	"github.com/profzone/libtools/courier"
-	"github.com/profzone/libtools/env"
-	"github.com/profzone/libtools/reflectx"
-	"github.com/profzone/libtools/timelib"
+	"github.com/johnnyeven/libtools/conf"
+	"github.com/johnnyeven/libtools/conf/presets"
+	"github.com/johnnyeven/libtools/courier"
+	"github.com/johnnyeven/libtools/env"
+	"github.com/johnnyeven/libtools/reflectx"
+	"github.com/johnnyeven/libtools/timelib"
 
 	"github.com/gomodule/redigo/redis"
 	"github.com/google/uuid"
 	"gopkg.in/robfig/cron.v2"
 
-	"github.com/profzone/libtools/mq"
-	mq_redis "github.com/profzone/libtools/mq/redis"
+	"github.com/johnnyeven/libtools/mq"
+	mq_redis "github.com/johnnyeven/libtools/mq/redis"
 )
 
 var (

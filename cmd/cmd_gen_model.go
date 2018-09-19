@@ -3,8 +3,8 @@ package cmd
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/profzone/libtools/codegen"
-	"github.com/profzone/libtools/sqlx/gen"
+	"github.com/johnnyeven/libtools/codegen"
+	"github.com/johnnyeven/libtools/sqlx/gen"
 )
 
 var cmdGenModelFlagDatabase string

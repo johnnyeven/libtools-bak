@@ -1,8 +1,8 @@
 package test
 
 import (
-	"github.com/profzone/libtools/sqlx/presets"
-	"github.com/profzone/libtools/timelib"
+	"github.com/johnnyeven/libtools/sqlx/presets"
+	"github.com/johnnyeven/libtools/timelib"
 )
 
 // @def primary ID

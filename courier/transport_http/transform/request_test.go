@@ -17,9 +17,9 @@ import (
 
 	"encoding/json"
 
-	"github.com/profzone/libtools/courier/enumeration"
-	"github.com/profzone/libtools/courier/status_error"
-	"github.com/profzone/libtools/ptr"
+	"github.com/johnnyeven/libtools/courier/enumeration"
+	"github.com/johnnyeven/libtools/courier/status_error"
+	"github.com/johnnyeven/libtools/ptr"
 )
 
 func MarshalParametersWithPath(req *http.Request, path string, v interface{}) error {

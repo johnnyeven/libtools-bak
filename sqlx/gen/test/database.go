@@ -1,7 +1,7 @@
 package test
 
 import (
-	"github.com/profzone/libtools/sqlx"
+	"github.com/johnnyeven/libtools/sqlx"
 )
 
 var DBTest = sqlx.NewDatabase("test")

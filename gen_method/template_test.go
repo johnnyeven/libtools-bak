@@ -5,7 +5,7 @@ import (
 	"testing"
 	"text/template"
 
-	"github.com/profzone/libtools/codegen"
+	"github.com/johnnyeven/libtools/codegen"
 )
 
 var gFile = os.Stdout

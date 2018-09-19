@@ -7,9 +7,9 @@ import (
 	"io/ioutil"
 	"reflect"
 
-	"github.com/profzone/libtools/courier/status_error"
-	"github.com/profzone/libtools/reflectx"
-	"github.com/profzone/libtools/strutil"
+	"github.com/johnnyeven/libtools/courier/status_error"
+	"github.com/johnnyeven/libtools/reflectx"
+	"github.com/johnnyeven/libtools/strutil"
 )
 
 func NewParameterMeta(field *reflect.StructField, rv reflect.Value, tagIn string, tagInFlags TagFlags) *ParameterMeta {

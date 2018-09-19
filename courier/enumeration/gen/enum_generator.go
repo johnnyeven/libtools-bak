@@ -9,10 +9,10 @@ import (
 
 	"golang.org/x/tools/go/loader"
 
-	"github.com/profzone/libtools/codegen"
-	"github.com/profzone/libtools/codegen/loaderx"
-	"github.com/profzone/libtools/courier/swagger/gen"
-	"github.com/profzone/libtools/godash"
+	"github.com/johnnyeven/libtools/codegen"
+	"github.com/johnnyeven/libtools/codegen/loaderx"
+	"github.com/johnnyeven/libtools/courier/swagger/gen"
+	"github.com/johnnyeven/libtools/godash"
 )
 
 type EnumGenerator struct {

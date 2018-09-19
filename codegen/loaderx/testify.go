@@ -10,7 +10,7 @@ import (
 	"github.com/google/uuid"
 	"golang.org/x/tools/go/loader"
 
-	"github.com/profzone/libtools/codegen"
+	"github.com/johnnyeven/libtools/codegen"
 )
 
 func replaceTagPlaceholder(s string) string {

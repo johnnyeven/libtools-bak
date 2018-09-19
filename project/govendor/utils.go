@@ -9,7 +9,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/profzone/libtools/executil"
+	"github.com/johnnyeven/libtools/executil"
 )
 
 var pkgsNoGoGet = []string{

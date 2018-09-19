@@ -5,9 +5,9 @@ import (
 	"context"
 	"io/ioutil"
 
-	"github.com/profzone/libtools/courier"
-	"github.com/profzone/libtools/courier/httpx"
-	"github.com/profzone/libtools/env"
+	"github.com/johnnyeven/libtools/courier"
+	"github.com/johnnyeven/libtools/courier/httpx"
+	"github.com/johnnyeven/libtools/env"
 )
 
 func getSwaggerJSON() []byte {

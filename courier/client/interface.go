@@ -1,7 +1,7 @@
 package client
 
 import (
-	"github.com/profzone/libtools/courier"
+	"github.com/johnnyeven/libtools/courier"
 )
 
 type IRequest interface {

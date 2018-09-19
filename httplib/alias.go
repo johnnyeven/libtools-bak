@@ -1,8 +1,8 @@
 package httplib
 
 import (
-	"github.com/profzone/libtools/courier/enumeration"
-	"github.com/profzone/libtools/courier/status_error"
+	"github.com/johnnyeven/libtools/courier/enumeration"
+	"github.com/johnnyeven/libtools/courier/status_error"
 )
 
 // deprecated

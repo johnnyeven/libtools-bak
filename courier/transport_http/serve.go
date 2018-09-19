@@ -15,8 +15,8 @@ import (
 	"github.com/fatih/color"
 	"github.com/julienschmidt/httprouter"
 
-	"github.com/profzone/libtools/conf"
-	"github.com/profzone/libtools/courier"
+	"github.com/johnnyeven/libtools/conf"
+	"github.com/johnnyeven/libtools/courier"
 )
 
 type ServeHTTP struct {

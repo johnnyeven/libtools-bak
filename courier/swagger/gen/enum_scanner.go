@@ -12,8 +12,8 @@ import (
 	"github.com/morlay/oas"
 	"golang.org/x/tools/go/loader"
 
-	"github.com/profzone/libtools/codegen"
-	"github.com/profzone/libtools/courier/enumeration"
+	"github.com/johnnyeven/libtools/codegen"
+	"github.com/johnnyeven/libtools/courier/enumeration"
 )
 
 func NewEnumScanner(program *loader.Program) *EnumScanner {

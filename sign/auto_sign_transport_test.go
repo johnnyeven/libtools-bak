@@ -7,8 +7,8 @@ import (
 	"github.com/davecgh/go-spew/spew"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/profzone/libtools/courier/client"
-	"github.com/profzone/libtools/courier/status_error"
+	"github.com/johnnyeven/libtools/courier/client"
+	"github.com/johnnyeven/libtools/courier/status_error"
 )
 
 func TestAutoSignTransport(t *testing.T) {

@@ -5,8 +5,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/profzone/libtools/executil"
-	"github.com/profzone/libtools/project/govendor"
+	"github.com/johnnyeven/libtools/executil"
+	"github.com/johnnyeven/libtools/project/govendor"
 )
 
 var cmdUpdateFlagUpdate bool

@@ -12,10 +12,10 @@ import (
 	"github.com/julienschmidt/httprouter"
 	"github.com/sirupsen/logrus"
 
-	"github.com/profzone/libtools/courier"
-	"github.com/profzone/libtools/courier/httpx"
-	"github.com/profzone/libtools/duration"
-	logContext "github.com/profzone/libtools/log/context"
+	"github.com/johnnyeven/libtools/courier"
+	"github.com/johnnyeven/libtools/courier/httpx"
+	"github.com/johnnyeven/libtools/duration"
+	logContext "github.com/johnnyeven/libtools/log/context"
 )
 
 func CreateHttpHandler(s *ServeHTTP, ops ...courier.IOperator) httprouter.Handle {

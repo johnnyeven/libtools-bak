@@ -3,8 +3,8 @@ package cmd
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/profzone/libtools/codegen"
-	"github.com/profzone/libtools/courier/enumeration/gen"
+	"github.com/johnnyeven/libtools/codegen"
+	"github.com/johnnyeven/libtools/courier/enumeration/gen"
 )
 
 var cmdGenEnum = &cobra.Command{

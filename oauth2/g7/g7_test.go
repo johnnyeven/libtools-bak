@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/profzone/libtools/conf"
+	"github.com/johnnyeven/libtools/conf"
 )
 
 func TestOAuth(t *testing.T) {

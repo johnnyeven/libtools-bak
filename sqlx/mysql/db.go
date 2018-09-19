@@ -5,9 +5,9 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/profzone/libtools/conf"
-	"github.com/profzone/libtools/conf/presets"
-	"github.com/profzone/libtools/sqlx"
+	"github.com/johnnyeven/libtools/conf"
+	"github.com/johnnyeven/libtools/conf/presets"
+	"github.com/johnnyeven/libtools/sqlx"
 )
 
 type MySQL struct {

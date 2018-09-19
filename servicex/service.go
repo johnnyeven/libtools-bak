@@ -7,8 +7,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/profzone/libtools/conf"
-	"github.com/profzone/libtools/service/dockerizier"
+	"github.com/johnnyeven/libtools/conf"
+	"github.com/johnnyeven/libtools/service/dockerizier"
 )
 
 var (

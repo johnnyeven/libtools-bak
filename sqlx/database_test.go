@@ -13,10 +13,10 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/profzone/libtools/runner"
-	"github.com/profzone/libtools/sqlx"
-	"github.com/profzone/libtools/sqlx/builder"
-	"github.com/profzone/libtools/timelib"
+	"github.com/johnnyeven/libtools/runner"
+	"github.com/johnnyeven/libtools/sqlx"
+	"github.com/johnnyeven/libtools/sqlx/builder"
+	"github.com/johnnyeven/libtools/timelib"
 )
 
 var db *sqlx.DB

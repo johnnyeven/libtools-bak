@@ -11,10 +11,10 @@ import (
 
 	"golib/gorm"
 
-	"github.com/profzone/libtools/courier/enumeration"
-	"github.com/profzone/libtools/duration"
-	"github.com/profzone/libtools/mysql/dberr"
-	"github.com/profzone/libtools/timelib"
+	"github.com/johnnyeven/libtools/courier/enumeration"
+	"github.com/johnnyeven/libtools/duration"
+	"github.com/johnnyeven/libtools/mysql/dberr"
+	"github.com/johnnyeven/libtools/timelib"
 )
 
 type CustomerG7List []CustomerG7

@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/profzone/libtools/codegen/loaderx"
+	"github.com/johnnyeven/libtools/codegen/loaderx"
 )
 
 func TestRouterScanner(t *testing.T) {
@@ -16,8 +16,8 @@ func TestRouterScanner(t *testing.T) {
 
 	import (
 		"context"
-		"github.com/profzone/libtools/courier/httpx"
-		"github.com/profzone/libtools/courier"
+		"github.com/johnnyeven/libtools/courier/httpx"
+		"github.com/johnnyeven/libtools/courier"
 	)
 
 	type Root struct {

@@ -11,7 +11,7 @@ import (
 	"github.com/wvanbergen/kazoo-go"
 	"gopkg.in/Shopify/sarama.v1"
 
-	"github.com/profzone/libtools/kafka/consumergroup"
+	"github.com/johnnyeven/libtools/kafka/consumergroup"
 )
 
 func PartitionerConstructor(topic string) sarama.Partitioner {

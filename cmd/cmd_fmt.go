@@ -9,7 +9,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/profzone/libtools/format"
+	"github.com/johnnyeven/libtools/format"
 )
 
 func LoadFiles(dir string, filter func(filename string) bool) (filenames []string) {

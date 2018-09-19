@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/profzone/libtools/sqlx/builder"
+	"github.com/johnnyeven/libtools/sqlx/builder"
 )
 
 func TestFlattenArgs(t *testing.T) {

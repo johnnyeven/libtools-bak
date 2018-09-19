@@ -6,11 +6,11 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/profzone/libtools/timelib"
+	"github.com/johnnyeven/libtools/timelib"
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/profzone/libtools/ptr"
+	"github.com/johnnyeven/libtools/ptr"
 )
 
 type Gender int

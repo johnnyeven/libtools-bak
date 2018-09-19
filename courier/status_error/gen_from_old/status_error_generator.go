@@ -17,8 +17,8 @@ import (
 
 	"golang.org/x/tools/go/loader"
 
-	"github.com/profzone/libtools/codegen"
-	"github.com/profzone/libtools/courier/status_error"
+	"github.com/johnnyeven/libtools/codegen"
+	"github.com/johnnyeven/libtools/courier/status_error"
 )
 
 type StatusErrorGenerator struct {
@@ -119,7 +119,7 @@ func (g *StatusErrorGenerator) Output(cwd string) codegen.Outputs {
 //go:generate tools gen error
 import (
 	"net/http"
-	"github.com/profzone/libtools/courier/status_error"
+	"github.com/johnnyeven/libtools/courier/status_error"
 )
 `, p.Name))
 

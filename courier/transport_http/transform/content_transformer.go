@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"encoding/xml"
 
-	"github.com/profzone/libtools/courier/httpx"
+	"github.com/johnnyeven/libtools/courier/httpx"
 )
 
 func init() {

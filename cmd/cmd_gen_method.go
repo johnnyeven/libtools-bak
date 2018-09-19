@@ -3,7 +3,7 @@ package cmd
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/profzone/libtools/gen_method"
+	"github.com/johnnyeven/libtools/gen_method"
 )
 
 var cmdGenMethodFlagNoTableName bool

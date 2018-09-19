@@ -9,9 +9,9 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"github.com/profzone/libtools/env"
-	"github.com/profzone/libtools/reflectx"
-	"github.com/profzone/libtools/strutil"
+	"github.com/johnnyeven/libtools/env"
+	"github.com/johnnyeven/libtools/reflectx"
+	"github.com/johnnyeven/libtools/strutil"
 )
 
 type TagFlags map[string]bool

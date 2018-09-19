@@ -4,11 +4,11 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/profzone/libtools/ptr"
+	"github.com/johnnyeven/libtools/ptr"
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/profzone/libtools/conf/presets"
+	"github.com/johnnyeven/libtools/conf/presets"
 )
 
 type SubConfig struct {

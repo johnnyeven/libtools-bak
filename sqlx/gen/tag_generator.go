@@ -13,8 +13,8 @@ import (
 	"github.com/sirupsen/logrus"
 	"golang.org/x/tools/go/loader"
 
-	"github.com/profzone/libtools/codegen"
-	"github.com/profzone/libtools/codegen/loaderx"
+	"github.com/johnnyeven/libtools/codegen"
+	"github.com/johnnyeven/libtools/codegen/loaderx"
 )
 
 type TagGenerator struct {
@@ -146,9 +146,9 @@ func modifyTag(structType *ast.StructType, typeStruct *types.Struct, withDefault
 		if tags["sql"] == "" {
 			tpe := f.Type()
 			switch codegen.DeVendor(tpe.String()) {
-			case "github.com/profzone/libtools/timelib.MySQLDatetime":
+			case "github.com/johnnyeven/libtools/timelib.MySQLDatetime":
 				tags["sql"] = "datetime NOT NULL"
-			case "github.com/profzone/libtools/timelib.MySQLTimestamp":
+			case "github.com/johnnyeven/libtools/timelib.MySQLTimestamp":
 				tags["sql"] = toSqlFromKind(types.Typ[types.Int64].Kind(), withDefaults)
 			default:
 				tpe, err := IndirectType(tpe)

@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/profzone/libtools/duration"
+	"github.com/johnnyeven/libtools/duration"
 )
 
 func TestNewCost(t *testing.T) {

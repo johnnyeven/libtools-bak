@@ -7,10 +7,10 @@ import (
 
 	"github.com/go-openapi/spec"
 
-	"github.com/profzone/libtools/codegen"
-	"github.com/profzone/libtools/courier/client/gen/common"
-	"github.com/profzone/libtools/courier/httpx"
-	"github.com/profzone/libtools/courier/swagger/gen"
+	"github.com/johnnyeven/libtools/codegen"
+	"github.com/johnnyeven/libtools/courier/client/gen/common"
+	"github.com/johnnyeven/libtools/courier/httpx"
+	"github.com/johnnyeven/libtools/courier/swagger/gen"
 )
 
 func ToClient(baseClient string, serviceName string, swagger *spec.Swagger) string {

@@ -3,7 +3,7 @@ package volvo
 import (
 	"fmt"
 
-	"github.com/profzone/libtools/vin-code/vinrune"
+	"github.com/johnnyeven/libtools/vin-code/vinrune"
 )
 
 var (

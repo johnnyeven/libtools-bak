@@ -7,8 +7,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 
-	"github.com/profzone/libtools/courier/transport_http/transform"
-	"github.com/profzone/libtools/reflectx"
+	"github.com/johnnyeven/libtools/courier/transport_http/transform"
+	"github.com/johnnyeven/libtools/reflectx"
 )
 
 type Request interface {

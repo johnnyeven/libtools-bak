@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/profzone/libtools/reflectx"
+	"github.com/johnnyeven/libtools/reflectx"
 )
 
 func TestParameterMap(t *testing.T) {

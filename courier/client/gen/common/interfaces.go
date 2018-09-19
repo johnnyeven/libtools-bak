@@ -3,7 +3,7 @@ package common
 import (
 	"io"
 
-	"github.com/profzone/libtools/codegen"
+	"github.com/johnnyeven/libtools/codegen"
 )
 
 type Op interface {

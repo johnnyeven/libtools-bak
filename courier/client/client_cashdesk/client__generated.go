@@ -3,12 +3,12 @@ package client_cashdesk
 import (
 	"fmt"
 
-	golib_tools_courier "github.com/profzone/libtools/courier"
-	golib_tools_courier_enumeration "github.com/profzone/libtools/courier/enumeration"
-	golib_tools_courier_status_error "github.com/profzone/libtools/courier/status_error"
-	golib_tools_timelib "github.com/profzone/libtools/timelib"
+	golib_tools_courier "github.com/johnnyeven/libtools/courier"
+	golib_tools_courier_enumeration "github.com/johnnyeven/libtools/courier/enumeration"
+	golib_tools_courier_status_error "github.com/johnnyeven/libtools/courier/status_error"
+	golib_tools_timelib "github.com/johnnyeven/libtools/timelib"
 
-	golib_tools_courier_client "github.com/profzone/libtools/courier/client"
+	golib_tools_courier_client "github.com/johnnyeven/libtools/courier/client"
 )
 
 type ClientCashdeskInterface interface {

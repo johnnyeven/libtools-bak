@@ -7,9 +7,9 @@ import (
 	"go/ast"
 	"reflect"
 
-	"github.com/profzone/libtools/reflectx"
-	"github.com/profzone/libtools/strutil"
-	"github.com/profzone/libtools/validate"
+	"github.com/johnnyeven/libtools/reflectx"
+	"github.com/johnnyeven/libtools/strutil"
+	"github.com/johnnyeven/libtools/validate"
 )
 
 type Validator func() (isValid bool, msg string)

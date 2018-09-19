@@ -7,7 +7,7 @@ import (
 	"encoding"
 	"errors"
 
-	golib_tools_courier_enumeration "github.com/profzone/libtools/courier/enumeration"
+	golib_tools_courier_enumeration "github.com/johnnyeven/libtools/courier/enumeration"
 )
 
 var InvalidState = errors.New("invalid State")

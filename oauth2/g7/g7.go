@@ -6,9 +6,9 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/profzone/libtools/conf"
-	"github.com/profzone/libtools/conf/presets"
-	"github.com/profzone/libtools/courier/client"
+	"github.com/johnnyeven/libtools/conf"
+	"github.com/johnnyeven/libtools/conf/presets"
+	"github.com/johnnyeven/libtools/courier/client"
 )
 
 type OAuth struct {

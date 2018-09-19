@@ -6,7 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/profzone/libtools/project/commit_msg"
+	"github.com/johnnyeven/libtools/project/commit_msg"
 )
 
 var cmdCommitMsgFlagInit bool

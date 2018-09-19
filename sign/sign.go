@@ -9,8 +9,8 @@ import (
 	"net/url"
 	"sort"
 
-	"github.com/profzone/libtools/courier/status_error"
-	"github.com/profzone/libtools/courier/transport_http/transform"
+	"github.com/johnnyeven/libtools/courier/status_error"
+	"github.com/johnnyeven/libtools/courier/transport_http/transform"
 )
 
 var Sign = "sign"

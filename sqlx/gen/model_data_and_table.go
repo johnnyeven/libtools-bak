@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"sort"
 
-	"github.com/profzone/libtools/godash"
-	"github.com/profzone/libtools/sqlx/builder"
+	"github.com/johnnyeven/libtools/godash"
+	"github.com/johnnyeven/libtools/sqlx/builder"
 )
 
 func (m *Model) dataAndTable() string {
@@ -13,18 +13,18 @@ func (m *Model) dataAndTable() string {
 
 	if m.WithTableInterfaces {
 		m.ParseTo(buf, `
-var {{ .StructName }}Table *{{ use "github.com/profzone/libtools/sqlx/builder" }}.Table
+var {{ .StructName }}Table *{{ use "github.com/johnnyeven/libtools/sqlx/builder" }}.Table
 
 func init() {
 	{{ .StructName }}Table = {{ .Database }}.Register(&{{ .StructName }}{})
 }
 
-func ({{ var .StructName }} *{{ .StructName }}) D() *{{ use "github.com/profzone/libtools/sqlx" }}.Database {
+func ({{ var .StructName }} *{{ .StructName }}) D() *{{ use "github.com/johnnyeven/libtools/sqlx" }}.Database {
 	return {{ .Database }}
 }
 
 
-func ({{ var .StructName }} *{{ .StructName }}) T() *{{ use "github.com/profzone/libtools/sqlx/builder" }}.Table {
+func ({{ var .StructName }} *{{ .StructName }}) T() *{{ use "github.com/johnnyeven/libtools/sqlx/builder" }}.Table {
 	return {{ .StructName }}Table
 }
 
@@ -38,7 +38,7 @@ func ({{ var .StructName }} *{{ .StructName }}) TableName() string {
 	{{ $structName := .StructName }}
 
 	type {{ .StructName }}Fields struct {
-		{{ range $k, $field := ( .FieldNames ) }}{{ print $field }} *{{ use "github.com/profzone/libtools/sqlx/builder" }}.Column
+		{{ range $k, $field := ( .FieldNames ) }}{{ print $field }} *{{ use "github.com/johnnyeven/libtools/sqlx/builder" }}.Column
 		{{ end }}
 	}
 	
@@ -63,12 +63,12 @@ func ({{ var .StructName }} *{{ .StructName }}) TableName() string {
 		return {{ dump .IndexFieldNames }}
 	}
 
-	func ({{ var .StructName }} *{{ .StructName }}) ConditionByStruct() *{{ use "github.com/profzone/libtools/sqlx/builder" }}.Condition  {
+	func ({{ var .StructName }} *{{ .StructName }}) ConditionByStruct() *{{ use "github.com/johnnyeven/libtools/sqlx/builder" }}.Condition  {
 		table := {{ var .StructName }}.T()
 
-		fieldValues := {{ use "github.com/profzone/libtools/sqlx" }}.FieldValuesFromStructByNonZero({{ var .StructName }})
+		fieldValues := {{ use "github.com/johnnyeven/libtools/sqlx" }}.FieldValuesFromStructByNonZero({{ var .StructName }})
 
-		conditions := []*{{ use "github.com/profzone/libtools/sqlx/builder" }}.Condition{}
+		conditions := []*{{ use "github.com/johnnyeven/libtools/sqlx/builder" }}.Condition{}
 
 		for _, fieldName := range {{ var .StructName }}.IndexFieldNames() {
 			if v, exists := fieldValues[fieldName]; exists {
@@ -85,10 +85,10 @@ func ({{ var .StructName }} *{{ .StructName }}) TableName() string {
 			conditions = append(conditions, table.F(fieldName).Eq(v))
 		}
 
-		condition := {{ use "github.com/profzone/libtools/sqlx/builder" }}.And(conditions...)
+		condition := {{ use "github.com/johnnyeven/libtools/sqlx/builder" }}.And(conditions...)
 
 		{{ if .HasSoftDelete }}
-			condition = {{ use "github.com/profzone/libtools/sqlx/builder" }}.And(condition, table.F("{{ .FieldSoftDelete }}").Eq({{ use .ConstSoftDeleteTrue }}))
+			condition = {{ use "github.com/johnnyeven/libtools/sqlx/builder" }}.And(condition, table.F("{{ .FieldSoftDelete }}").Eq({{ use .ConstSoftDeleteTrue }}))
 		{{ end }}
 		return condition
 	}

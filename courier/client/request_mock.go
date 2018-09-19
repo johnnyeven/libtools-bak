@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/profzone/libtools/courier"
-	"github.com/profzone/libtools/courier/httpx"
-	"github.com/profzone/libtools/courier/status_error"
+	"github.com/johnnyeven/libtools/courier"
+	"github.com/johnnyeven/libtools/courier/httpx"
+	"github.com/johnnyeven/libtools/courier/status_error"
 )
 
 func MetadataWithMocker(mocker *Mocker) courier.Metadata {

@@ -6,7 +6,7 @@ import (
 
 	"github.com/davecgh/go-spew/spew"
 
-	"github.com/profzone/libtools/courier/httpx"
+	"github.com/johnnyeven/libtools/courier/httpx"
 )
 
 type Group struct {

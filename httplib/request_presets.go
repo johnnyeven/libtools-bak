@@ -1,7 +1,7 @@
 package httplib
 
 import (
-	"github.com/profzone/libtools/timelib"
+	"github.com/johnnyeven/libtools/timelib"
 )
 
 type Pager struct {

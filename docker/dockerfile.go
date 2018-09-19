@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/profzone/libtools/executil"
-	"github.com/profzone/libtools/godash"
+	"github.com/johnnyeven/libtools/executil"
+	"github.com/johnnyeven/libtools/godash"
 )
 
 func EnvVarInDocker(key string) string {

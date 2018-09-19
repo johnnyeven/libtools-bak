@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/profzone/libtools/courier/status_error"
+	"github.com/johnnyeven/libtools/courier/status_error"
 )
 
 type TUnmarshal func(data []byte, v interface{}) error

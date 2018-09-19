@@ -5,8 +5,8 @@ import (
 
 	"gopkg.in/Shopify/sarama.v1"
 
-	"github.com/profzone/libtools/conf"
-	"github.com/profzone/libtools/kafka/consumergroup"
+	"github.com/johnnyeven/libtools/conf"
+	"github.com/johnnyeven/libtools/kafka/consumergroup"
 )
 
 type ProducerKafkaConfig struct {

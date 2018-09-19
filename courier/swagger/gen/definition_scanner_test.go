@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/profzone/libtools/codegen/loaderx"
+	"github.com/johnnyeven/libtools/codegen/loaderx"
 )
 
 func TestDefinitionScanner(t *testing.T) {
@@ -16,7 +16,7 @@ func TestDefinitionScanner(t *testing.T) {
 
 	import (
 		"time"
-		"github.com/profzone/libtools/courier/enumeration"
+		"github.com/johnnyeven/libtools/courier/enumeration"
 	)
 
 	type String string

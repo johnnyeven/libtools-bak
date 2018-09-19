@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/profzone/libtools/codegen"
+	"github.com/johnnyeven/libtools/codegen"
 )
 
 func init() {

@@ -6,7 +6,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/profzone/libtools/env"
+	"github.com/johnnyeven/libtools/env"
 )
 
 type TableDef interface {

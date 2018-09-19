@@ -1,7 +1,7 @@
 package err
 
 import (
-	"github.com/profzone/libtools/httplib"
+	"github.com/johnnyeven/libtools/httplib"
 )
 
 var (

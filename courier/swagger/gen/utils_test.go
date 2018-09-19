@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/profzone/libtools/courier"
+	"github.com/johnnyeven/libtools/courier"
 )
 
 func ToMap(schema interface{}) (result interface{}) {

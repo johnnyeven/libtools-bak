@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/profzone/libtools/codegen/loaderx"
+	"github.com/johnnyeven/libtools/codegen/loaderx"
 )
 
 func TestOperatorScanner(t *testing.T) {
@@ -17,7 +17,7 @@ func TestOperatorScanner(t *testing.T) {
 	import (
 		"fmt"
 		"net/http"
-		"github.com/profzone/libtools/courier/status_error"
+		"github.com/johnnyeven/libtools/courier/status_error"
 	)
 
 	type With struct {
@@ -125,7 +125,7 @@ func TestOperatorScannerWithFile(t *testing.T) {
 	package main
 
 	import (
-		"github.com/profzone/libtools/courier/transport_http"
+		"github.com/johnnyeven/libtools/courier/transport_http"
 	)
 
 	// Op
@@ -155,7 +155,7 @@ func TestOperatorScannerForWebSocket(t *testing.T) {
 	package main
 
 	import (
-		"github.com/profzone/libtools/courier/transport_http"
+		"github.com/johnnyeven/libtools/courier/transport_http"
 	)
 
 	type WS struct {
