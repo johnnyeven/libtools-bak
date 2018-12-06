@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"os/signal"
 	"reflect"
 	"regexp"
 	"sort"
@@ -17,6 +16,7 @@ import (
 
 	"github.com/johnnyeven/libtools/conf"
 	"github.com/johnnyeven/libtools/courier"
+	"os/signal"
 )
 
 type ServeHTTP struct {
@@ -28,6 +28,7 @@ type ServeHTTP struct {
 	ReadTimeout  time.Duration
 	WithCORS     bool
 	router       *httprouter.Router
+	serv         *http.Server
 }
 
 func (s ServeHTTP) DockerDefaults() conf.DockerDefaults {
@@ -65,26 +66,28 @@ func (s *ServeHTTP) Serve(router *courier.Router) error {
 	s.MarshalDefaults(s)
 	s.router = s.convertRouterToHttpRouter(router)
 
-	srv := &http.Server{
+	s.serv = &http.Server{
 		Handler:      s,
 		Addr:         fmt.Sprintf("%s:%d", s.IP, s.Port),
 		WriteTimeout: s.WriteTimeout,
 		ReadTimeout:  s.ReadTimeout,
 	}
 
-	idleConnsClosed := make(chan struct{})
 	go func() {
 		sigint := make(chan os.Signal, 1)
 		signal.Notify(sigint, os.Interrupt)
 		<-sigint
-		if err := srv.Shutdown(context.Background()); err != nil {
+		if err := s.Stop(); err != nil {
 			fmt.Printf("HTTP server Shutdown: %v", err)
 		}
-		close(idleConnsClosed)
 	}()
 
-	fmt.Printf("[Courier] listen on %s\n", srv.Addr)
-	return srv.ListenAndServe()
+	fmt.Printf("[Courier] listen on %s\n", s.serv.Addr)
+	return s.serv.ListenAndServe()
+}
+
+func (s *ServeHTTP) Stop() error {
+	return s.serv.Shutdown(context.Background())
 }
 
 var RxHttpRouterPath = regexp.MustCompile("/:([^/]+)")

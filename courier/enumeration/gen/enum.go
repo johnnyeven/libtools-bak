@@ -206,7 +206,7 @@ func (`+m.Name+`) Enums() map[int][]string {
 
 	for _, option := range m.Options {
 		io.WriteString(w, fmt.Sprintf(`int(%s): {%s, %s},
-`, m.ConstKey(option.Value), strconv.Quote(option.Value.(string)), strconv.Quote(option.Label)))
+`, m.ConstKey(option.Value), strconv.Quote(fmt.Sprintf("%s", option.Value)), strconv.Quote(option.Label)))
 	}
 
 	io.WriteString(w, `
