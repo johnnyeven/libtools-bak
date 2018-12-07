@@ -13,6 +13,7 @@ import (
 	"github.com/johnnyeven/libtools/courier/transport_http"
 	"github.com/johnnyeven/libtools/env"
 	"github.com/johnnyeven/libtools/log/context"
+	"github.com/johnnyeven/libtools/servicex"
 )
 
 type Client struct {
@@ -30,7 +31,7 @@ type Client struct {
 func (c Client) DockerDefaults() conf.DockerDefaults {
 	return conf.DockerDefaults{
 		// todo make switch in docker or expose
-		"Host": conf.RancherInternal("service-"+c.Name, "service-"+c.Name),
+		"Host": conf.RancherInternal(os.Getenv(servicex.EnvVarKeyProjectGroup), "service-"+c.Name),
 		"Port": 80,
 	}
 }

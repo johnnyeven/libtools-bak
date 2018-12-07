@@ -7,5 +7,8 @@ RUN sed -i "s|http://dl-cdn.alpinelinux.org|http://mirrors.aliyun.com|g" /etc/ap
 RUN apk add --no-cache curl git openssh wget unzip \
     && go get -u github.com/kardianos/govendor
 
-COPY . /go/src/github.com/johnnyeven/libtools
+COPY libtools /go/src/github.com/johnnyeven/libtools
 RUN cd /go/src/github.com/johnnyeven/libtools && go install
+
+COPY profzone /go/src/github.com/johnnyeven/profzone
+RUN cd /go/src/github.com/johnnyeven/profzone && go install

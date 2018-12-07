@@ -7,6 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/johnnyeven/libtools/servicex/internal"
 	"github.com/johnnyeven/libtools/conf"
 	"github.com/johnnyeven/libtools/service/dockerizier"
 )
@@ -14,6 +15,7 @@ import (
 var (
 	EnvVarKeyProjectName    = "PROJECT_NAME"
 	EnvVarKeyProjectFeature = "PROJECT_FEATURE"
+	EnvVarKeyProjectGroup   = "PROJECT_GROUP"
 )
 
 func init() {
@@ -63,7 +65,14 @@ func ConfP(c interface{}) {
 		panic(fmt.Errorf("ConfP pass ptr for setting value"))
 	}
 
+	p := &internal.Project{}
+	err := p.UnmarshalFromFile()
+	if err != nil {
+		panic(fmt.Errorf("ConfP need project config file. err: %v", err))
+	}
+
 	os.Setenv(EnvVarKeyProjectName, ServiceName)
+	os.Setenv(EnvVarKeyProjectGroup, p.Group)
 
 	envVars = conf.UnmarshalConf(c, envConfigPrefix)
 	envVars.Print()
