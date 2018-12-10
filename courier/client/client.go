@@ -16,6 +16,8 @@ import (
 	"github.com/johnnyeven/libtools/servicex"
 )
 
+const depToolStackName = "dep-tools"
+
 type Client struct {
 	Name string
 	// used in service
@@ -30,6 +32,13 @@ type Client struct {
 }
 
 func (c Client) DockerDefaults() conf.DockerDefaults {
+	if c.Name == "rancher" {
+		return conf.DockerDefaults{
+			// todo make switch in docker or expose
+			"Host": conf.RancherInternal(depToolStackName, c.Name),
+			"Port": 38080,
+		}
+	}
 	return conf.DockerDefaults{
 		// todo make switch in docker or expose
 		"Host": conf.RancherInternal(c.Group, "service-"+c.Name),
