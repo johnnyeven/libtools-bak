@@ -129,6 +129,11 @@ func NewHttpRequestFromParameterGroup(method string, uri string, m *ParameterGro
 
 	if metadatas != nil {
 		for key, values := range courier.MetadataMerge(metadatas...) {
+			if key == httpx.HeaderAuthorization {
+				req.SetBasicAuth(values[0], values[1])
+				continue
+			}
+
 			for _, v := range values {
 				req.Header.Add(key, v)
 			}
