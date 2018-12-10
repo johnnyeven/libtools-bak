@@ -36,6 +36,7 @@ func toDockerFileYML(envVars conf.EnvVars, serviceName string) string {
 
 	d = d.AddContent("./config", "./config")
 	d = d.AddContent("./"+serviceName, "./")
+	d = d.AddContent("./profzone.yml", "./")
 
 	bytes, _ := yaml.Marshal(d)
 	return string(bytes)

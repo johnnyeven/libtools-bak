@@ -20,10 +20,11 @@ type Client struct {
 	Name string
 	// used in service
 	Service       string
+	Group         string
 	Version       string
 	Host          string `conf:"env,upstream" validate:"@hostname"`
 	Mode          string
-	Port          int16
+	Port          int
 	Timeout       time.Duration
 	WrapTransport transport_http.TransportWrapper
 }
@@ -31,7 +32,7 @@ type Client struct {
 func (c Client) DockerDefaults() conf.DockerDefaults {
 	return conf.DockerDefaults{
 		// todo make switch in docker or expose
-		"Host": conf.RancherInternal(os.Getenv(servicex.EnvVarKeyProjectGroup), "service-"+c.Name),
+		"Host": conf.RancherInternal(c.Group, "service-"+c.Name),
 		"Port": 80,
 	}
 }
@@ -40,6 +41,9 @@ func (Client) MarshalDefaults(v interface{}) {
 	if client, ok := v.(*Client); ok {
 		if client.Service == "" {
 			client.Service = os.Getenv("PROJECT_NAME")
+		}
+		if client.Group == "" {
+			client.Group = os.Getenv(servicex.EnvVarKeyProjectGroup)
 		}
 		if client.Version == "" {
 			client.Version = os.Getenv("PROJECT_REF")
