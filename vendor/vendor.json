@@ -15,6 +15,13 @@
 			"revisionTime": "2017-08-10T14:37:23Z"
 		},
 		{
+			"checksumSHA1": "dvabztWVQX8f6oMLRyv4dLH+TGY=",
+			"origin": "github.com/stretchr/testify/vendor/github.com/davecgh/go-spew/spew",
+			"path": "github.com/davecgh/go-spew/spew",
+			"revision": "8019298d9fa5a04fc2ad10ae03349df3483096a6",
+			"revisionTime": "2018-10-28T12:27:15Z"
+		},
+		{
 			"checksumSHA1": "VsE3zx2d8kpwj97TWhYddzAwBrY=",
 			"path": "github.com/fatih/color",
 			"revision": "507f6050b8568533fb3f5504de8e5205fa62a114",
@@ -215,6 +222,13 @@
 			"revisionTime": "2017-06-28T01:26:37Z"
 		},
 		{
+			"checksumSHA1": "LuFv4/jlrmFNnDb/5SCSEPAM9vU=",
+			"origin": "github.com/stretchr/testify/vendor/github.com/pmezard/go-difflib/difflib",
+			"path": "github.com/pmezard/go-difflib/difflib",
+			"revision": "8019298d9fa5a04fc2ad10ae03349df3483096a6",
+			"revisionTime": "2018-10-28T12:27:15Z"
+		},
+		{
 			"checksumSHA1": "ySaT8G3I3y4MmnoXOYAAX0rC+p8=",
 			"path": "github.com/sirupsen/logrus",
 			"revision": "d682213848ed68c0a260ca37d6dd5ace8423f5ba",
@@ -254,6 +268,24 @@
 			"checksumSHA1": "XeB0yeQkOMI+CWrllrbTrg4iOEs=",
 			"path": "github.com/spf13/viper",
 			"revision": ""
+		},
+		{
+			"checksumSHA1": "v3LEmqP4Cb6qGCIP7mJk7l2ZXw8=",
+			"path": "github.com/stretchr/testify/assert",
+			"revision": "8019298d9fa5a04fc2ad10ae03349df3483096a6",
+			"revisionTime": "2018-10-28T12:27:15Z"
+		},
+		{
+			"checksumSHA1": "3DvkGtpbJW8oXepRr3wYSs72LmQ=",
+			"path": "github.com/stretchr/testify/require",
+			"revision": "8019298d9fa5a04fc2ad10ae03349df3483096a6",
+			"revisionTime": "2018-10-28T12:27:15Z"
+		},
+		{
+			"checksumSHA1": "uefllr2OtKBGo/kQSAPbW3w6p0A=",
+			"path": "github.com/stretchr/testify/suite",
+			"revision": "8019298d9fa5a04fc2ad10ae03349df3483096a6",
+			"revisionTime": "2018-10-28T12:27:15Z"
 		},
 		{
 			"checksumSHA1": "TuSuFDkCZyZwXeFgZ6cIqaGctKo=",
@@ -316,12 +348,12 @@
 			"revisionTime": "2017-12-11T20:45:21Z"
 		},
 		{
-			"checksumSHA1": "fDv4eIQwZuKatRI+hU7ILAJSl5c=",
+			"checksumSHA1": "HJCYHqYjA5IaiHXbZrTS3dZY+zU=",
 			"path": "golang.org/x/sys/unix",
 			"revision": ""
 		},
 		{
-			"checksumSHA1": "LkAsnLUlAZSg3lRYk7BEyNfog3A=",
+			"checksumSHA1": "Y7nctMxT58lRM78VtElPerhcnEs=",
 			"path": "golang.org/x/sys/windows",
 			"revision": ""
 		},
