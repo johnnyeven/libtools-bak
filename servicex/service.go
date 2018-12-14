@@ -10,12 +10,14 @@ import (
 	"github.com/johnnyeven/libtools/servicex/internal"
 	"github.com/johnnyeven/libtools/conf"
 	"github.com/johnnyeven/libtools/service/dockerizier"
+	"strings"
 )
 
 var (
 	EnvVarKeyProjectName    = "PROJECT_NAME"
 	EnvVarKeyProjectFeature = "PROJECT_FEATURE"
 	EnvVarKeyProjectGroup   = "PROJECT_GROUP"
+	EnvVarKeyServiceName    = "SERVICE_NAME"
 )
 
 func init() {
@@ -72,6 +74,7 @@ func ConfP(c interface{}) {
 	}
 
 	os.Setenv(EnvVarKeyProjectName, ServiceName)
+	os.Setenv(EnvVarKeyServiceName, strings.Replace(ServiceName, "service-", "", 1))
 	os.Setenv(EnvVarKeyProjectGroup, p.Group)
 
 	envVars = conf.UnmarshalConf(c, envConfigPrefix)
