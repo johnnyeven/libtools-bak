@@ -17,6 +17,7 @@ import (
 	"github.com/johnnyeven/libtools/conf"
 	"github.com/johnnyeven/libtools/courier"
 	"os/signal"
+	"github.com/johnnyeven/libtools/servicex"
 )
 
 type ServeHTTP struct {
@@ -41,7 +42,7 @@ func (s ServeHTTP) DockerDefaults() conf.DockerDefaults {
 func (s ServeHTTP) MarshalDefaults(v interface{}) {
 	if h, ok := v.(*ServeHTTP); ok {
 		if h.Name == "" {
-			h.Name = os.Getenv("PROJECT_NAME")
+			h.Name = os.Getenv(servicex.EnvVarKeyProjectName)
 		}
 
 		if h.SwaggerPath == "" {

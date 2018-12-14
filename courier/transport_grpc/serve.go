@@ -10,6 +10,7 @@ import (
 
 	"github.com/johnnyeven/libtools/conf"
 	"github.com/johnnyeven/libtools/courier"
+	"github.com/johnnyeven/libtools/servicex"
 )
 
 type ServeGRPC struct {
@@ -29,7 +30,7 @@ func (s ServeGRPC) DockerDefaults() conf.DockerDefaults {
 func (s ServeGRPC) MarshalDefaults(v interface{}) {
 	if grpc, ok := v.(*ServeGRPC); ok {
 		if grpc.Name == "" {
-			grpc.Name = os.Getenv("PROJECT_NAME")
+			grpc.Name = os.Getenv(servicex.EnvVarKeyServiceName)
 		}
 
 		if grpc.Port == 0 {
