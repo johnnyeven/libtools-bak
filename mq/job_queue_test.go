@@ -8,9 +8,9 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 
-	"git.chinawayltd.com/golib/tools/mq"
-	mq_redis "git.chinawayltd.com/golib/tools/mq/redis"
-	"git.chinawayltd.com/golib/tools/redis"
+	"github.com/johnnyeven/libtools/mq"
+	mq_redis "github.com/johnnyeven/libtools/mq/redis"
+	"github.com/johnnyeven/libtools/redis"
 )
 
 var r = &redis.Redis{

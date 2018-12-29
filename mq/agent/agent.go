@@ -14,14 +14,14 @@ import (
 	"github.com/google/uuid"
 	"gopkg.in/robfig/cron.v2"
 
-	"git.chinawayltd.com/golib/tools/conf"
-	"git.chinawayltd.com/golib/tools/conf/presets"
-	"git.chinawayltd.com/golib/tools/courier"
-	"git.chinawayltd.com/golib/tools/env"
-	"git.chinawayltd.com/golib/tools/mq"
-	mq_redis "git.chinawayltd.com/golib/tools/mq/redis"
-	"git.chinawayltd.com/golib/tools/reflectx"
-	"git.chinawayltd.com/golib/tools/timelib"
+	"github.com/johnnyeven/libtools/conf"
+	"github.com/johnnyeven/libtools/conf/presets"
+	"github.com/johnnyeven/libtools/courier"
+	"github.com/johnnyeven/libtools/env"
+	"github.com/johnnyeven/libtools/mq"
+	mq_redis "github.com/johnnyeven/libtools/mq/redis"
+	"github.com/johnnyeven/libtools/reflectx"
+	"github.com/johnnyeven/libtools/timelib"
 )
 
 var (

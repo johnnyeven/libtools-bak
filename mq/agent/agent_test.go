@@ -9,8 +9,8 @@ import (
 	"github.com/davecgh/go-spew/spew"
 	"github.com/sirupsen/logrus"
 
-	"git.chinawayltd.com/golib/tools/courier"
-	"git.chinawayltd.com/golib/tools/mq"
+	"github.com/johnnyeven/libtools/courier"
+	"github.com/johnnyeven/libtools/mq"
 )
 
 func init() {

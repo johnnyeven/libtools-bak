@@ -8,7 +8,7 @@ import (
 
 	"github.com/gomodule/redigo/redis"
 
-	"git.chinawayltd.com/golib/tools/mq"
+	"github.com/johnnyeven/libtools/mq"
 )
 
 func NewRedisBackend(pool *redis.Pool, prefix string) *RedisBackend {
