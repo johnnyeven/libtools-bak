@@ -3,6 +3,96 @@
 	"ignore": "test",
 	"package": [
 		{
+			"checksumSHA1": "a/Os9ql5a3FIiXliDiYJ1t19S/I=",
+			"path": "git.chinawayltd.com/golib/tools/conf",
+			"revision": "0fc325dfc87e752d97860b475d721a5d8ee47577",
+			"revisionTime": "2018-12-27T03:34:20Z"
+		},
+		{
+			"checksumSHA1": "Ci9RDM8HvNumwYB/D3bEisJH+nA=",
+			"path": "git.chinawayltd.com/golib/tools/conf/presets",
+			"revision": "0fc325dfc87e752d97860b475d721a5d8ee47577",
+			"revisionTime": "2018-12-27T03:34:20Z"
+		},
+		{
+			"checksumSHA1": "wWkEMrQNkRQfBIiaIxEzo6HnYf8=",
+			"path": "git.chinawayltd.com/golib/tools/courier",
+			"revision": "0fc325dfc87e752d97860b475d721a5d8ee47577",
+			"revisionTime": "2018-12-27T03:34:20Z"
+		},
+		{
+			"checksumSHA1": "KWuBzxKSjBACAjekjVBxk2cteTc=",
+			"path": "git.chinawayltd.com/golib/tools/courier/httpx",
+			"revision": "0fc325dfc87e752d97860b475d721a5d8ee47577",
+			"revisionTime": "2018-12-27T03:34:20Z"
+		},
+		{
+			"checksumSHA1": "dbGiqyi7tPR0sAYWg1RoOXZ7rg4=",
+			"path": "git.chinawayltd.com/golib/tools/courier/status_error",
+			"revision": "0fc325dfc87e752d97860b475d721a5d8ee47577",
+			"revisionTime": "2018-12-27T03:34:20Z"
+		},
+		{
+			"checksumSHA1": "JYsxEPiPof0C1hf4yxBFqqHA1dw=",
+			"path": "git.chinawayltd.com/golib/tools/courier/transport_http/transform",
+			"revision": "0fc325dfc87e752d97860b475d721a5d8ee47577",
+			"revisionTime": "2018-12-27T03:34:20Z"
+		},
+		{
+			"checksumSHA1": "3th5+ePWW+slaikrq0ZO1WeJe2E=",
+			"path": "git.chinawayltd.com/golib/tools/env",
+			"revision": "0fc325dfc87e752d97860b475d721a5d8ee47577",
+			"revisionTime": "2018-12-27T03:34:20Z"
+		},
+		{
+			"checksumSHA1": "ieFgMxrXFko1Zewz27krJAy/rRQ=",
+			"path": "git.chinawayltd.com/golib/tools/mq",
+			"revision": "0fc325dfc87e752d97860b475d721a5d8ee47577",
+			"revisionTime": "2018-12-27T03:34:20Z"
+		},
+		{
+			"checksumSHA1": "hifQVNTpaKnnzAko/YSqE6gubLs=",
+			"path": "git.chinawayltd.com/golib/tools/mq/redis",
+			"revision": "0fc325dfc87e752d97860b475d721a5d8ee47577",
+			"revisionTime": "2018-12-27T03:34:20Z"
+		},
+		{
+			"checksumSHA1": "+XeJIPq9fhrnahXWtG3Hmm2K5f8=",
+			"path": "git.chinawayltd.com/golib/tools/redis",
+			"revision": "0fc325dfc87e752d97860b475d721a5d8ee47577",
+			"revisionTime": "2018-12-27T03:34:20Z"
+		},
+		{
+			"checksumSHA1": "4Q0qWs3JbnNcHXoJ77P9/9QGNzM=",
+			"path": "git.chinawayltd.com/golib/tools/reflectx",
+			"revision": "0fc325dfc87e752d97860b475d721a5d8ee47577",
+			"revisionTime": "2018-12-27T03:34:20Z"
+		},
+		{
+			"checksumSHA1": "NAfSv4BGmpUbxwAw+MIAUHJK5I4=",
+			"path": "git.chinawayltd.com/golib/tools/strutil",
+			"revision": "0fc325dfc87e752d97860b475d721a5d8ee47577",
+			"revisionTime": "2018-12-27T03:34:20Z"
+		},
+		{
+			"checksumSHA1": "sz8xfnwKLFtHAjetHWEJwSgdweU=",
+			"path": "git.chinawayltd.com/golib/tools/timelib",
+			"revision": "0fc325dfc87e752d97860b475d721a5d8ee47577",
+			"revisionTime": "2018-12-27T03:34:20Z"
+		},
+		{
+			"checksumSHA1": "Hf56q4f2kO0fgVdP+ZC6G0fmuxg=",
+			"path": "git.chinawayltd.com/golib/tools/validate",
+			"revision": "0fc325dfc87e752d97860b475d721a5d8ee47577",
+			"revisionTime": "2018-12-27T03:34:20Z"
+		},
+		{
+			"checksumSHA1": "i2Jz2gyuZR+szned/3v8+PbxEKw=",
+			"path": "git.chinawayltd.com/golib/tools/validate/validatetpl",
+			"revision": "0fc325dfc87e752d97860b475d721a5d8ee47577",
+			"revisionTime": "2018-12-27T03:34:20Z"
+		},
+		{
 			"checksumSHA1": "nJrp/CKnvpO+vzTfOeR8qmzRZ4c=",
 			"path": "github.com/PuerkitoBio/purell",
 			"revision": "975f53781597ed779763b7b65566e74c4004d8de",
@@ -92,6 +182,19 @@
 			"path": "github.com/golang/protobuf/ptypes/timestamp",
 			"revision": "93b26e6a70e37abb14f2f88194949312b0592a84",
 			"revisionTime": "2018-07-24T20:30:48Z"
+		},
+		{
+			"checksumSHA1": "w3QCCIYHgZzIXQ+xTl7oLfFrXHs=",
+			"origin": "git.chinawayltd.com/golib/tools/vendor/github.com/gomodule/redigo/internal",
+			"path": "github.com/gomodule/redigo/internal",
+			"revision": "0fc325dfc87e752d97860b475d721a5d8ee47577",
+			"revisionTime": "2018-12-27T03:34:20Z"
+		},
+		{
+			"checksumSHA1": "73htiRJAyEYC5HJaFtkhmosWlbE=",
+			"path": "github.com/gomodule/redigo/redis",
+			"revision": "02dc2736dbc3a4a56907b0d5a9fead2f71b499db",
+			"revisionTime": "2018-12-13T21:05:01Z"
 		},
 		{
 			"checksumSHA1": "uFNLkTxk8BkHTk0Jcub2lj2BX4M=",

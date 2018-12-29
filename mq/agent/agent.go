@@ -10,19 +10,18 @@ import (
 	"strings"
 	"time"
 
-	"github.com/johnnyeven/libtools/conf"
-	"github.com/johnnyeven/libtools/conf/presets"
-	"github.com/johnnyeven/libtools/courier"
-	"github.com/johnnyeven/libtools/env"
-	"github.com/johnnyeven/libtools/reflectx"
-	"github.com/johnnyeven/libtools/timelib"
-
 	"github.com/gomodule/redigo/redis"
 	"github.com/google/uuid"
 	"gopkg.in/robfig/cron.v2"
 
-	"github.com/johnnyeven/libtools/mq"
-	mq_redis "github.com/johnnyeven/libtools/mq/redis"
+	"git.chinawayltd.com/golib/tools/conf"
+	"git.chinawayltd.com/golib/tools/conf/presets"
+	"git.chinawayltd.com/golib/tools/courier"
+	"git.chinawayltd.com/golib/tools/env"
+	"git.chinawayltd.com/golib/tools/mq"
+	mq_redis "git.chinawayltd.com/golib/tools/mq/redis"
+	"git.chinawayltd.com/golib/tools/reflectx"
+	"git.chinawayltd.com/golib/tools/timelib"
 )
 
 var (
@@ -36,7 +35,7 @@ type Agent struct {
 
 	Protocol       string
 	Host           string `conf:"env,upstream"`
-	Port           int32
+	Port           int32 `conf:"env"`
 	Password       presets.Password `conf:"env"`
 	ConnectTimeout time.Duration
 	ReadTimeout    time.Duration

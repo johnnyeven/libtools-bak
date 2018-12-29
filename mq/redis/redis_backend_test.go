@@ -7,7 +7,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/johnnyeven/libtools/mq"
+	"git.chinawayltd.com/golib/tools/mq"
 )
 
 func TestRedisBackend(t *testing.T) {
