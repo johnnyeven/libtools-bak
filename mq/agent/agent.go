@@ -56,7 +56,7 @@ type Agent struct {
 
 func (Agent) DockerDefaults() conf.DockerDefaults {
 	return conf.DockerDefaults{
-		"Host": conf.RancherInternal("tool-deps", "redis"),
+		"Host": conf.RancherInternal("db-routers", "task"),
 		"Port": 6379,
 	}
 }
