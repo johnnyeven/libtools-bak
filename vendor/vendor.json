@@ -307,6 +307,18 @@
 			"revisionTime": "2018-02-13T13:34:03Z"
 		},
 		{
+			"checksumSHA1": "mvEf1lN5zGIw0Y+79LS47OKKeLc=",
+			"path": "github.com/mikespook/gearman-go/client",
+			"revision": "2fba865e375bb72518d35bd6fcecdb19e425d5cb",
+			"revisionTime": "2017-10-18T12:34:29Z"
+		},
+		{
+			"checksumSHA1": "GO/2hYELUkKsBoiTaNBquLbeqjs=",
+			"path": "github.com/mikespook/gearman-go/worker",
+			"revision": "2fba865e375bb72518d35bd6fcecdb19e425d5cb",
+			"revisionTime": "2017-10-18T12:34:29Z"
+		},
+		{
 			"checksumSHA1": "EHjhpHipgm+XGccrRAms9AW3Ewk=",
 			"path": "github.com/mitchellh/mapstructure",
 			"revision": "d0303fe809921458f417bcf828397a65db30a7e4",
