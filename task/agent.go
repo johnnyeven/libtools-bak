@@ -136,5 +136,5 @@ func (a *Agent) workerProcessor(task *constants.Task) (interface{}, error) {
 		return nil, err
 	}
 	a.backend.Feedback(task.Success(ret))
-	return nil, nil
+	return ret, nil
 }

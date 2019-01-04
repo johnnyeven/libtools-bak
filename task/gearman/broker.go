@@ -17,6 +17,9 @@ type GearmanBroker struct {
 func NewGearmanBroker(info constants.ConnectionInfo) *GearmanBroker {
 	w := worker.New(worker.Unlimited)
 	w.AddServer(info.Protocol, fmt.Sprintf("%s:%d", info.Host, info.Port))
+	w.ErrorHandler = func(e error) {
+		logrus.Errorf("worker handled err: %v", e)
+	}
 	return &GearmanBroker{
 		worker: w,
 	}
@@ -28,7 +31,7 @@ func (b *GearmanBroker) RegisterChannel(channel string, processor constants.Task
 }
 
 func (b *GearmanBroker) processorJob(job worker.Job) ([]byte, error) {
-	logrus.Infof("receive job: %+v", job)
+	logrus.Debugf("receive job: %+v", job)
 	t := &constants.Task{}
 	err := constants.UnmarshalData(job.Data(), t)
 	if err != nil {
@@ -42,11 +45,11 @@ func (b *GearmanBroker) processorJob(job worker.Job) ([]byte, error) {
 }
 
 func (b *GearmanBroker) Work() {
-	logrus.Info("GearmanBroker.Working...")
+	logrus.Debug("GearmanBroker.Working...")
 	b.worker.Work()
 }
 
 func (b *GearmanBroker) Stop() {
 	b.worker.Close()
-	logrus.Info("GearmanBroker.Stopped")
+	logrus.Debug("GearmanBroker.Stopped")
 }
