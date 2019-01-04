@@ -14,7 +14,7 @@ func main() {
 			UserName: "",
 			Password: "",
 		},
-		Type:           constants.BROKER_TYPE__GEARMAN,
+		BrokerType: constants.BROKER_TYPE__GEARMAN,
 	}
 
 	agent.Start("service-test.dev", 0)

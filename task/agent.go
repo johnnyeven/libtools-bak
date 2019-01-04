@@ -16,15 +16,16 @@ import (
 type Agent struct {
 	ConnectionInfo constants.ConnectionInfo
 	Channel        string
-	Type           constants.BrokerType `conf:"env"`
+	BrokerType     constants.BrokerType `conf:"env"`
 	worker         *Worker
+	backend        *Backend
 	jobs           sync.Map
 }
 
 func (Agent) MarshalDefaults(v interface{}) {
 	if agent, ok := v.(*Agent); ok {
-		if agent.Type == constants.BROKER_TYPE_UNKNOWN {
-			agent.Type = constants.BROKER_TYPE__GEARMAN
+		if agent.BrokerType == constants.BROKER_TYPE_UNKNOWN {
+			agent.BrokerType = constants.BROKER_TYPE__GEARMAN
 		}
 		if agent.Channel == "" {
 			agent.Channel = getDefaultChannel()
@@ -40,10 +41,10 @@ func (Agent) MarshalDefaults(v interface{}) {
 
 func (a *Agent) DockerDefaults() conf.DockerDefaults {
 	return conf.DockerDefaults{
-		"Protocol": "tcp",
-		"Host":     conf.RancherInternal("dep-tools", "gearmand"),
-		"Port":     4730,
-		"Type":     1,
+		"Protocol":   "tcp",
+		"Host":       conf.RancherInternal("dep-tools", "gearmand"),
+		"Port":       4730,
+		"BrokerType": 1,
 	}
 }
 
@@ -77,7 +78,7 @@ func (a *Agent) RegisterRoutes(routes ...*courier.Route) {
 			for i, opMeta := range operatorMetas {
 				op := reflect.New(opMeta.Type).Interface().(courier.IOperator)
 
-				if err := UnmarshalData(task.Data, op); err != nil {
+				if err := constants.UnmarshalData(task.Data, op); err != nil {
 					return nil, err
 				}
 
@@ -104,8 +105,11 @@ func (a *Agent) RegisterRoutes(routes ...*courier.Route) {
 func (a *Agent) Start(channel string, numWorker int) {
 	a.Channel = channel
 
+	if a.backend == nil {
+		a.backend = NewBackend()
+	}
 	if a.worker == nil {
-		a.worker = NewWorker(a.Type, a.ConnectionInfo)
+		a.worker = NewWorker(a.BrokerType, a.ConnectionInfo)
 	}
 	a.worker.Start(a.Channel, a.workerProcessor)
 }
@@ -117,15 +121,20 @@ func (a *Agent) Stop() {
 }
 
 func (a *Agent) workerProcessor(task *constants.Task) (interface{}, error) {
+	a.backend.Feedback(task.Processing())
 	subject := task.Subject
 	p, ok := a.jobs.Load(subject)
-	if ok {
-		return nil, fmt.Errorf("subject %s not registered", subject)
-	}
-
-	_, err := p.(constants.TaskProcessor)(task)
-	if err != nil {
+	if !ok {
+		err := fmt.Errorf("subject %s not registered", subject)
+		a.backend.Feedback(task.Fail(err))
 		return nil, err
 	}
+
+	ret, err := p.(constants.TaskProcessor)(task)
+	if err != nil {
+		a.backend.Feedback(task.Fail(err))
+		return nil, err
+	}
+	a.backend.Feedback(task.Success(ret))
 	return nil, nil
 }

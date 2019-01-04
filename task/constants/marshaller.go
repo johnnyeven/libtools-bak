@@ -1,4 +1,4 @@
-package task
+package constants
 
 import "encoding/json"
 

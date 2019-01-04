@@ -7,7 +7,3 @@ type Broker interface {
 	Work()
 	Stop()
 }
-
-type Backend interface {
-
-}

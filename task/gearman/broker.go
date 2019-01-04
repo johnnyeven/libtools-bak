@@ -30,8 +30,15 @@ func (b *GearmanBroker) RegisterChannel(channel string, processor constants.Task
 func (b *GearmanBroker) processorJob(job worker.Job) ([]byte, error) {
 	logrus.Infof("receive job: %+v", job)
 	t := &constants.Task{}
-	_, err := b.workerProcessor(t)
-	return nil, err
+	err := constants.UnmarshalData(job.Data(), t)
+	if err != nil {
+		return nil, err
+	}
+	ret, err := b.workerProcessor(t)
+	if err != nil {
+		return nil, err
+	}
+	return constants.MarshalData(ret)
 }
 
 func (b *GearmanBroker) Work() {
