@@ -168,7 +168,17 @@ func (a *Agent) Publish(channel string, subject string, data []byte) (*constants
 		CreateTime: time.Now(),
 	}
 
-	return task, a.client.SendTask(task)
+	err := a.client.SendTask(task)
+	if err != nil {
+		return nil, err
+	}
+
+	err = a.backend.Feedback(task.Pending())
+	if err != nil {
+		return nil, err
+	}
+
+	return task, nil
 }
 
 func (a *Agent) Start(numWorker int) {
