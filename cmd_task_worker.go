@@ -17,9 +17,12 @@ func main() {
 			UserName: "",
 			Password: "",
 		},
+		Channel:    "service-test.dev",
 		BrokerType: constants.BROKER_TYPE__GEARMAN,
 	}
+	agent.MarshalDefaults(&agent)
+	agent.Init()
 	agent.RegisterRoutes(test_routers.Router.Routes()...)
-	agent.Start("service-test.dev", 0)
+	agent.Start(5)
 	select {}
 }

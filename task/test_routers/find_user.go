@@ -17,6 +17,10 @@ type FindUser struct {
 	UserID uint64 `name:"userId,string" in:"path"`
 }
 
+func (req FindUser) CronSpec() string {
+	return "0 0 * * * *"
+}
+
 func (req FindUser) Path() string {
 	return "/:userId"
 }

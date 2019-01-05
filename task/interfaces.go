@@ -7,3 +7,12 @@ type Broker interface {
 	Work()
 	Stop()
 }
+
+type Client interface {
+	SendTask(task *constants.Task) error
+	Stop()
+}
+
+type CronDescriber interface {
+	CronSpec() string
+}

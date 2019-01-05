@@ -11,15 +11,36 @@ import (
 	"github.com/johnnyeven/libtools/courier"
 	"reflect"
 	"context"
+	"github.com/robfig/cron"
+	"encoding/json"
+	"github.com/sirupsen/logrus"
+	"time"
+	"github.com/google/uuid"
+	"github.com/johnnyeven/libtools/task/gearman"
+)
+
+const (
+	DefaultCentralChannel = "service-task-manager.dev"
+	DefaultCentralSubject = "CreateOrUpdateCronTable"
 )
 
 type Agent struct {
 	ConnectionInfo constants.ConnectionInfo
 	Channel        string
 	BrokerType     constants.BrokerType `conf:"env"`
-	worker         *Worker
+	workers        []*Worker
+	client         Client
 	backend        *Backend
 	jobs           sync.Map
+
+	CentralChannel string `conf:"env"`
+	CentralSubject string `conf:"env"`
+}
+
+func (a *Agent) Init() {
+	if a.BrokerType == constants.BROKER_TYPE__GEARMAN {
+		a.client = gearman.NewGearmanClient(a.ConnectionInfo)
+	}
 }
 
 func (Agent) MarshalDefaults(v interface{}) {
@@ -35,6 +56,12 @@ func (Agent) MarshalDefaults(v interface{}) {
 		}
 		if agent.ConnectionInfo.Protocol == "" {
 			agent.ConnectionInfo.Protocol = "tcp"
+		}
+		if agent.CentralChannel == "" {
+			agent.CentralChannel = DefaultCentralChannel
+		}
+		if agent.CentralSubject == "" {
+			agent.CentralSubject = DefaultCentralSubject
 		}
 	}
 }
@@ -72,6 +99,17 @@ func (a *Agent) RegisterRoutes(routes ...*courier.Route) {
 		lastOpMeta := operatorMetas[lastOpIndex]
 		subject := lastOpMeta.Type.Name()
 
+		if cronDescriber, ok := lastOpMeta.Operator.(CronDescriber); ok {
+			spec := cronDescriber.CronSpec()
+			_, err := cron.Parse(spec)
+			if err != nil {
+				panic(err)
+			}
+			if a.registerCron(subject, spec); err != nil {
+				panic(err)
+			}
+		}
+
 		a.Register(subject, func(task *constants.Task) (interface{}, error) {
 			ctx := context.Background()
 
@@ -102,21 +140,61 @@ func (a *Agent) RegisterRoutes(routes ...*courier.Route) {
 	}
 }
 
-func (a *Agent) Start(channel string, numWorker int) {
-	a.Channel = channel
+func (a *Agent) registerCron(subject string, spec string) error {
+	cronTable := &constants.CronTableInfo{}
+	cronTable.CronTableID = fmt.Sprintf("%s-%s", a.Channel, subject)
+	cronTable.Subject = subject
+	cronTable.Channel = a.Channel
+	cronTable.Spec = spec
+	cronTable.Desc = cronTable.CronTableID
+
+	bytes, err := json.Marshal(cronTable)
+	if err != nil {
+		return err
+	}
+	_, err = a.Publish(a.CentralChannel, a.CentralSubject, bytes)
+	return err
+}
+
+func (a *Agent) Publish(channel string, subject string, data []byte) (*constants.Task, error) {
+	if a.client == nil {
+		return nil, fmt.Errorf("client not init")
+	}
+	task := &constants.Task{
+		ID:         uuid.New().String(),
+		Channel:    channel,
+		Subject:    subject,
+		Data:       data,
+		CreateTime: time.Now(),
+	}
+
+	return task, a.client.SendTask(task)
+}
+
+func (a *Agent) Start(numWorker int) {
+	if a.Channel == "" {
+		logrus.Panic("channel must be set")
+	}
 
 	if a.backend == nil {
 		a.backend = NewBackend()
 	}
-	if a.worker == nil {
-		a.worker = NewWorker(a.BrokerType, a.ConnectionInfo)
+	if a.workers == nil {
+		a.workers = make([]*Worker, 0)
 	}
-	a.worker.Start(a.Channel, a.workerProcessor)
+
+	for i := 0; i < numWorker; i++ {
+		w := NewWorker(a.BrokerType, a.ConnectionInfo)
+		a.workers = append(a.workers, w)
+		w.Start(a.Channel, a.workerProcessor)
+	}
 }
 
 func (a *Agent) Stop() {
-	if a.worker != nil {
-		a.worker.Stop()
+	if a.workers != nil {
+		for _, w := range a.workers {
+			w.Stop()
+		}
 	}
 }
 
