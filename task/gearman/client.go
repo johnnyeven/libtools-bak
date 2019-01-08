@@ -28,11 +28,8 @@ func (c *GearmanClient) SendTask(task *constants.Task) error {
 		logrus.Errorf("GearmanClient.SendTask err: %v", err)
 		return err
 	}
-	_, err = c.client.Do(task.Channel, data, client.JobNormal, func(response *client.Response) {
-
-	})
+	_, err = c.client.DoBg(task.Channel, data, client.JobNormal)
 	if err != nil {
-		logrus.Errorf("GearmanClient.Do err: %v", err)
 		return err
 	}
 

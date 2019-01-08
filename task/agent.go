@@ -11,17 +11,18 @@ import (
 	"github.com/johnnyeven/libtools/courier"
 	"reflect"
 	"context"
-	"github.com/robfig/cron"
 	"encoding/json"
 	"github.com/sirupsen/logrus"
 	"time"
 	"github.com/google/uuid"
 	"github.com/johnnyeven/libtools/task/gearman"
+	"gopkg.in/robfig/cron.v2"
 )
 
 const (
-	DefaultCentralChannel = "service-task-manager.dev"
-	DefaultCentralSubject = "CreateOrUpdateCronTable"
+	DefaultCentralChannel  = "service-task-manager.dev"
+	DefaultCentralSubject  = "CreateOrUpdateCronTable"
+	DefaultFeedbackSubject = "TaskStatusFeedback"
 )
 
 type Agent struct {
@@ -33,8 +34,8 @@ type Agent struct {
 	backend        *Backend
 	jobs           sync.Map
 
-	CentralChannel string `conf:"env"`
-	CentralSubject string `conf:"env"`
+	CentralChannel  string `conf:"env"`
+	CentralSubject  string `conf:"env"`
 }
 
 func (a *Agent) Init() {
@@ -68,10 +69,12 @@ func (Agent) MarshalDefaults(v interface{}) {
 
 func (a *Agent) DockerDefaults() conf.DockerDefaults {
 	return conf.DockerDefaults{
-		"Protocol":   "tcp",
-		"Host":       conf.RancherInternal("dep-tools", "gearmand"),
-		"Port":       4730,
-		"BrokerType": 1,
+		"Protocol":        "tcp",
+		"Host":            conf.RancherInternal("dep-tools", "gearmand"),
+		"Port":            4730,
+		"BrokerType":      1,
+		"CentralChannel":  DefaultCentralChannel,
+		"CentralSubject":  DefaultCentralSubject,
 	}
 }
 
@@ -156,7 +159,14 @@ func (a *Agent) registerCron(subject string, spec string) error {
 	return err
 }
 
+func (a *Agent) SendTask(task *constants.Task) error {
+	return a.client.SendTask(task)
+}
+
 func (a *Agent) Publish(channel string, subject string, data []byte) (*constants.Task, error) {
+	if a.backend == nil {
+		return nil, fmt.Errorf("backend not init")
+	}
 	if a.client == nil {
 		return nil, fmt.Errorf("client not init")
 	}
@@ -168,7 +178,12 @@ func (a *Agent) Publish(channel string, subject string, data []byte) (*constants
 		CreateTime: time.Now(),
 	}
 
-	err := a.client.SendTask(task)
+	err := a.backend.Feedback(task.Init())
+	if err != nil {
+		return nil, err
+	}
+
+	err = a.client.SendTask(task)
 	if err != nil {
 		return nil, err
 	}
@@ -187,12 +202,12 @@ func (a *Agent) Start(numWorker int) {
 	}
 
 	if a.backend == nil {
-		a.backend = NewBackend()
+		a.backend = NewBackend(a)
 	}
+
 	if a.workers == nil {
 		a.workers = make([]*Worker, 0)
 	}
-
 	for i := 0; i < numWorker; i++ {
 		w := NewWorker(a.BrokerType, a.ConnectionInfo)
 		a.workers = append(a.workers, w)
@@ -209,20 +224,28 @@ func (a *Agent) Stop() {
 }
 
 func (a *Agent) workerProcessor(task *constants.Task) (interface{}, error) {
-	a.backend.Feedback(task.Processing())
+	logrus.Debugf("receive task: id=%s, channel=%s, subject=%s", task.ID, task.Channel, task.Subject)
 	subject := task.Subject
 	p, ok := a.jobs.Load(subject)
 	if !ok {
 		err := fmt.Errorf("subject %s not registered", subject)
-		a.backend.Feedback(task.Fail(err))
 		return nil, err
 	}
 
-	ret, err := p.(constants.TaskProcessor)(task)
-	if err != nil {
-		a.backend.Feedback(task.Fail(err))
-		return nil, err
+	if task.Subject == DefaultFeedbackSubject {
+		ret, err := p.(constants.TaskProcessor)(task)
+		if err != nil {
+			return nil, err
+		}
+		return ret, nil
+	} else {
+		a.backend.Feedback(task.Processing())
+		ret, err := p.(constants.TaskProcessor)(task)
+		if err != nil {
+			a.backend.Feedback(task.Fail(err))
+			return nil, err
+		}
+		a.backend.Feedback(task.Success(ret))
+		return ret, nil
 	}
-	a.backend.Feedback(task.Success(ret))
-	return ret, nil
 }

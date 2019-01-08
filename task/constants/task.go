@@ -13,6 +13,16 @@ type Task struct {
 	CreateTime time.Time `json:"createTime"`
 }
 
+func (t *Task) Init() *TaskFeedback {
+	return &TaskFeedback{
+		ID:         t.ID,
+		Channel:    t.Channel,
+		Subject:    t.Subject,
+		Data:       t.Data,
+		Status:     TASK_STATUS__INIT,
+	}
+}
+
 func (t *Task) Pending() *TaskFeedback {
 	return &TaskFeedback{
 		ID:         t.ID,

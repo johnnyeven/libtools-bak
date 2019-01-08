@@ -31,7 +31,6 @@ func (b *GearmanBroker) RegisterChannel(channel string, processor constants.Task
 }
 
 func (b *GearmanBroker) processorJob(job worker.Job) ([]byte, error) {
-	logrus.Debugf("receive job: %+v", job)
 	t := &constants.Task{}
 	err := constants.UnmarshalData(job.Data(), t)
 	if err != nil {
@@ -45,6 +44,9 @@ func (b *GearmanBroker) processorJob(job worker.Job) ([]byte, error) {
 }
 
 func (b *GearmanBroker) Work() {
+	if err := b.worker.Ready(); err != nil {
+		logrus.Panic("gearman worker not ready...")
+	}
 	logrus.Debug("GearmanBroker.Working...")
 	b.worker.Work()
 }

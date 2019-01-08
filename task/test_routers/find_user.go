@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/johnnyeven/libtools/courier/httpx"
 	"github.com/johnnyeven/libtools/courier"
+	"github.com/sirupsen/logrus"
 )
 
 func init() {
@@ -18,7 +19,7 @@ type FindUser struct {
 }
 
 func (req FindUser) CronSpec() string {
-	return "0 0 * * * *"
+	return "* * * * * *"
 }
 
 func (req FindUser) Path() string {
@@ -26,6 +27,7 @@ func (req FindUser) Path() string {
 }
 
 func (req FindUser) Output(ctx context.Context) (result interface{}, err error) {
+	logrus.Info("johnnyeven")
 	return struct {
 		UserID   uint64
 		UserName string
