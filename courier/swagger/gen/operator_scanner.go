@@ -97,6 +97,10 @@ func getTagNameByPkgPath(pkgPath string) string {
 	cwd, _ := os.Getwd()
 	p, _ := build.Default.Import(pkgPath, "", build.FindOnly)
 	tag, _ := filepath.Rel(cwd, p.Dir)
+	i := strings.Index(tag, "routes/")
+	if i >= 0 {
+		tag = string([]byte(tag)[i:])
+	}
 	return strings.Replace(tag, "routes/", "", 1)
 }
 
