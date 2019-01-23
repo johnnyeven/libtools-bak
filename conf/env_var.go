@@ -65,7 +65,6 @@ func collectEnvVars(rv reflect.Value, envVarKey string, tagConfOption TagConfOpt
 	if rv.Kind() == reflect.Ptr && rv.IsNil() {
 		return
 	}
-	rv = reflect.Indirect(rv)
 	if hasDockerDefaults, ok := rv.Interface().(IHasDockerDefaults); ok {
 		// parent should overwrite child as anonymous
 		dockerDefaults = hasDockerDefaults.DockerDefaults().Merge(dockerDefaults)
