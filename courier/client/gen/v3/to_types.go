@@ -93,7 +93,7 @@ func (g *TypeGenerator) TypeIndirect(schema *oas.Schema) (string, bool) {
 		}
 
 		typeFullName := fmt.Sprint(schema.Extensions[gen.XNamed])
-		isInCommonLib := strings.Contains(typeFullName, "golib/tools")
+		isInCommonLib := strings.Contains(typeFullName, "johnnyeven/libtools")
 
 		if schema.Type == "string" || schema.Type == "boolean" || schema.Enum != nil || isInCommonLib {
 

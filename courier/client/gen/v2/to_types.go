@@ -91,7 +91,7 @@ func (g *TypeGenerator) TypeIndirect(schema *spec.Schema) string {
 		if schema.Type.Contains("string") ||
 			schema.Type.Contains("boolean") ||
 			schema.Enum != nil ||
-			strings.Contains(typeFullName, "golib/tools") {
+			strings.Contains(typeFullName, "johnnyeven/libtools") {
 
 			pkgImportName, typeName := loaderx.GetPkgImportPathAndExpose(typeFullName)
 
