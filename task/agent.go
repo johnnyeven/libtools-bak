@@ -108,7 +108,7 @@ func (a *Agent) RegisterRoutes(routes ...*courier.Route) {
 			if err != nil {
 				panic(err)
 			}
-			if a.registerCron(subject, spec); err != nil {
+			if err = a.registerCron(subject, spec); err != nil {
 				panic(err)
 			}
 		}
