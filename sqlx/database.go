@@ -78,13 +78,13 @@ func (database *Database) Update(model Model, zeroFields ...string) *builder.Stm
 	return table.Update().Set(table.AssignsByFieldValues(fieldValues)...)
 }
 
-func (database *Database) MustMigrateTo(db *DB, dryRun bool) {
+func (database *Database) MustMigrateTo(db DBDriver, dryRun bool) {
 	if err := database.MigrateTo(db, dryRun); err != nil {
 		logrus.Panic(err)
 	}
 }
 
-func (database *Database) MigrateTo(db *DB, dryRun bool) error {
+func (database *Database) MigrateTo(db DBDriver, dryRun bool) error {
 	database.Register(&SqlMetaEnum{})
 
 	currentDatabase := DBFromInformationSchema(db, database.Name, database.Tables.TableNames()...)

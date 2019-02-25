@@ -7,9 +7,9 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type Task func(db *DB) error
+type Task func(db DBDriver) error
 
-func (task Task) Run(db *DB) (err error) {
+func (task Task) Run(db DBDriver) (err error) {
 	defer func() {
 		if e := recover(); e != nil {
 			err = fmt.Errorf("panic: %s; calltrace:%s", fmt.Sprint(e), string(debug.Stack()))
@@ -18,14 +18,14 @@ func (task Task) Run(db *DB) (err error) {
 	return task(db)
 }
 
-func NewTasks(db *DB) *Tasks {
+func NewTasks(db DBDriver) *Tasks {
 	return &Tasks{
 		db: db,
 	}
 }
 
 type Tasks struct {
-	db    *DB
+	db    DBDriver
 	tasks []Task
 }
 

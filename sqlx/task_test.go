@@ -28,7 +28,7 @@ func TestWithTasks(t *testing.T) {
 	{
 		taskList := sqlx.NewTasks(db)
 
-		taskList = taskList.With(func(db *sqlx.DB) error {
+		taskList = taskList.With(func(db sqlx.DBDriver) error {
 			user := User{
 				Name:   uuid.New().String(),
 				Gender: GenderMale,
@@ -36,10 +36,10 @@ func TestWithTasks(t *testing.T) {
 			return db.Do(dbTest.Insert(&user).Comment("InsertUser")).Err()
 		})
 
-		taskList = taskList.With(func(db *sqlx.DB) error {
+		taskList = taskList.With(func(db sqlx.DBDriver) error {
 			subTaskList := sqlx.NewTasks(db)
 
-			subTaskList = subTaskList.With(func(db *sqlx.DB) error {
+			subTaskList = subTaskList.With(func(db sqlx.DBDriver) error {
 				user := User{
 					Name:   uuid.New().String(),
 					Gender: GenderMale,
@@ -47,7 +47,7 @@ func TestWithTasks(t *testing.T) {
 				return db.Do(dbTest.Insert(&user).Comment("InsertUser")).Err()
 			})
 
-			subTaskList = subTaskList.With(func(db *sqlx.DB) error {
+			subTaskList = subTaskList.With(func(db sqlx.DBDriver) error {
 				return fmt.Errorf("rollback")
 			})
 
@@ -60,7 +60,7 @@ func TestWithTasks(t *testing.T) {
 
 	taskList := sqlx.NewTasks(db)
 
-	taskList = taskList.With(func(db *sqlx.DB) error {
+	taskList = taskList.With(func(db sqlx.DBDriver) error {
 		user := User{
 			Name:   uuid.New().String(),
 			Gender: GenderMale,
@@ -68,10 +68,10 @@ func TestWithTasks(t *testing.T) {
 		return db.Do(dbTest.Insert(&user).Comment("InsertUser")).Err()
 	})
 
-	taskList = taskList.With(func(db *sqlx.DB) error {
+	taskList = taskList.With(func(db sqlx.DBDriver) error {
 		subTaskList := sqlx.NewTasks(db)
 
-		subTaskList = subTaskList.With(func(db *sqlx.DB) error {
+		subTaskList = subTaskList.With(func(db sqlx.DBDriver) error {
 			user := User{
 				Name:   uuid.New().String(),
 				Gender: GenderMale,
@@ -79,7 +79,7 @@ func TestWithTasks(t *testing.T) {
 			return db.Do(dbTest.Insert(&user).Comment("InsertUser")).Err()
 		})
 
-		subTaskList = subTaskList.With(func(db *sqlx.DB) error {
+		subTaskList = subTaskList.With(func(db sqlx.DBDriver) error {
 			user := User{
 				Name:   uuid.New().String(),
 				Gender: GenderMale,

@@ -11,7 +11,7 @@ import (
 	"github.com/johnnyeven/libtools/sqlx/builder"
 )
 
-func Do(db *DB, stmt builder.Statement) (result *Result) {
+func Do(db DBDriver, stmt builder.Statement) (result *Result) {
 	result = &Result{}
 
 	e := stmt.Expr()

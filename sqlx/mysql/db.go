@@ -20,7 +20,7 @@ type MySQL struct {
 	PoolSize        int
 	ConnMaxLifetime time.Duration
 	presets.Retry
-	db *sqlx.DB
+	db sqlx.DBDriver
 }
 
 func (m MySQL) DockerDefaults() conf.DockerDefaults {
@@ -81,7 +81,7 @@ func (m *MySQL) Init() {
 	}
 }
 
-func (m *MySQL) Get() *sqlx.DB {
+func (m *MySQL) Get() sqlx.DBDriver {
 	if m.db == nil {
 		panic(fmt.Errorf("get db before init"))
 	}
@@ -89,5 +89,5 @@ func (m *MySQL) Get() *sqlx.DB {
 }
 
 type DBGetter interface {
-	Get() *sqlx.DB
+	Get() sqlx.DBDriver
 }
