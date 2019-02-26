@@ -19,7 +19,7 @@ import (
 	"github.com/johnnyeven/libtools/timelib"
 )
 
-var db sqlx.DBDriver
+var db *sqlx.DB
 
 func init() {
 	logrus.SetLevel(logrus.DebugLevel)

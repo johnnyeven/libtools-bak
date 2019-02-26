@@ -17,7 +17,7 @@ func toInterfaces(list ...string) []interface{} {
 	return s
 }
 
-func DBFromInformationSchema(db DBDriver, dbName string, tableNames ...string) *Database {
+func DBFromInformationSchema(db *DB, dbName string, tableNames ...string) *Database {
 	d := NewDatabase(dbName)
 
 	schema := SchemaDatabase.T(&Schema{})

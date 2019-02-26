@@ -26,16 +26,16 @@ func (*SqlMetaEnum) UniqueIndexes() Indexes {
 	return Indexes{"I_enum": FieldNames{"TName", "CName", "Value"}}
 }
 
-func (database *Database) SyncEnum(db DBDriver) error {
+func (database *Database) SyncEnum(db *DB) error {
 	task := NewTasks(db)
 
 	metaEnumTable := database.T(&SqlMetaEnum{})
 
-	task = task.With(func(db DBDriver) error {
+	task = task.With(func(db *DB) error {
 		return db.Do(metaEnumTable.Create(true)).Err()
 	})
 
-	task = task.With(func(db DBDriver) error {
+	task = task.With(func(db *DB) error {
 		return db.Do(metaEnumTable.Delete().Where(metaEnumTable.F("TName").In(database.TableNames()))).Err()
 	})
 
@@ -74,7 +74,7 @@ func (database *Database) SyncEnum(db DBDriver) error {
 	}
 
 	if hasEnum {
-		task = task.With(func(db DBDriver) error {
+		task = task.With(func(db *DB) error {
 			return db.Do(stmt).Err()
 		})
 	}

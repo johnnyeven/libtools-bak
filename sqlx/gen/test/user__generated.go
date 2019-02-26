@@ -128,7 +128,7 @@ func (user *User) UniqueIndexes() golib_tools_sqlx.Indexes {
 	return golib_tools_sqlx.Indexes{"I_name": golib_tools_sqlx.FieldNames{"Name", "Enabled"}}
 }
 
-func (user *User) Create(db *golib_tools_sqlx.DBDriver) error {
+func (user *User) Create(db *golib_tools_sqlx.DB) error {
 	user.Enabled = golib_tools_courier_enumeration.BOOL__TRUE
 
 	if user.CreateTime.IsZero() {
@@ -151,7 +151,7 @@ func (user *User) Create(db *golib_tools_sqlx.DBDriver) error {
 	return err
 }
 
-func (user *User) DeleteByStruct(db *golib_tools_sqlx.DBDriver) (err error) {
+func (user *User) DeleteByStruct(db *golib_tools_sqlx.DB) (err error) {
 	table := user.T()
 
 	stmt := table.Delete().
@@ -162,7 +162,7 @@ func (user *User) DeleteByStruct(db *golib_tools_sqlx.DBDriver) (err error) {
 	return
 }
 
-func (user *User) CreateOnDuplicateWithUpdateFields(db *golib_tools_sqlx.DBDriver, updateFields []string) error {
+func (user *User) CreateOnDuplicateWithUpdateFields(db *golib_tools_sqlx.DB, updateFields []string) error {
 	if len(updateFields) == 0 {
 		panic(fmt.Errorf("must have update fields"))
 	}
@@ -214,7 +214,7 @@ func (user *User) CreateOnDuplicateWithUpdateFields(db *golib_tools_sqlx.DBDrive
 	return db.Do(stmt).Err()
 }
 
-func (user *User) FetchByID(db *golib_tools_sqlx.DBDriver) error {
+func (user *User) FetchByID(db *golib_tools_sqlx.DB) error {
 	user.Enabled = golib_tools_courier_enumeration.BOOL__TRUE
 
 	table := user.T()
@@ -228,7 +228,7 @@ func (user *User) FetchByID(db *golib_tools_sqlx.DBDriver) error {
 	return db.Do(stmt).Scan(user).Err()
 }
 
-func (user *User) FetchByIDForUpdate(db *golib_tools_sqlx.DBDriver) error {
+func (user *User) FetchByIDForUpdate(db *golib_tools_sqlx.DB) error {
 	user.Enabled = golib_tools_courier_enumeration.BOOL__TRUE
 
 	table := user.T()
@@ -243,7 +243,7 @@ func (user *User) FetchByIDForUpdate(db *golib_tools_sqlx.DBDriver) error {
 	return db.Do(stmt).Scan(user).Err()
 }
 
-func (user *User) DeleteByID(db *golib_tools_sqlx.DBDriver) error {
+func (user *User) DeleteByID(db *golib_tools_sqlx.DB) error {
 	user.Enabled = golib_tools_courier_enumeration.BOOL__TRUE
 
 	table := user.T()
@@ -257,7 +257,7 @@ func (user *User) DeleteByID(db *golib_tools_sqlx.DBDriver) error {
 	return db.Do(stmt).Scan(user).Err()
 }
 
-func (user *User) UpdateByIDWithMap(db *golib_tools_sqlx.DBDriver, fieldValues golib_tools_sqlx_builder.FieldValues) error {
+func (user *User) UpdateByIDWithMap(db *golib_tools_sqlx.DB, fieldValues golib_tools_sqlx_builder.FieldValues) error {
 
 	if _, ok := fieldValues["UpdateTime"]; !ok {
 		fieldValues["UpdateTime"] = golib_tools_timelib.MySQLTimestamp(time.Now())
@@ -290,12 +290,12 @@ func (user *User) UpdateByIDWithMap(db *golib_tools_sqlx.DBDriver, fieldValues g
 	return nil
 }
 
-func (user *User) UpdateByIDWithStruct(db *golib_tools_sqlx.DBDriver, zeroFields ...string) error {
+func (user *User) UpdateByIDWithStruct(db *golib_tools_sqlx.DB, zeroFields ...string) error {
 	fieldValues := golib_tools_sqlx.FieldValuesFromStructByNonZero(user, zeroFields...)
 	return user.UpdateByIDWithMap(db, fieldValues)
 }
 
-func (user *User) SoftDeleteByID(db *golib_tools_sqlx.DBDriver) error {
+func (user *User) SoftDeleteByID(db *golib_tools_sqlx.DB) error {
 	user.Enabled = golib_tools_courier_enumeration.BOOL__TRUE
 
 	table := user.T()
@@ -327,7 +327,7 @@ func (user *User) SoftDeleteByID(db *golib_tools_sqlx.DBDriver) error {
 	return nil
 }
 
-func (user *User) FetchByName(db *golib_tools_sqlx.DBDriver) error {
+func (user *User) FetchByName(db *golib_tools_sqlx.DB) error {
 	user.Enabled = golib_tools_courier_enumeration.BOOL__TRUE
 
 	table := user.T()
@@ -341,7 +341,7 @@ func (user *User) FetchByName(db *golib_tools_sqlx.DBDriver) error {
 	return db.Do(stmt).Scan(user).Err()
 }
 
-func (user *User) FetchByNameForUpdate(db *golib_tools_sqlx.DBDriver) error {
+func (user *User) FetchByNameForUpdate(db *golib_tools_sqlx.DB) error {
 	user.Enabled = golib_tools_courier_enumeration.BOOL__TRUE
 
 	table := user.T()
@@ -356,7 +356,7 @@ func (user *User) FetchByNameForUpdate(db *golib_tools_sqlx.DBDriver) error {
 	return db.Do(stmt).Scan(user).Err()
 }
 
-func (user *User) DeleteByName(db *golib_tools_sqlx.DBDriver) error {
+func (user *User) DeleteByName(db *golib_tools_sqlx.DB) error {
 	user.Enabled = golib_tools_courier_enumeration.BOOL__TRUE
 
 	table := user.T()
@@ -370,7 +370,7 @@ func (user *User) DeleteByName(db *golib_tools_sqlx.DBDriver) error {
 	return db.Do(stmt).Scan(user).Err()
 }
 
-func (user *User) UpdateByNameWithMap(db *golib_tools_sqlx.DBDriver, fieldValues golib_tools_sqlx_builder.FieldValues) error {
+func (user *User) UpdateByNameWithMap(db *golib_tools_sqlx.DB, fieldValues golib_tools_sqlx_builder.FieldValues) error {
 
 	if _, ok := fieldValues["UpdateTime"]; !ok {
 		fieldValues["UpdateTime"] = golib_tools_timelib.MySQLTimestamp(time.Now())
@@ -403,12 +403,12 @@ func (user *User) UpdateByNameWithMap(db *golib_tools_sqlx.DBDriver, fieldValues
 	return nil
 }
 
-func (user *User) UpdateByNameWithStruct(db *golib_tools_sqlx.DBDriver, zeroFields ...string) error {
+func (user *User) UpdateByNameWithStruct(db *golib_tools_sqlx.DB, zeroFields ...string) error {
 	fieldValues := golib_tools_sqlx.FieldValuesFromStructByNonZero(user, zeroFields...)
 	return user.UpdateByNameWithMap(db, fieldValues)
 }
 
-func (user *User) SoftDeleteByName(db *golib_tools_sqlx.DBDriver) error {
+func (user *User) SoftDeleteByName(db *golib_tools_sqlx.DB) error {
 	user.Enabled = golib_tools_courier_enumeration.BOOL__TRUE
 
 	table := user.T()
@@ -443,12 +443,12 @@ func (user *User) SoftDeleteByName(db *golib_tools_sqlx.DBDriver) error {
 type UserList []User
 
 // deprecated
-func (userList *UserList) FetchList(db *golib_tools_sqlx.DBDriver, size int32, offset int32, conditions ...*golib_tools_sqlx_builder.Condition) (count int32, err error) {
+func (userList *UserList) FetchList(db *golib_tools_sqlx.DB, size int32, offset int32, conditions ...*golib_tools_sqlx_builder.Condition) (count int32, err error) {
 	*userList, count, err = (&User{}).FetchList(db, size, offset, conditions...)
 	return
 }
 
-func (user *User) FetchList(db *golib_tools_sqlx.DBDriver, size int32, offset int32, conditions ...*golib_tools_sqlx_builder.Condition) (userList UserList, count int32, err error) {
+func (user *User) FetchList(db *golib_tools_sqlx.DB, size int32, offset int32, conditions ...*golib_tools_sqlx_builder.Condition) (userList UserList, count int32, err error) {
 	userList = UserList{}
 
 	table := user.T()
@@ -476,7 +476,7 @@ func (user *User) FetchList(db *golib_tools_sqlx.DBDriver, size int32, offset in
 	return
 }
 
-func (user *User) List(db *golib_tools_sqlx.DBDriver, condition *golib_tools_sqlx_builder.Condition) (userList UserList, err error) {
+func (user *User) List(db *golib_tools_sqlx.DB, condition *golib_tools_sqlx_builder.Condition) (userList UserList, err error) {
 	userList = UserList{}
 
 	table := user.T()
@@ -492,7 +492,7 @@ func (user *User) List(db *golib_tools_sqlx.DBDriver, condition *golib_tools_sql
 	return
 }
 
-func (user *User) ListByStruct(db *golib_tools_sqlx.DBDriver) (userList UserList, err error) {
+func (user *User) ListByStruct(db *golib_tools_sqlx.DB) (userList UserList, err error) {
 	userList = UserList{}
 
 	table := user.T()
@@ -511,12 +511,12 @@ func (user *User) ListByStruct(db *golib_tools_sqlx.DBDriver) (userList UserList
 }
 
 // deprecated
-func (userList *UserList) BatchFetchByIDList(db *golib_tools_sqlx.DBDriver, idList []uint64) (err error) {
+func (userList *UserList) BatchFetchByIDList(db *golib_tools_sqlx.DB, idList []uint64) (err error) {
 	*userList, err = (&User{}).BatchFetchByIDList(db, idList)
 	return
 }
 
-func (user *User) BatchFetchByIDList(db *golib_tools_sqlx.DBDriver, idList []uint64) (userList UserList, err error) {
+func (user *User) BatchFetchByIDList(db *golib_tools_sqlx.DB, idList []uint64) (userList UserList, err error) {
 	if len(idList) == 0 {
 		return UserList{}, nil
 	}
@@ -537,12 +537,12 @@ func (user *User) BatchFetchByIDList(db *golib_tools_sqlx.DBDriver, idList []uin
 }
 
 // deprecated
-func (userList *UserList) BatchFetchByNameList(db *golib_tools_sqlx.DBDriver, nameList []string) (err error) {
+func (userList *UserList) BatchFetchByNameList(db *golib_tools_sqlx.DB, nameList []string) (err error) {
 	*userList, err = (&User{}).BatchFetchByNameList(db, nameList)
 	return
 }
 
-func (user *User) BatchFetchByNameList(db *golib_tools_sqlx.DBDriver, nameList []string) (userList UserList, err error) {
+func (user *User) BatchFetchByNameList(db *golib_tools_sqlx.DB, nameList []string) (userList UserList, err error) {
 	if len(nameList) == 0 {
 		return UserList{}, nil
 	}
@@ -563,12 +563,12 @@ func (user *User) BatchFetchByNameList(db *golib_tools_sqlx.DBDriver, nameList [
 }
 
 // deprecated
-func (userList *UserList) BatchFetchByNicknameList(db *golib_tools_sqlx.DBDriver, nicknameList []string) (err error) {
+func (userList *UserList) BatchFetchByNicknameList(db *golib_tools_sqlx.DB, nicknameList []string) (err error) {
 	*userList, err = (&User{}).BatchFetchByNicknameList(db, nicknameList)
 	return
 }
 
-func (user *User) BatchFetchByNicknameList(db *golib_tools_sqlx.DBDriver, nicknameList []string) (userList UserList, err error) {
+func (user *User) BatchFetchByNicknameList(db *golib_tools_sqlx.DB, nicknameList []string) (userList UserList, err error) {
 	if len(nicknameList) == 0 {
 		return UserList{}, nil
 	}
@@ -589,12 +589,12 @@ func (user *User) BatchFetchByNicknameList(db *golib_tools_sqlx.DBDriver, nickna
 }
 
 // deprecated
-func (userList *UserList) BatchFetchByUsernameList(db *golib_tools_sqlx.DBDriver, usernameList []string) (err error) {
+func (userList *UserList) BatchFetchByUsernameList(db *golib_tools_sqlx.DB, usernameList []string) (err error) {
 	*userList, err = (&User{}).BatchFetchByUsernameList(db, usernameList)
 	return
 }
 
-func (user *User) BatchFetchByUsernameList(db *golib_tools_sqlx.DBDriver, usernameList []string) (userList UserList, err error) {
+func (user *User) BatchFetchByUsernameList(db *golib_tools_sqlx.DB, usernameList []string) (userList UserList, err error) {
 	if len(usernameList) == 0 {
 		return UserList{}, nil
 	}

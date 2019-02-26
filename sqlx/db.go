@@ -10,7 +10,7 @@ import (
 )
 
 var ErrNotTx = errors.New("db is not *sql.Tx")
-var ErrNotDB = errors.New("db is not *sql.DBDriver")
+var ErrNotDB = errors.New("db is not *sql.DB")
 
 func Open(driverName string, dataSourceName string, openFunc func(string, string) (*sql.DB, error)) (*DB, error) {
 	db, err := openFunc(driverName, dataSourceName)
@@ -28,18 +28,6 @@ func MustOpen(driverName string, dataSourceName string, openFunc func(string, st
 		panic(err)
 	}
 	return db
-}
-
-type DBDriver interface {
-	SqlExecutor
-	Do(stmt builder.Statement) (result *Result)
-	IsTx() bool
-	Begin() (DBDriver, error)
-	Commit() error
-	Rollback() error
-	SetMaxOpenConns(n int)
-	SetMaxIdleConns(n int)
-	SetConnMaxLifetime(t time.Duration)
 }
 
 type DB struct {
@@ -65,7 +53,7 @@ func (d *DB) Exec(query string, args ...interface{}) (sql.Result, error) {
 	return d.SqlExecutor.Exec(query, args...)
 }
 
-func (d *DB) Begin() (DBDriver, error) {
+func (d *DB) Begin() (*DB, error) {
 	if d.IsTx() {
 		return nil, ErrNotDB
 	}
