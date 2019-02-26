@@ -12,8 +12,8 @@ import (
 var ErrNotTx = errors.New("db is not *sql.Tx")
 var ErrNotDB = errors.New("db is not *sql.DBDriver")
 
-func Open(driverName string, dataSourceName string) (*DB, error) {
-	db, err := sql.Open(driverName, dataSourceName)
+func Open(driverName string, dataSourceName string, openFunc func(string, string) (*sql.DB, error)) (*DB, error) {
+	db, err := openFunc(driverName, dataSourceName)
 	if err != nil {
 		return nil, err
 	}
@@ -22,8 +22,8 @@ func Open(driverName string, dataSourceName string) (*DB, error) {
 	}, nil
 }
 
-func MustOpen(driverName string, dataSourceName string) *DB {
-	db, err := Open(driverName, dataSourceName)
+func MustOpen(driverName string, dataSourceName string, openFunc func(string, string) (*sql.DB, error)) *DB {
+	db, err := Open(driverName, dataSourceName, openFunc)
 	if err != nil {
 		panic(err)
 	}

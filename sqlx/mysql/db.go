@@ -1,6 +1,7 @@
 package mysql
 
 import (
+	"database/sql"
 	"fmt"
 	"net/url"
 	"time"
@@ -64,7 +65,7 @@ func (m MySQL) GetConnect() string {
 
 func (m *MySQL) Connect() error {
 	m.MarshalDefaults(m)
-	db, err := sqlx.Open("logger:mysql", m.GetConnect())
+	db, err := sqlx.Open("logger:mysql", m.GetConnect(), sql.Open)
 	if err != nil {
 		return err
 	}

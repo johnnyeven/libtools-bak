@@ -68,10 +68,7 @@ func ConfP(c interface{}) {
 	}
 
 	p := &internal.Project{}
-	err := p.UnmarshalFromFile()
-	if err != nil {
-		panic(fmt.Errorf("ConfP need project config file. err: %v", err))
-	}
+	p.UnmarshalFromFile()
 
 	os.Setenv(EnvVarKeyProjectName, ServiceName)
 	os.Setenv(EnvVarKeyServiceName, strings.Replace(ServiceName, "service-", "", 1))
