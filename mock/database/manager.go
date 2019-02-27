@@ -6,12 +6,13 @@ import (
 	"fmt"
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/johnnyeven/libtools/sqlx"
+	"github.com/pkg/errors"
 )
 
 type MockDB struct {
 	mockDB *sql.DB
-	mock sqlmock.Sqlmock
-	db *sqlx.DB
+	mock   sqlmock.Sqlmock
+	db     *sqlx.DB
 }
 
 func (m *MockDB) Init() error {
@@ -56,10 +57,10 @@ func (m *MockDB) LoadTestSuite(path string) error {
 		case "exec":
 			exec := m.mock.ExpectExec(q.ExpectedSQLKeyWord)
 			if q.WithArgs != nil {
-				exec = exec.WithArgs(q.WithArgs)
+				exec = exec.WithArgs(convertDBValue(q.WithArgs)...)
 			}
-			if q.ReturnError != nil {
-				exec.WillReturnError(q.ReturnError)
+			if q.ReturnError != "" {
+				exec.WillReturnError(errors.Errorf(q.ReturnError))
 			} else if q.ReturnResult != nil {
 				exec.WillReturnResult(sqlmock.NewResult(q.ReturnResult.LastInsertID, q.ReturnResult.RowsEffected))
 			} else {
@@ -68,10 +69,10 @@ func (m *MockDB) LoadTestSuite(path string) error {
 		case "query":
 			query := m.mock.ExpectQuery(q.ExpectedSQLKeyWord)
 			if q.WithArgs != nil {
-				query = query.WithArgs(q.WithArgs)
+				query = query.WithArgs(convertDBValue(q.WithArgs)...)
 			}
-			if q.ReturnError != nil {
-				query.WillReturnError(q.ReturnError)
+			if q.ReturnError != "" {
+				query.WillReturnError(errors.Errorf(q.ReturnError))
 			} else if q.ReturnRows != nil {
 				rows := sqlmock.NewRows(q.ReturnRows.Columns)
 				for _, r := range q.ReturnRows.Rows {
@@ -91,4 +92,29 @@ func (m *MockDB) LoadTestSuite(path string) error {
 	}
 
 	return nil
+}
+
+func convertDBValue(data []interface{}) []driver.Value {
+	args := make([]driver.Value, 0)
+	for _, a := range data {
+		var v driver.Value
+		f := a.(float64)
+		if isValidFloatValue(f) {
+			v = f
+		} else {
+			v = int64(f)
+		}
+		args = append(args, v)
+	}
+
+	return args
+}
+
+func isValidFloatValue(v float64) bool {
+	compare := v
+	if v == float64(int64(compare)) {
+		return false
+	}
+
+	return true
 }

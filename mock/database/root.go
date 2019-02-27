@@ -6,7 +6,7 @@ type Query struct {
 	WithArgs           []interface{} `json:"args,omitempty"`
 	ReturnResult       *ReturnResult `json:"result,omitempty"`
 	ReturnRows         *ReturnRows   `json:"rows,omitempty"`
-	ReturnError        error         `json:"error,omitempty"`
+	ReturnError        string        `json:"error,omitempty"`
 }
 
 type ReturnResult struct {
