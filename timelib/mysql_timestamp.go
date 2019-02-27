@@ -38,10 +38,11 @@ func (dt *MySQLTimestamp) Scan(value interface{}) error {
 		}
 		*dt = MySQLTimestamp(time.Unix(n, 0))
 	case int64:
+	case float64:
 		if v < 0 {
 			*dt = MySQLTimestamp{}
 		} else {
-			*dt = MySQLTimestamp(time.Unix(v, 0))
+			*dt = MySQLTimestamp(time.Unix(int64(v), 0))
 		}
 	case nil:
 		*dt = MySQLTimestampZero
