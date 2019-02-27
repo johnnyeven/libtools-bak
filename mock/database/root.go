@@ -2,7 +2,7 @@ package database
 
 type Query struct {
 	Type               string        `json:"type"`
-	ExpectedSQLKeyWord string        `json:"sqlKeyword"`
+	ExpectedSQLKeyWord string        `json:"sqlKeyword,omitempty"`
 	WithArgs           []interface{} `json:"args,omitempty"`
 	ReturnResult       *ReturnResult `json:"result,omitempty"`
 	ReturnRows         *ReturnRows   `json:"rows,omitempty"`
