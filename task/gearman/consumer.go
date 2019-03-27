@@ -1,36 +1,34 @@
 package gearman
 
 import (
-	"github.com/mikespook/gearman-go/worker"
-	"github.com/mikespook/gearman-go/client"
-	"github.com/johnnyeven/libtools/task/constants"
 	"fmt"
+	"github.com/johnnyeven/libtools/task/constants"
+	"github.com/mikespook/gearman-go/worker"
 	"github.com/sirupsen/logrus"
 )
 
-type GearmanBroker struct {
+type GearmanConsumer struct {
 	worker          *worker.Worker
 	workerProcessor constants.TaskProcessor
-	client          *client.Client
 }
 
-func NewGearmanBroker(info constants.ConnectionInfo) *GearmanBroker {
+func NewGearmanBroker(info constants.ConnectionInfo) *GearmanConsumer {
 	w := worker.New(worker.Unlimited)
 	w.AddServer(info.Protocol, fmt.Sprintf("%s:%d", info.Host, info.Port))
 	w.ErrorHandler = func(e error) {
 		logrus.Errorf("worker handled err: %v", e)
 	}
-	return &GearmanBroker{
+	return &GearmanConsumer{
 		worker: w,
 	}
 }
 
-func (b *GearmanBroker) RegisterChannel(channel string, processor constants.TaskProcessor) error {
+func (b *GearmanConsumer) RegisterChannel(channel string, processor constants.TaskProcessor) error {
 	b.workerProcessor = processor
 	return b.worker.AddFunc(channel, b.processorJob, worker.Unlimited)
 }
 
-func (b *GearmanBroker) processorJob(job worker.Job) ([]byte, error) {
+func (b *GearmanConsumer) processorJob(job worker.Job) ([]byte, error) {
 	t := &constants.Task{}
 	err := constants.UnmarshalData(job.Data(), t)
 	if err != nil {
@@ -43,15 +41,15 @@ func (b *GearmanBroker) processorJob(job worker.Job) ([]byte, error) {
 	return constants.MarshalData(ret)
 }
 
-func (b *GearmanBroker) Work() {
+func (b *GearmanConsumer) Work() {
 	if err := b.worker.Ready(); err != nil {
 		logrus.Panic("gearman worker not ready...")
 	}
-	logrus.Debug("GearmanBroker.Working...")
+	logrus.Debug("GearmanConsumer.Working...")
 	b.worker.Work()
 }
 
-func (b *GearmanBroker) Stop() {
+func (b *GearmanConsumer) Stop() {
 	b.worker.Close()
-	logrus.Debug("GearmanBroker.Stopped")
+	logrus.Debug("GearmanConsumer.Stopped")
 }

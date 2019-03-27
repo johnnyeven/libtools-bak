@@ -1,31 +1,31 @@
 package gearman
 
 import (
-	"github.com/mikespook/gearman-go/client"
-	"github.com/johnnyeven/libtools/task/constants"
 	"fmt"
+	"github.com/johnnyeven/libtools/task/constants"
+	"github.com/mikespook/gearman-go/client"
 	"github.com/sirupsen/logrus"
 )
 
-type GearmanClient struct {
+type GearmanProducer struct {
 	client *client.Client
 }
 
-func NewGearmanClient(info constants.ConnectionInfo) *GearmanClient {
+func NewGearmanClient(info constants.ConnectionInfo) *GearmanProducer {
 	c, err := client.New(info.Protocol, fmt.Sprintf("%s:%d", info.Host, info.Port))
 	if err != nil {
 		logrus.Panicf("NewGearmanClient err: %v", err)
 	}
 
-	return &GearmanClient{
+	return &GearmanProducer{
 		client: c,
 	}
 }
 
-func (c *GearmanClient) SendTask(task *constants.Task) error {
+func (c *GearmanProducer) SendTask(task *constants.Task) error {
 	data, err := constants.MarshalData(task)
 	if err != nil {
-		logrus.Errorf("GearmanClient.SendTask err: %v", err)
+		logrus.Errorf("GearmanProducer.SendTask err: %v", err)
 		return err
 	}
 	_, err = c.client.DoBg(task.Channel, data, client.JobNormal)
@@ -36,6 +36,6 @@ func (c *GearmanClient) SendTask(task *constants.Task) error {
 	return nil
 }
 
-func (c *GearmanClient) Stop() {
+func (c *GearmanProducer) Stop() {
 	c.client.Close()
 }

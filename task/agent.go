@@ -30,7 +30,7 @@ type Agent struct {
 	Channel        string
 	BrokerType     constants.BrokerType `conf:"env"`
 	workers        []*Worker
-	client         Client
+	client         Producer
 	backend        *Backend
 	jobs           sync.Map
 

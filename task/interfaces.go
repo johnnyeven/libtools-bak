@@ -2,13 +2,13 @@ package task
 
 import "github.com/johnnyeven/libtools/task/constants"
 
-type Broker interface {
+type Consumer interface {
 	RegisterChannel(channel string, processor constants.TaskProcessor) error
 	Work()
 	Stop()
 }
 
-type Client interface {
+type Producer interface {
 	SendTask(task *constants.Task) error
 	Stop()
 }

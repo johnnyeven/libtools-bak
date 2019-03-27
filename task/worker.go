@@ -6,12 +6,12 @@ import (
 )
 
 type Worker struct {
-	broker    Broker
+	broker    Consumer
 	processor constants.TaskProcessor
 }
 
 func NewWorker(brokerType constants.BrokerType, connInfo constants.ConnectionInfo) *Worker {
-	var b Broker
+	var b Consumer
 	if brokerType == constants.BROKER_TYPE__GEARMAN {
 		b = gearman.NewGearmanBroker(connInfo)
 	}
