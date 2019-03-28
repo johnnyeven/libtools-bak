@@ -13,7 +13,7 @@ type Worker struct {
 func NewWorker(brokerType constants.BrokerType, connInfo constants.ConnectionInfo) *Worker {
 	var b Consumer
 	if brokerType == constants.BROKER_TYPE__GEARMAN {
-		b = gearman.NewGearmanBroker(connInfo)
+		b = gearman.NewGearmanConsumer(connInfo)
 	}
 	return &Worker{
 		broker: b,

@@ -12,7 +12,7 @@ type GearmanConsumer struct {
 	workerProcessor constants.TaskProcessor
 }
 
-func NewGearmanBroker(info constants.ConnectionInfo) *GearmanConsumer {
+func NewGearmanConsumer(info constants.ConnectionInfo) *GearmanConsumer {
 	w := worker.New(worker.Unlimited)
 	w.AddServer(info.Protocol, fmt.Sprintf("%s:%d", info.Host, info.Port))
 	w.ErrorHandler = func(e error) {

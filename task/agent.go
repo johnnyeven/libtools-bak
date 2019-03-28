@@ -40,7 +40,7 @@ type Agent struct {
 
 func (a *Agent) Init() {
 	if a.BrokerType == constants.BROKER_TYPE__GEARMAN {
-		a.client = gearman.NewGearmanClient(a.ConnectionInfo)
+		a.client = gearman.NewGearmanProducer(a.ConnectionInfo)
 	}
 }
 

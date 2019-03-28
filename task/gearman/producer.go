@@ -11,10 +11,10 @@ type GearmanProducer struct {
 	client *client.Client
 }
 
-func NewGearmanClient(info constants.ConnectionInfo) *GearmanProducer {
+func NewGearmanProducer(info constants.ConnectionInfo) *GearmanProducer {
 	c, err := client.New(info.Protocol, fmt.Sprintf("%s:%d", info.Host, info.Port))
 	if err != nil {
-		logrus.Panicf("NewGearmanClient err: %v", err)
+		logrus.Panicf("NewGearmanProducer err: %v", err)
 	}
 
 	return &GearmanProducer{
