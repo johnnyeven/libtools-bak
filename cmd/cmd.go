@@ -22,8 +22,8 @@ func getPackageName() string {
 }
 
 var cmdRoot = &cobra.Command{
-	Use:   "tools",
-	Short: "g7pay tools",
+	Use:   "libtools",
+	Short: "profzone tools",
 }
 
 func Execute() {

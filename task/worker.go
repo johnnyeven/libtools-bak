@@ -3,6 +3,7 @@ package task
 import (
 	"github.com/johnnyeven/libtools/task/constants"
 	"github.com/johnnyeven/libtools/task/gearman"
+	"github.com/johnnyeven/libtools/task/kafka"
 )
 
 type Worker struct {
@@ -14,6 +15,8 @@ func NewWorker(brokerType constants.BrokerType, connInfo constants.ConnectionInf
 	var b Consumer
 	if brokerType == constants.BROKER_TYPE__GEARMAN {
 		b = gearman.NewGearmanConsumer(connInfo)
+	} else if brokerType == constants.BROKER_TYPE__KAFKA {
+		b = kafka.NewKafkaConsumer(connInfo)
 	}
 	return &Worker{
 		broker: b,

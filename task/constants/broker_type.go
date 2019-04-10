@@ -9,4 +9,5 @@ const (
 	BROKER_TYPE_UNKNOWN  BrokerType = iota
 	BROKER_TYPE__GEARMAN  // gearman
 	BROKER_TYPE__REDIS    // redis
+	BROKER_TYPE__KAFKA    // kafka
 )

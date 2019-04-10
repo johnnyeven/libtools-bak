@@ -13,6 +13,7 @@ var InvalidBrokerType = errors.New("invalid BrokerType")
 func init() {
 	github_com_johnnyeven_libtools_courier_enumeration.RegisterEnums("BrokerType", map[string]string{
 		"GEARMAN": "gearman",
+		"KAFKA":   "kafka",
 		"REDIS":   "redis",
 	})
 }
@@ -23,6 +24,8 @@ func ParseBrokerTypeFromString(s string) (BrokerType, error) {
 		return BROKER_TYPE_UNKNOWN, nil
 	case "GEARMAN":
 		return BROKER_TYPE__GEARMAN, nil
+	case "KAFKA":
+		return BROKER_TYPE__KAFKA, nil
 	case "REDIS":
 		return BROKER_TYPE__REDIS, nil
 	}
@@ -35,6 +38,8 @@ func ParseBrokerTypeFromLabelString(s string) (BrokerType, error) {
 		return BROKER_TYPE_UNKNOWN, nil
 	case "gearman":
 		return BROKER_TYPE__GEARMAN, nil
+	case "kafka":
+		return BROKER_TYPE__KAFKA, nil
 	case "redis":
 		return BROKER_TYPE__REDIS, nil
 	}
@@ -48,6 +53,7 @@ func (BrokerType) EnumType() string {
 func (BrokerType) Enums() map[int][]string {
 	return map[int][]string{
 		int(BROKER_TYPE__GEARMAN): {"GEARMAN", "gearman"},
+		int(BROKER_TYPE__KAFKA):   {"KAFKA", "kafka"},
 		int(BROKER_TYPE__REDIS):   {"REDIS", "redis"},
 	}
 }
@@ -57,6 +63,8 @@ func (v BrokerType) String() string {
 		return ""
 	case BROKER_TYPE__GEARMAN:
 		return "GEARMAN"
+	case BROKER_TYPE__KAFKA:
+		return "KAFKA"
 	case BROKER_TYPE__REDIS:
 		return "REDIS"
 	}
@@ -69,6 +77,8 @@ func (v BrokerType) Label() string {
 		return ""
 	case BROKER_TYPE__GEARMAN:
 		return "gearman"
+	case BROKER_TYPE__KAFKA:
+		return "kafka"
 	case BROKER_TYPE__REDIS:
 		return "redis"
 	}

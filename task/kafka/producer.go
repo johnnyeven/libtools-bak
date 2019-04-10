@@ -12,10 +12,11 @@ type KafkaProducer struct {
 	w *kafka.Writer
 }
 
-func NewGearmanProducer(info constants.ConnectionInfo) *KafkaProducer {
+func NewKafkaProducer(info constants.ConnectionInfo) *KafkaProducer {
 	w := kafka.NewWriter(kafka.WriterConfig{
-		Brokers:  []string{fmt.Sprintf("%s:%d", info.Host, info.Port)},
-		Balancer: &kafka.LeastBytes{},
+		Brokers:           []string{fmt.Sprintf("%s:%d", info.Host, info.Port)},
+		Topic:             "test",
+		Balancer:          &kafka.LeastBytes{},
 	})
 	return &KafkaProducer{
 		w: w,
@@ -29,9 +30,9 @@ func (p *KafkaProducer) SendTask(task *constants.Task) error {
 		return err
 	}
 	err = p.w.WriteMessages(context.Background(), kafka.Message{
-		Topic:     task.Channel,
-		Key:       []byte(task.Subject),
-		Value:     data,
+		Topic: task.Channel,
+		Key:   []byte(task.Subject),
+		Value: data,
 	})
 	if err != nil {
 		return err

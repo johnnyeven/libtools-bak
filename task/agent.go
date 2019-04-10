@@ -2,6 +2,7 @@ package task
 
 import (
 	"github.com/johnnyeven/libtools/conf"
+	"github.com/johnnyeven/libtools/task/kafka"
 	"os"
 	"strings"
 	"fmt"
@@ -41,6 +42,8 @@ type Agent struct {
 func (a *Agent) Init() {
 	if a.BrokerType == constants.BROKER_TYPE__GEARMAN {
 		a.client = gearman.NewGearmanProducer(a.ConnectionInfo)
+	} else if a.BrokerType == constants.BROKER_TYPE__KAFKA {
+		a.client = kafka.NewKafkaProducer(a.ConnectionInfo)
 	}
 }
 
