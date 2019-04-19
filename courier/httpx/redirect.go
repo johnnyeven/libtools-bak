@@ -11,73 +11,73 @@ type IRedirect interface {
 	Status() int
 }
 
-func RedirectWithStatusMovedPermanently(uri string) *statusMovedPermanently {
-	return &statusMovedPermanently{
+func RedirectWithStatusMovedPermanently(uri string) *StatusMovedPermanently {
+	return &StatusMovedPermanently{
 		location: location(uri),
 	}
 }
 
-type statusMovedPermanently struct {
+type StatusMovedPermanently struct {
 	location
 }
 
-func (s *statusMovedPermanently) Status() int {
+func (s *StatusMovedPermanently) Status() int {
 	return http.StatusMovedPermanently
 }
 
-func RedirectWithStatusFound(uri string) *statusFound {
-	return &statusFound{
+func RedirectWithStatusFound(uri string) *StatusFound {
+	return &StatusFound{
 		location: location(uri),
 	}
 }
 
-type statusFound struct {
+type StatusFound struct {
 	location
 }
 
-func (s *statusFound) Status() int {
+func (s *StatusFound) Status() int {
 	return http.StatusFound
 }
 
-func RedirectWithStatusSeeOther(uri string) *statusSeeOther {
-	return &statusSeeOther{
+func RedirectWithStatusSeeOther(uri string) *StatusSeeOther {
+	return &StatusSeeOther{
 		location: location(uri),
 	}
 }
 
-type statusSeeOther struct {
+type StatusSeeOther struct {
 	location
 }
 
-func (s *statusSeeOther) Status() int {
+func (s *StatusSeeOther) Status() int {
 	return http.StatusSeeOther
 }
 
-func RedirectWithStatusTemporaryRedirect(uri string) *statusTemporaryRedirect {
-	return &statusTemporaryRedirect{
+func RedirectWithStatusTemporaryRedirect(uri string) *StatusTemporaryRedirect {
+	return &StatusTemporaryRedirect{
 		location: location(uri),
 	}
 }
 
-type statusTemporaryRedirect struct {
+type StatusTemporaryRedirect struct {
 	location
 }
 
-func (s *statusTemporaryRedirect) Status() int {
+func (s *StatusTemporaryRedirect) Status() int {
 	return http.StatusTemporaryRedirect
 }
 
-func RedirectWithStatusPermanentRedirect(uri string) *statusPermanentRedirect {
-	return &statusPermanentRedirect{
+func RedirectWithStatusPermanentRedirect(uri string) *StatusPermanentRedirect {
+	return &StatusPermanentRedirect{
 		location: location(uri),
 	}
 }
 
-type statusPermanentRedirect struct {
+type StatusPermanentRedirect struct {
 	location
 }
 
-func (s *statusPermanentRedirect) Status() int {
+func (s *StatusPermanentRedirect) Status() int {
 	return http.StatusPermanentRedirect
 }
 
