@@ -96,7 +96,7 @@ var RxHttpRouterPath = regexp.MustCompile("/:([^/]+)")
 func (s *ServeHTTP) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	if s.WithCORS {
 		headers := w.Header()
-		setCORS(&headers)
+		setCORS(&headers, req)
 	}
 	s.router.ServeHTTP(w, req)
 }
