@@ -11,7 +11,7 @@ import (
 // code, key, msg, desc, canBeTalkError
 var RegexpStatusError = regexp.MustCompile(`@httpError\(([0-9]+),(.+),"(.+)?","(.+)?",(false|true)\);`)
 
-const DefaultErrorCode = 500000000
+const DefaultErrorCode = 500000001
 const DefaultErrorKey = "InternalError"
 
 func ParseString(s string) *StatusError {
