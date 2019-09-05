@@ -1,8 +1,9 @@
-package conf
+package config_agent
 
 import (
 	"encoding/json"
 	"github.com/johnnyeven/libtools/clients/client_configurations"
+	"github.com/johnnyeven/libtools/conf"
 	"github.com/johnnyeven/libtools/courier/client"
 	"github.com/sirupsen/logrus"
 	"reflect"
@@ -10,13 +11,13 @@ import (
 )
 
 const (
-	DefaultHost           = "service-eden-configuration.eden.service.profzone.net"
+	DefaultHost           = "service-configurations.profzone.service.profzone.net"
 	DefaultMode           = "http"
 	DefaultPort           = 80
 	DefaultRequestTimeout = 5
 	DefaultPullInterval   = 60
-	DefaultStackName      = "eden"
-	DefaultServiceName    = "service-eden-configuration"
+	DefaultStackName      = "profzone"
+	DefaultServiceName    = "service-configurations"
 )
 
 type Agent struct {
@@ -28,6 +29,7 @@ type Agent struct {
 	StackID            uint64 `conf:"env"`
 	client             *client_configurations.ClientConfigurations
 	config             interface{}
+	rawConfig          []RawConfig
 }
 
 func (a *Agent) MarshalDefaults(v interface{}) {
@@ -62,9 +64,9 @@ func (a *Agent) MarshalDefaults(v interface{}) {
 	}
 }
 
-func (a Agent) DockerDefaults() DockerDefaults {
-	return DockerDefaults{
-		"Host":               RancherInternal(DefaultStackName, DefaultServiceName),
+func (a Agent) DockerDefaults() conf.DockerDefaults {
+	return conf.DockerDefaults{
+		"Host":               conf.RancherInternal(DefaultStackName, DefaultServiceName),
 		"Mode":               DefaultMode,
 		"Port":               DefaultPort,
 		"Timeout":            DefaultRequestTimeout,
@@ -114,7 +116,22 @@ func (a *Agent) getFistRunConfig() {
 		logrus.Panicf("load configuration failed, neither remote or local. err: %v", err)
 	}
 
-	err = json.Unmarshal(result, a.config)
+	err = json.Unmarshal(result, &a.rawConfig)
+	if err != nil {
+		logrus.Panicf("unmarshal raw configuration err: %v", err)
+	}
+
+	configMap := make(map[string]string)
+	for _, config := range a.rawConfig {
+		configMap[config.Key] = config.Value
+	}
+
+	jsonConfig, err := json.Marshal(configMap)
+	if err != nil {
+		logrus.Panicf("marshal raw configuration err: %v", err)
+	}
+
+	err = json.Unmarshal(jsonConfig, &a.config)
 	if err != nil {
 		logrus.Panicf("unmarshal configuration err: %v", err)
 	}
