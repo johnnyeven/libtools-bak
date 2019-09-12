@@ -33,3 +33,14 @@ func GetLogID() string {
 
 	return ""
 }
+
+func Close() {
+	locker.Lock()
+	defer locker.Unlock()
+
+	goID := getGoID()
+
+	if _, ok := logIDs[goID]; ok {
+		delete(logIDs, goID)
+	}
+}

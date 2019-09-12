@@ -43,6 +43,7 @@ func CreateHttpHandler(s *ServeHTTP, ops ...courier.IOperator) httprouter.Handle
 		}
 
 		logContext.SetLogID(reqID)
+		defer logContext.Close()
 
 		d := duration.NewDuration()
 

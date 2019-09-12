@@ -2,7 +2,7 @@ FROM tensorflow/tensorflow
 
 RUN apt-get install -y curl git
 
-ENV GOLANG_VERSION 1.10.3
+ENV GOLANG_VERSION 1.13
 ENV GOLANG_DOWNLOAD_URL https://golang.org/dl/go$GOLANG_VERSION.linux-amd64.tar.gz
 ENV GOPATH /go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
@@ -26,7 +26,13 @@ RUN  curl -fsSL "https://storage.googleapis.com/tensorflow/libtensorflow/$TENSOR
 
 ENV LD_LIBRARY_PATH=$TARGET_DIRECTORY/lib
 ENV LIBRARY_PATH=$TARGET_DIRECTORY/lib
-RUN go get -v github.com/tensorflow/tensorflow/tensorflow/go
 
-#ADD ./tensorflow.tar.gz /go/src/github.com/tensorflow/tensorflow/
-#RUN cd /go/src/github.com/tensorflow/tensorflow/tensorflow/go && go install
+#RUN go get -v github.com/tensorflow/tensorflow/tensorflow/go
+
+#RUN mkdir -p $GOPATH/src/github.com/tensorflow/ && cd $GOPATH/src/github.com/tensorflow/ && \
+#	git clone https://github.com/tensorflow/tensorflow.git && \
+#	cd tensorflow/go && \
+#	go install
+
+ADD ./tensorflow.tar.gz /go/src/github.com/
+RUN cd /go/src/github.com/tensorflow/tensorflow/tensorflow/go && go install

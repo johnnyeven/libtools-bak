@@ -76,7 +76,11 @@ func collectEnvVars(rv reflect.Value, envVarKey string, tagConfOption TagConfOpt
 	case reflect.Struct:
 		walkStructField(rv, false, func(fieldValue reflect.Value, field reflect.StructField) bool {
 			nextEnvKey := resolveEnvVarKeyByField(envVarKey, field)
-			tagConfOption = GetTagConfOption(field.Tag.Get(TagConf))
+			tagContent := field.Tag.Get(TagConf)
+			if tagContent == "-" {
+				return true
+			}
+			tagConfOption = GetTagConfOption(tagContent)
 			if v, exists := dockerDefaults[field.Name]; exists {
 				tagConfOption.FallbackValue = v
 			}
