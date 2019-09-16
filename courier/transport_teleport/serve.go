@@ -2,6 +2,7 @@ package transport_teleport
 
 import (
 	"github.com/henrylee2cn/teleport"
+	"github.com/henrylee2cn/teleport/proto/pbproto"
 	"github.com/johnnyeven/libtools/conf"
 	"time"
 )
@@ -25,6 +26,7 @@ type ServeTeleport struct {
 }
 
 func (s *ServeTeleport) Init() {
+	tp.SetDefaultProtoFunc(pbproto.NewPbProtoFunc())
 	s.server = tp.NewPeer(tp.PeerConfig{
 		Network:            s.Network,
 		LocalIP:            s.IP,

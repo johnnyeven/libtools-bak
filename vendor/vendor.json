@@ -296,6 +296,18 @@
 			"revisionTime": "2019-08-27T03:48:41Z"
 		},
 		{
+			"checksumSHA1": "m6DjsqUwo1GD83bE9AQQFFBW0Fo=",
+			"path": "github.com/henrylee2cn/teleport/proto/pbproto",
+			"revision": "f56327e25d4bccd6b6bb0e8bedffcf422ffd1f6f",
+			"revisionTime": "2019-09-12T03:36:44Z"
+		},
+		{
+			"checksumSHA1": "5kD1p6zxBeNMMf35oFjp5J5BjKM=",
+			"path": "github.com/henrylee2cn/teleport/proto/pbproto/pb",
+			"revision": "f56327e25d4bccd6b6bb0e8bedffcf422ffd1f6f",
+			"revisionTime": "2019-09-12T03:36:44Z"
+		},
+		{
 			"checksumSHA1": "924rRT8eFRsA+XUlXBBs43vgU4s=",
 			"path": "github.com/henrylee2cn/teleport/quic",
 			"revision": "dce8115ac2f370a69b17166ddbc7548a68e11cad",
@@ -461,6 +473,36 @@
 			"path": "github.com/morlay/oas",
 			"revision": "772645512e7261b0f43a1b64c8c3ab4a063f63ad",
 			"revisionTime": "2018-01-04T07:00:36Z"
+		},
+		{
+			"checksumSHA1": "MW07HDpxtg0zxirvbXqws4HTmTg=",
+			"path": "github.com/mustafaturan/bus",
+			"revision": "39f6078a5b6459162a69ddf9a68baeeb9b58a619",
+			"revisionTime": "2019-08-05T03:51:07Z"
+		},
+		{
+			"checksumSHA1": "qw0i09OiLI7rid+0aY9I/Wk2Ez4=",
+			"path": "github.com/mustafaturan/monoton",
+			"revision": "a59c469de003a420f855067a6e13abe1d9e58e77",
+			"revisionTime": "2019-04-17T07:15:47Z"
+		},
+		{
+			"checksumSHA1": "K1aYdWZSfQWqCBiqNrJLRSR/fd8=",
+			"path": "github.com/mustafaturan/monoton/encoder",
+			"revision": "a59c469de003a420f855067a6e13abe1d9e58e77",
+			"revisionTime": "2019-04-17T07:15:47Z"
+		},
+		{
+			"checksumSHA1": "1oqKd7LC3udKwQnAfSZ5D9RsyJM=",
+			"path": "github.com/mustafaturan/monoton/mtimer",
+			"revision": "a59c469de003a420f855067a6e13abe1d9e58e77",
+			"revisionTime": "2019-04-17T07:15:47Z"
+		},
+		{
+			"checksumSHA1": "I0XvfR8J/AtW0vf1T8jc9zkaouU=",
+			"path": "github.com/mustafaturan/monoton/sequencer",
+			"revision": "a59c469de003a420f855067a6e13abe1d9e58e77",
+			"revisionTime": "2019-04-17T07:15:47Z"
 		},
 		{
 			"checksumSHA1": "NzzMfGmmPoTGVwLZDkj3FXXDvCA=",
